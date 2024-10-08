@@ -3,7 +3,7 @@
 _:tada::tada::tada:修仙模拟器！:tada::tada::tada:_
 
 ## 简介
-【本仓库才fork过来，等我移植好了会删除这行字】
+【本仓库才fork过来（移植自nonebot_plugin_xiuxian），等我移植好了会删除这行字】
 本插件主要为实现群聊修仙功能,最近经常封号，请自行判断后再使用，已默认转成图片模式，如需关闭，可在config.py处调整img字段为false
 
 
