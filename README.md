@@ -1,111 +1,86 @@
-# nonebot_plugin_xiuxian
+# koishi-plugin-huaji-xiuxian
 
-_:tada::tada::tada:修仙模拟器！:tada::tada::tada:_
+[![npm](https://img.shields.io/npm/v/koishi-plugin-huaji-xiuxian?style=flat-square)](https://www.npmjs.com/package/koishi-plugin-huaji-xiuxian)
 
-## 简介
-【本仓库才fork过来（移植自nonebot_plugin_xiuxian），等我移植好了会重写readme】
-本插件主要为实现群聊修仙功能,最近经常封号，请自行判断后再使用，已默认转成图片模式，如需关闭，可在config.py处调整img字段为false
+群聊修仙模拟器 —— 由 [nonebot-plugin-xiuxian-2](https://github.com/QingMuCat/nonebot_plugin_xiuxian_2) 完整移植、重构而来的 Koishi v4 插件。
 
+修炼、境界、灵根、宗门、世界 BOSS、悬赏令、炼丹、秘境、传承……在群聊中开启你的修仙之旅。
 
-## 已暂停更新，可去nonebot商店查询xiuxian2~~~
+## 特性
 
-## 特色功能
+- **标准 Koishi 生态**：使用 `ctx.command` 注册指令、`ctx.model` 持久化数据、`Service` 提供核心服务，支持多平台适配器。
+- **灵石经济基于 monetary**：所有灵石（货币）操作通过 [`koishi-plugin-monetary`](https://www.npmjs.com/package/koishi-plugin-monetary) 服务实现，**不内置任何货币逻辑**。
+- **TypeScript 严格模式**：全量类型注解，模块化拆分，易于维护扩展。
+- **可视化配置**：修炼速度、境界惩罚、签到灵石、各类冷却等均可在控制台 Schema 中调整。
 
-  指令较多，具体查看指令 修仙帮助<br>
-  1、悬赏令系统：发送指令 悬赏令帮助 获取信息<br>
-  2、宗门系统：发送指令 宗门帮助 获取信息<br>
-  3、世界boss系统：发送 世界boss帮助 获取信息<br>
-  4、坊市：查询商店信息，当前商品为用户自行上架拍卖，发送指令 背包帮助 获取信息<br>
-  5、灵庄：银行系统，发送 灵庄帮助 获取信息<br>
-  6、功法：功法系统，发送指令 功法帮助<br>
-  7、炼丹：发送 炼丹帮助 获取对应操作指令，需要炼丹炉，可在世界boss处获取。<br>
-  8、秘境：发送 秘境帮助 获取对应操作指令。<br>
+## 依赖
+
+本插件依赖以下服务，请在 Koishi 中一并安装并启用：
+
+- `database`（任意数据库实现，如 `@koishijs/plugin-database-sqlite`）
+- `monetary`（`koishi-plugin-monetary`）
 
 ## 安装
-1、下载插件文件
 
-- 使用脚手架安装(推荐github处拉取源码使用)
+在 Koishi 插件市场搜索 `huaji-xiuxian` 安装，或在工作区中本地安装后启用。
 
+## 快速开始
 
-```
-pip install nonebot-plugin-xiuxian
-nb plugin install nonebot-plugin-xiuxian
-```
+1. 安装并启用 `database`、`monetary` 与本插件。
+2. 在群聊中发送 **我要修仙** 创建角色。
+3. 发送 **修仙帮助** 查看完整指令列表。
 
-- 使用github处拉取源码使用
+## 指令一览
 
-```
-git clone https://github.com/s52047qwas/nonebot_plugin_xiuxian.git
-```
+| 分类 | 指令 |
+| --- | --- |
+| 基础 | `我要修仙` `修仙签到` `我的修仙信息` `我的状态` `改名` `重入仙途` |
+| 突破 | `我的突破概率` `突破` `直接突破` `渡厄突破` |
+| 修炼 | `闭关` `出关` `灵石修炼` `双修` |
+| 经济 | `灵石` `送灵石` `偷灵石` `抢劫` `排行榜` |
+| 背包 | `我的背包` `使用` `换装` `查看修仙界物品` |
+| 宗门 | `宗门帮助` 等系列指令 |
+| 悬赏令 | `悬赏令帮助` 等系列指令 |
+| 灵庄 | `灵庄信息` 等系列指令 |
+| 世界 BOSS | `世界boss帮助` `查看世界boss` `讨伐世界boss` |
+| 秘境 | `秘境帮助` `探索秘境` |
+| 炼丹 | `炼丹帮助` `凝丹` |
+| 传承 | `传承帮助` `参悟传承` |
 
-2、下载数据文件
+## 变更说明（移植 / 重构记录）
 
-使用git clone的方法的，进入插件目录，把data文件夹中的全部内容移动到bot的数据文件夹中<br>
-使用pip的，在GitHub处下载data文件夹，把data文件夹中的全部内容移动到bot的数据文件夹中<br>
-bot的数据文件夹一般为bot.py同级目录下的data文件夹
+### 主要移植内容
 
-3、加载插件
+- **用户与角色系统**：玩家信息、灵根生成、境界进阶、属性（气血 / 真元 / 攻击）等完整移植。
+- **修炼系统**：闭关、出关、灵石修炼、双修（含每日次数限制）。
+- **突破系统**：普通突破、直接突破、渡厄突破，突破概率读取 `突破概率.json`。
+- **经济系统**：灵石通过 monetary 服务管理，含送 / 偷 / 抢劫等交互。
+- **背包与物品**：装备、功法、丹药的使用与换装，物品图鉴查询。
+- **宗门系统**：创建 / 加入 / 退出 / 捐献 / 职位变更 / 传位 / 攻击修炼等。
+- **悬赏令系统**：刷新 / 接取 / 结算 / 终止，奖励与成功率按境界计算。
+- **灵庄（银行）**：存取灵石、会员升级、利息结算。
+- **世界 BOSS**：生成 / 查看 / 讨伐与战利品掉落。
+- **排行榜**：战力与修为榜单。
 
-- 然后在bot.py文件中添加
+### 重构点
 
-```
-nonebot.load_plugin('nonebot_plugin_xiuxian')
-```
+- 将 NoneBot 的事件 / 指令体系全面替换为 Koishi 的 `ctx.command` 与服务注入。
+- 原 SQLite 直连改为 Koishi `ctx.model` 表定义（`xiuxian_player` / `xiuxian_cd` / `xiuxian_sect` / `xiuxian_back` / `xiuxian_buff` / `xiuxian_bank` / `xiuxian_work` / `xiuxian_boss`）。
+- 灵石由插件自管改为通过 `monetary` 服务（平台 `userId` ↔ Koishi `uid` 映射）。
+- 所有静态数据（境界 / 灵根 / 物品 / 悬赏）由 `data/xiuxian` 下 JSON 在 `GameData` 中统一加载缓存。
+- 以 `突破概率.json` 的键顺序作为境界进阶的唯一可信来源，动态推导境界等级 `rank`。
 
-4、如果遇到问题，请先百度和查看下方的 【一些问题】
+### 注意事项
 
-5、如解决不了进交流群：760517008 提问，提问请贴上完整的日志
+- **秘境、炼丹、传承** 为简化移植版本：保留核心玩法（随机探索奖励、凝练丹药、永久强化攻击修炼），完整丹方 / 多阶段事件 / 虚神界体系将在后续版本补全。
+- 世界 BOSS 的属性以当前修为最高玩家为基准生成，以适配本插件的境界命名体系。
+- 默认仅在群聊响应（可在配置中关闭 `groupOnly`）。
+- 插件启用后请尽快设置管理员QQ号
+## 许可证
 
-## 配置文件
-1、配置文件一般在data/xiuxian文件夹下，自行按照json格式修改即可，一些字段的含义可以进群交流<br>
-2、子插件的配置会在插件运行后在子插件文件中生成config.json文件，该文件字段含义在同级目录的xxxconfig.py有备注。注意：修改配置只需要修改json即可，修改.py文件的话需要删除json文件才会生效，任何修改都需要重启bot
+[MIT](https://choosealicense.com/licenses/mit/)
 
-## 更新
-- 使用脚手架安装的
-```
-pip install nonebot-plugin-xiuxian -U
-```
-```
-pip install nonebot-plugin-xiuxian --upgrade
-```
-- 使用github处拉取源码使用的
-进入插件目录执行命令：
-```
-git pull
-```
-
-
-## 功能展示
-
-- 使用 `/我要修仙` 指令触发机器人，机器人创建用户信息，生成灵根，境界等信息。
-- 发送突破，当修为足够时，可突破境界。
-- 发送修仙签到，获取每日初始化的灵石及修为。
-
-![image](https://user-images.githubusercontent.com/44226600/187607785-3ea934f4-2b5c-418e-9b99-e8a8e5562125.png)
-
-## 一些问题
-
-- 当前首次使用，未自动创建json文件及sql文件，请在[githut](https://github.com/s52047qwas/nonebot_plugin_xiuxian)处，目录data -> xiuxian
-处下载的文件，放置于bot目录，data -> xiuxian文件夹处
-- 当为放置为plugins目录使用时，请修改根目录下__init__.py文件中的42行：src=''中的内容，填写的是存放插件的目录，一般情况下 src='src.plugins.'  如有不同请按照格式修改
 ## 特别感谢
 
-- [NoneBot2](https://github.com/nonebot/nonebot2)：本插件实装的开发框架。
-- [go-cqhttp](https://github.com/Mrs4s/go-cqhttp)：稳定完善的 CQHTTP 实现。
-
-## 插件依赖
-
-- nonebot2
-- nonebot-adapter-onebot
-- go-cqhttp
-
-## 支持
-
-大家喜欢的话可以给这个项目点个star
-
-有bug、意见和建议都欢迎提交 [Issues](https://github.com/s52047qwas/nonebot_plugin_xiuxian/issues) 
-或者联系进入QQ交流群：760517008
-
-## 许可证
-本项目使用 [MIT](https://choosealicense.com/licenses/mit/) 作为开源许可证
-
+- [nonebot-plugin-xiuxian-2](https://github.com/QingMuCat/nonebot_plugin_xiuxian_2)：原始玩法与数据来源。
+- [Koishi](https://koishi.chat/)：本插件的开发框架。
