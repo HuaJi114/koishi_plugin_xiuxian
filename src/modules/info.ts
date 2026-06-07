@@ -1,5 +1,6 @@
 import { Context } from 'koishi'
 import { Config } from '../config'
+import { buildFighter, computeCombatStats, formatAtkBreakdown } from '../combat-stats'
 import { getEffectiveMaxHpMp, isHeavilyInjured, numberTo } from '../utils'
 
 /** 信息查询模块：我的修仙信息、我的状态、我的功法 */
@@ -32,6 +33,7 @@ export function applyInfo(ctx: Context, _config: Config) {
       const secBuff = srv.data.getItem(buff.secBuff)
       const weapon = srv.data.getItem(buff.faqiBuff)
       const armor = srv.data.getItem(buff.armorBuff)
+      const stats = computeCombatStats(base, buff, srv.data)
       const itemName = (i?: { name: string; level?: string }) => i ? `${i.name}(${i.level ?? ''})` : '无'
 
       let sectMsg = '散修'
@@ -48,7 +50,9 @@ export function applyInfo(ctx: Context, _config: Config) {
         `灵石：${numberTo(stone)}`,
         `战力：${numberTo(Math.floor(base.exp * rootRate * realmRate))}`,
         `突破状态：${expMsg}概率：${rate}%`,
-        `攻击力：${numberTo(player.atk)}，攻修等级${player.atkPractice}级`,
+        `攻击力：${numberTo(player.atk)}（${formatAtkBreakdown(stats)}）`,
+        `会心率：${stats.critRate}%${stats.defenseRate > 0 ? `，减伤率：${Math.floor(stats.defenseRate * 100)}%` : ''}`,
+        `攻修等级：${player.atkPractice}级`,
         `所在宗门：${sectMsg}`,
         `主修功法：${itemName(mainBuff as never)}`,
         `副修神通：${itemName(secBuff as never)}`,
@@ -68,11 +72,13 @@ export function applyInfo(ctx: Context, _config: Config) {
       const mainMp = (mainBuff?.mpbuff as number) ?? 0
       const { maxHp, maxMp } = getEffectiveMaxHpMp(player.exp, mainHp, mainMp)
       const base = (await srv.getPlayer(userId))!
+      const stats = computeCombatStats(base, buff, srv.data)
       const lines = [
         `${player.userName} 道友的状态`,
         `气血：${numberTo(player.hp)} / ${numberTo(maxHp)}`,
         `真元：${numberTo(player.mp)} / ${numberTo(maxMp)}`,
-        `攻击：${numberTo(player.atk)}`,
+        `攻击：${numberTo(player.atk)}（${formatAtkBreakdown(stats)}）`,
+        `会心率：${stats.critRate}%${stats.defenseRate > 0 ? `，减伤率：${Math.floor(stats.defenseRate * 100)}%` : ''}`,
       ]
       if (isHeavilyInjured(base.exp, base.hp)) {
         lines.push('当前状态：重伤（需【闭关】并【出关】后恢复满气血与真元）')

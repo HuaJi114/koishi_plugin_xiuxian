@@ -2,8 +2,8 @@ import { Context, Session } from 'koishi'
 import { Config } from '../config'
 import { ADMIN_AUTHORITY, breakthrough, getAtId } from '../helpers'
 import { formatPresetSectList, formatSectRegisterPrompt } from '../preset-sects'
+import { buildFighter } from '../combat-stats'
 import { dateDiffSeconds, generateRoot, getPowerRate, isHeavilyInjured, numberTo, playerFight, randInt } from '../utils'
-import { Fighter } from '../types'
 
 const REGISTER_PROMPT_MS = 120_000
 const ROB_BATTLE_DETAIL_TTL_MS = 120_000
@@ -271,26 +271,9 @@ export function applyBase(ctx: Context, config: Config) {
       if (isHeavilyInjured(baseTarget.exp, baseTarget.hp)) return '对方重伤藏匿了，无法抢劫！'
       if (isHeavilyInjured(basePlayer.exp, basePlayer.hp)) return '重伤未愈，动弹不得！'
 
-      const f1: Fighter = {
-        userId: player.userId,
-        name: player.userName,
-        hp: basePlayer.hp,
-        atk: player.atk,
-        mp: basePlayer.mp,
-        crit: 1,
-        critDamage: 1.5,
-        defense: 0,
-      }
-      const f2: Fighter = {
-        userId: target.userId,
-        name: target.userName,
-        hp: baseTarget.hp,
-        atk: target.atk,
-        mp: baseTarget.mp,
-        crit: 1,
-        critDamage: 1.5,
-        defense: 0,
-      }
+      const f1 = await buildFighter(srv, session!.userId!)
+      const f2 = await buildFighter(srv, targetId)
+      if (!f1 || !f2) return '战斗数据异常，请稍后再试！'
       const [log, victor, finalHp] = playerFight(f1, f2)
       storeRobBattleDetail(player.userId, target.userId, log)
       await srv.applyBattleHp(player.userId, finalHp[player.userId])

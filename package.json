@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-huaji-xiuxian",
   "description": "群聊修仙模拟器，由 nonebot-plugin-xiuxian-2 移植重构而来，后续会开发AI随机副本功能，以及更多有趣的小玩意儿",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [

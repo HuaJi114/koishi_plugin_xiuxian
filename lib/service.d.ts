@@ -24,6 +24,11 @@ export declare class XiuxianService extends Service {
     getPlayerByName(userName: string): Promise<XiuxianPlayer | undefined>;
     /** 获取玩家并应用功法/装备加成（对应 final_user_data） */
     getRealPlayer(userId: string): Promise<XiuxianPlayer | undefined>;
+    /**
+     * 将背包中 state=1 的装备同步到 buff 表。
+     * 修复仅更新了背包装备状态、未写入 faqiBuff/armorBuff 的历史数据。
+     */
+    syncEquipBuffs(userId: string): Promise<void>;
     /** 创建玩家，已存在则返回提示 */
     createPlayer(session: Session, root: string, rootType: string, power: number, userName: string): Promise<string>;
     /** 查询时尝试的 currency 列表（配置项优先，兼容 monetary 默认的 default） */
@@ -96,6 +101,14 @@ export declare class XiuxianService extends Service {
     setSecBuff(userId: string, id: number): Promise<void>;
     setFaqiBuff(userId: string, id: number): Promise<void>;
     setArmorBuff(userId: string, id: number): Promise<void>;
+    setSubBuff(userId: string, id: number): Promise<void>;
+    addAtkBuff(userId: string, amount: number): Promise<void>;
+    setBlessedSpot(userId: string, level: number): Promise<void>;
+    setAtk(userId: string, atk: number): Promise<void>;
+    /** 装备法器（自动卸下原法器） */
+    equipFaqi(userId: string, goodsId: number): Promise<void>;
+    /** 装备防具（自动卸下原防具） */
+    equipArmor(userId: string, goodsId: number): Promise<void>;
     /** 获取背包（数量 >= 1） */
     getBack(userId: string): Promise<XiuxianBack[]>;
     /** 获取背包中某物品 */

@@ -10,7 +10,7 @@ import {
   SECT_MISSION_CD_SECONDS,
 } from '../sect-missions'
 import { dateDiffSeconds, isHeavilyInjured, numberTo, playerFight, randInt } from '../utils'
-import { Fighter } from '../types'
+import { buildFighter } from '../combat-stats'
 
 /** 各职位供奉丹药概率（%） */
 const SECT_OFFERING_PILL_RATE = [18, 14, 11, 8, 5]
@@ -324,16 +324,8 @@ export function applySect(ctx: Context, config: Config) {
       const realPlayer = (await srv.getRealPlayer(userId))!
       const basePlayer = player
       const monsters = generateMissionMonsters(mission, basePlayer.hp, realPlayer.atk)
-      const fighter: Fighter = {
-        userId,
-        name: realPlayer.userName,
-        hp: basePlayer.hp,
-        atk: realPlayer.atk,
-        mp: basePlayer.mp,
-        crit: 1,
-        critDamage: 1.5,
-        defense: 0,
-      }
+      const fighter = await buildFighter(srv, userId)
+      if (!fighter) return '战斗数据异常，请稍后再试！'
 
       const { log, won, remainingHp, initialMonsterHp } = fightMissionMonsters(
         fighter,

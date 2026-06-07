@@ -2,6 +2,7 @@ import { $, Context, Service, Session } from 'koishi'
 import { Config } from './config'
 import { GameData } from './data'
 import { calcInitialStats, clampBaseHpMp, getEffectiveMaxHpMp } from './utils'
+import { computeCombatStats } from './combat-stats'
 import { findPresetSect, PRESET_SECTS } from './preset-sects'
 import { XiuxianBack, XiuxianBuff, XiuxianPlayer, XiuxianSect } from './types'
 
@@ -132,22 +133,45 @@ export class XiuxianService extends Service {
 
   /** 获取玩家并应用功法/装备加成（对应 final_user_data） */
   async getRealPlayer(userId: string): Promise<XiuxianPlayer | undefined> {
+    await this.syncEquipBuffs(userId)
     const player = await this.getPlayer(userId)
     if (!player) return undefined
     const buff = await this.getBuff(userId)
-    const mainBuff = this.data.getItem(buff.mainBuff)
-    const weapon = this.data.getItem(buff.faqiBuff)
-    const mainHp = (mainBuff?.hpbuff as number) ?? 0
-    const mainMp = (mainBuff?.mpbuff as number) ?? 0
-    const mainAtk = (mainBuff?.atkbuff as number) ?? 0
-    const weaponAtk = buff.faqiBuff ? ((weapon?.atk_buff as number) ?? 0) : 0
+    const mainBuff = buff.mainBuff > 0 ? this.data.getItem(buff.mainBuff) : undefined
+    const stats = computeCombatStats(player, buff, this.data)
+    const mainHp = Number(mainBuff?.hpbuff ?? 0)
+    const mainMp = Number(mainBuff?.mpbuff ?? 0)
     const { maxHp, maxMp } = getEffectiveMaxHpMp(player.exp, mainHp, mainMp)
     const { hp: baseHp, mp: baseMp } = clampBaseHpMp(player.exp, player.hp, player.mp)
     return {
       ...player,
       hp: Math.min(Math.floor(baseHp * (1 + mainHp)), maxHp),
       mp: Math.min(Math.floor(baseMp * (1 + mainMp)), maxMp),
-      atk: Math.floor(player.atk * (player.atkPractice * 0.04 + 1) * (1 + mainAtk) * (1 + weaponAtk)) + buff.atkBuff,
+      atk: stats.finalAtk,
+    }
+  }
+
+  /**
+   * 将背包中 state=1 的装备同步到 buff 表。
+   * 修复仅更新了背包装备状态、未写入 faqiBuff/armorBuff 的历史数据。
+   */
+  async syncEquipBuffs(userId: string): Promise<void> {
+    const backs = await this.ctx.database.get('xiuxian_back', { userId, state: 1, goodsNum: { $gte: 1 } })
+    const buff = await this.getBuff(userId)
+    let faqiId = 0
+    let armorId = 0
+    for (const b of backs) {
+      const info = this.data.getItem(b.goodsId)
+      const equipType = info?.item_type === '法器' ? '法器'
+        : info?.item_type === '防具' ? '防具'
+        : b.goodsType === '装备'
+          ? (b.goodsName.includes('甲') || b.goodsName.includes('袍') || b.goodsName.includes('衣') ? '防具' : '法器')
+          : null
+      if (equipType === '法器') faqiId = b.goodsId
+      if (equipType === '防具') armorId = b.goodsId
+    }
+    if (faqiId !== buff.faqiBuff || armorId !== buff.armorBuff) {
+      await this.ctx.database.set('xiuxian_buff', { userId }, { faqiBuff: faqiId, armorBuff: armorId })
     }
   }
 
@@ -498,6 +522,7 @@ export class XiuxianService extends Service {
       sectOfferingGet: 0,
       sectElixirGet: 0,
     })
+    await this.ctx.database.set('xiuxian_back', {}, { dayNum: 0 })
   }
 
   /** @deprecated 请使用 resetDailyFlags */
@@ -554,6 +579,50 @@ export class XiuxianService extends Service {
     await this.ctx.database.set('xiuxian_buff', { userId }, { armorBuff: id })
   }
 
+  async setSubBuff(userId: string, id: number) {
+    await this.getBuff(userId)
+    await this.ctx.database.set('xiuxian_buff', { userId }, { subBuff: id })
+  }
+
+  async addAtkBuff(userId: string, amount: number) {
+    const buff = await this.getBuff(userId)
+    await this.ctx.database.set('xiuxian_buff', { userId }, { atkBuff: buff.atkBuff + amount })
+    await this.updatePower(userId)
+  }
+
+  async setBlessedSpot(userId: string, level: number) {
+    await this.getBuff(userId)
+    await this.ctx.database.set('xiuxian_buff', { userId }, { blessedSpot: level })
+  }
+
+  async setAtk(userId: string, atk: number) {
+    await this.ctx.database.set('xiuxian_player', { userId }, { atk })
+  }
+
+  /** 装备法器（自动卸下原法器） */
+  async equipFaqi(userId: string, goodsId: number): Promise<void> {
+    const buff = await this.getBuff(userId)
+    const now = new Date()
+    if (buff.faqiBuff && buff.faqiBuff !== goodsId) {
+      await this.ctx.database.set('xiuxian_back', { userId, goodsId: buff.faqiBuff }, { state: 0, updateTime: now })
+    }
+    await this.setFaqiBuff(userId, goodsId)
+    await this.ctx.database.set('xiuxian_back', { userId, goodsId }, { state: 1, updateTime: now, actionTime: now })
+    await this.updatePower(userId)
+  }
+
+  /** 装备防具（自动卸下原防具） */
+  async equipArmor(userId: string, goodsId: number): Promise<void> {
+    const buff = await this.getBuff(userId)
+    const now = new Date()
+    if (buff.armorBuff && buff.armorBuff !== goodsId) {
+      await this.ctx.database.set('xiuxian_back', { userId, goodsId: buff.armorBuff }, { state: 0, updateTime: now })
+    }
+    await this.setArmorBuff(userId, goodsId)
+    await this.ctx.database.set('xiuxian_back', { userId, goodsId }, { state: 1, updateTime: now, actionTime: now })
+    await this.updatePower(userId)
+  }
+
   // ==================== 背包 ====================
 
   /** 获取背包（数量 >= 1） */
@@ -569,6 +638,8 @@ export class XiuxianService extends Service {
 
   /** 添加物品到背包 */
   async sendBack(userId: string, goodsId: number, goodsName: string, goodsType: string, goodsNum: number, bindFlag = 0): Promise<void> {
+    const info = this.data.getItem(goodsId)
+    const storedType = info?.item_type ?? goodsType
     const now = new Date()
     const item = await this.getBackItem(userId, goodsId)
     if (item) {
@@ -580,7 +651,7 @@ export class XiuxianService extends Service {
       })
     } else {
       await this.ctx.database.create('xiuxian_back', {
-        userId, goodsId, goodsName, goodsType, goodsNum,
+        userId, goodsId, goodsName, goodsType: storedType, goodsNum,
         createTime: now, updateTime: now,
         bindNum: bindFlag === 1 ? goodsNum : 0,
       })
@@ -593,7 +664,10 @@ export class XiuxianService extends Service {
     if (!item) return
     const now = new Date()
     let { dayNum, allNum, bindNum } = item
-    if (item.goodsType === '丹药' && useKey === 1) {
+    const info = this.data.getItem(goodsId)
+    const elixirType = info?.item_type ?? item.goodsType
+    const isElixir = elixirType === '丹药' || elixirType === '合成丹药'
+    if (isElixir && useKey === 1) {
       if (item.bindNum >= 1) bindNum = item.bindNum - num
       dayNum += num
       allNum += num
