@@ -1,13 +1,12 @@
 import { Context } from 'koishi'
 import { Config } from '../config'
+import { RIFT_DAILY_LIMIT } from '../daily-utils'
 import { dateDiffSeconds, numberTo, randChoice, randInt } from '../utils'
 
 const RIFT_CD_SECONDS = 60 * 60
 
 /**
- * 秘境模块（简化移植）。
- * 原插件秘境为多阶段事件探索，这里实现为单次随机事件探索，
- * 保留奖励/惩罚/获得物品的核心玩法。
+ * 秘境模块：每日 3 次 + 1 小时 CD。
  */
 export function applyRift(ctx: Context, _config: Config) {
   const srv = ctx.xiuxian
@@ -16,7 +15,7 @@ export function applyRift(ctx: Context, _config: Config) {
     .action(() => [
       '秘境帮助信息:',
       '1、探索秘境：进入秘境随机探索，可能获得灵石、修为或物品，也可能受伤。',
-      `2、每位道友独立冷却：探索后需等待 ${RIFT_CD_SECONDS / 60} 分钟方可再次探索。`,
+      `2、每位道友每日可探索 ${RIFT_DAILY_LIMIT} 次（0 点刷新），每次探索后需等待 ${RIFT_CD_SECONDS / 60} 分钟方可再次探索。`,
     ].join('\n'))
 
   ctx.command('xiuxian/探索秘境', '进入秘境随机探索')
@@ -25,6 +24,12 @@ export function applyRift(ctx: Context, _config: Config) {
       const realPlayer = await srv.getRealPlayer(userId)
       if (!realPlayer) return '修仙界没有道友的信息，请输入【我要修仙】加入！'
       const basePlayer = (await srv.getPlayer(userId))!
+      const used = basePlayer.riftDailyCount ?? 0
+      const remain = RIFT_DAILY_LIMIT - used
+      if (remain <= 0) {
+        return `道友今日探索秘境次数已用尽（${RIFT_DAILY_LIMIT}/${RIFT_DAILY_LIMIT}），请明日 0 点后再来。`
+      }
+
       const cd = await srv.getCd(userId)
       if (cd && cd.type !== 0) {
         if (cd.type === 1) return '道友正在闭关，无法探索秘境！'
@@ -34,8 +39,8 @@ export function applyRift(ctx: Context, _config: Config) {
       if (basePlayer.riftCd) {
         const elapsed = dateDiffSeconds(new Date(), basePlayer.riftCd)
         if (elapsed < RIFT_CD_SECONDS) {
-          const remain = Math.ceil((RIFT_CD_SECONDS - elapsed) / 60)
-          return `秘境探索冷却中，还需${remain}分钟方可再次探索。`
+          const remainMin = Math.ceil((RIFT_CD_SECONDS - elapsed) / 60)
+          return `秘境探索冷却中，还需${remainMin}分钟方可再次探索。（今日剩余${remain - 1 >= 0 ? remain : 0}次，探索成功后消耗1次）`
         }
       }
 
@@ -70,7 +75,11 @@ export function applyRift(ctx: Context, _config: Config) {
         result = `道友在秘境中遭遇强敌，气血损失${numberTo(lost)}，险些殒命！`
       }
 
-      await ctx.database.set('xiuxian_player', { userId }, { riftCd: new Date() })
-      return result
+      await ctx.database.set('xiuxian_player', { userId }, {
+        riftCd: new Date(),
+        riftDailyCount: used + 1,
+      })
+      const left = RIFT_DAILY_LIMIT - (used + 1)
+      return `${result}\n（今日剩余探索次数：${left}/${RIFT_DAILY_LIMIT}）`
     })
 }

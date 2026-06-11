@@ -6,3 +6,4 @@ export type ItemUseCategory = 'equipment' | 'skill' | 'elixir' | 'jlq' | 'other'
 export declare function getItemUseCategory(info: ItemInfo, back?: XiuxianBack): ItemUseCategory;
 export declare function useBackItem(ctx: Context, srv: XiuxianService, userId: string, back: XiuxianBack, info: ItemInfo, useNum?: number): Promise<string>;
 export declare function unequipItem(ctx: Context, srv: XiuxianService, userId: string, back: XiuxianBack, info: ItemInfo): Promise<string>;
+//# sourceMappingURL=item-use.d.ts.map

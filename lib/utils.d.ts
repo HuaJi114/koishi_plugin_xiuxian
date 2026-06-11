@@ -56,6 +56,7 @@ export declare function dateDiffSeconds(newTime: Date | number, oldTime: Date | 
 export declare function getPowerRate(mind: number, other: number): number | string;
 /**
  * 简单回合制战斗，对应原 OtherSet.player_fight。
- * @returns [战斗过程文本列表, 胜者道号, 双方剩余气血]
+ * 若传入 data 且攻击方有神通，随机选用一门神通（不叠加）。
  */
-export declare function playerFight(p1: Fighter, p2: Fighter): [string[], string, Record<string, number>];
+export declare function playerFight(p1: Fighter, p2: Fighter, data?: GameData): [string[], string, Record<string, number>];
+//# sourceMappingURL=utils.d.ts.map

@@ -19,3 +19,4 @@ export interface XiuxianWork {
 }
 /** 悬赏令模块：刷新、接取、结算、终止 */
 export declare function applyWork(ctx: Context, _config: Config): void;
+//# sourceMappingURL=work.d.ts.map

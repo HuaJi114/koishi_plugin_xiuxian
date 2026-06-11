@@ -67,11 +67,16 @@ export declare class GameData {
     itemRankByLevel(level: string): number;
     /** 解析物品的境界要求展示文案 */
     formatItemRealmRequirement(info: ItemInfo): string | undefined;
-    /** 格式化物品详情（编号查询） */
+    /** 按名称搜索物品（精确优先，再模糊） */
+    findItemsByName(query: string): Array<[string, ItemInfo]>;
+    /** 格式化物品详情（编号/名称查询） */
     formatItemDetail(id: string | number): string | undefined;
     /**
      * 境界对应的 USERRANK 数值（越小境界越高），与原 xiuxian_config.USERRANK 同一量纲。
      * 江湖好手 = 56，依次递减，供物品/丹药等级判定使用。
      */
     userRank(level: string): number;
+    /** 药材可参与的合成丹药名称（按 elixir_config 类型匹配） */
+    findElixirsForHerb(herbId: string): string[];
 }
+//# sourceMappingURL=data.d.ts.map

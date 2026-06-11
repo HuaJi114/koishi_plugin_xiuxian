@@ -32,3 +32,4 @@ export declare function fightMissionMonsters(player: Fighter, monsters: Array<{
 };
 /** 任务酬劳：各妖兽初始气血之和 × 0.1 × 妖兽数量（按需求公式） */
 export declare function calcMissionReward(initialMonsterHp: number[]): number;
+//# sourceMappingURL=sect-missions.d.ts.map

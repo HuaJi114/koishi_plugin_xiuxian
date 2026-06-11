@@ -29,3 +29,4 @@ export type BreakthroughResult = {
  * @param level 当前境界
  */
 export declare function breakthrough(data: GameData, exp: number, rate: number, level: string): BreakthroughResult;
+//# sourceMappingURL=helpers.d.ts.map

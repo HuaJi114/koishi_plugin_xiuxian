@@ -1,0 +1,40 @@
+{"id":1,"type":"info","level":2,"name":"app","meta":{},"content":"\u001b[38;5;15;1mKoishi/4.18.11\u001b[0m","timestamp":1780649496215}
+{"id":2,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:entry\u001b[0m","timestamp":1780649496232}
+{"id":3,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:server\u001b[0m","timestamp":1780649496232}
+{"id":4,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mserver:p5vgxw\u001b[0m","timestamp":1780649496233}
+{"id":5,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:basic\u001b[0m","timestamp":1780649496337}
+{"id":6,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mcommands:ckqanq\u001b[0m","timestamp":1780649496337}
+{"id":7,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhelp:do3b4q\u001b[0m","timestamp":1780649496340}
+{"id":8,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhttp:ktv517\u001b[0m","timestamp":1780649496342}
+{"id":9,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mlocales:yzwfva\u001b[0m","timestamp":1780649496343}
+{"id":10,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mproxy-agent:wxbshp\u001b[0m","timestamp":1780649496346}
+{"id":11,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mrate-limit:g1qwdv\u001b[0m","timestamp":1780649496418}
+{"id":12,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mtelemetry:9o4qn9\u001b[0m","timestamp":1780649496419}
+{"id":13,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:console\u001b[0m","timestamp":1780649496428}
+{"id":14,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mactions:fqxmz1\u001b[0m","timestamp":1780649496428}
+{"id":15,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45manalytics:pe7f1n\u001b[0m","timestamp":1780649496429}
+{"id":16,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mconfig:sxmcu9\u001b[0m","timestamp":1780649496431}
+{"id":17,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mconsole:y8id5p\u001b[0m","timestamp":1780649496458}
+{"id":18,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mdataview:4tqnl0\u001b[0m","timestamp":1780649496464}
+{"id":19,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mexplorer:c556ld\u001b[0m","timestamp":1780649496466}
+{"id":20,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mlogger:u8sxc2\u001b[0m","timestamp":1780649496477}
+{"id":21,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45minsight:kx9h2z\u001b[0m","timestamp":1780649496479}
+{"id":22,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mmarket:6vlzmo\u001b[0m","timestamp":1780649496480}
+{"id":23,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mnotifier:iors19\u001b[0m","timestamp":1780649496500}
+{"id":24,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45moobe:mvnpze\u001b[0m","timestamp":1780649496502}
+{"id":25,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45msandbox:5fdj6q\u001b[0m","timestamp":1780649496503}
+{"id":26,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mstatus:iweqrx\u001b[0m","timestamp":1780649496505}
+{"id":27,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mtheme-vanilla:ip0ven\u001b[0m","timestamp":1780649496522}
+{"id":28,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:storage\u001b[0m","timestamp":1780649496523}
+{"id":29,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mdatabase-sqlite:ylldu6\u001b[0m","timestamp":1780649496524}
+{"id":30,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45massets-local:12ryfk\u001b[0m","timestamp":1780649496531}
+{"id":31,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:adapter\u001b[0m","timestamp":1780649496533}
+{"id":32,"type":"info","level":2,"name":"assets","meta":{"paths":["12ryfk"]},"content":"missing config \"selfUrl\", fallback to \"file:\" scheme","timestamp":1780649496588}
+{"id":33,"type":"info","level":2,"name":"server","meta":{"paths":["p5vgxw"]},"content":"server listening at \u001b[38;5;57mhttp://127.0.0.1:5140\u001b[0m","timestamp":1780649496628}
+{"id":34,"type":"info","level":2,"name":"console","meta":{"paths":["y8id5p"]},"content":"webui is available at \u001b[38;5;166mhttp://127.0.0.1:5140\u001b[0m","timestamp":1780649496628}
+{"id":36,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170muser\u001b[0m","timestamp":1780649496674}
+{"id":39,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170mbinding\u001b[0m","timestamp":1780649496682}
+{"id":42,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170mchannel\u001b[0m","timestamp":1780649496685}
+{"id":45,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170manalytics.message\u001b[0m","timestamp":1780649496689}
+{"id":48,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170manalytics.command\u001b[0m","timestamp":1780649496691}
+{"id":55,"type":"success","level":1,"name":"telemetry","meta":{"paths":["9o4qn9"]},"content":"\n欢迎使用 Koishi！\ntelemetry 服务是一组可选的 Koishi 服务，旨在通过分析您的 Koishi 使用情况来改善 Koishi 的使用体验、提供精确的插件使用量数据，并仅在您需要时为您提供支持。\n拒绝同意将影响我们提供的相关数据和功能，但不会影响 Koishi 的基础功能。\n要了解更多信息，请打开 Koishi 控制台并参阅我们的隐私政策。在您点击「同意」前，telemetry 服务不会启动。\n","timestamp":1780649496703}

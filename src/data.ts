@@ -206,7 +206,20 @@ export class GameData {
     return realm || undefined
   }
 
-  /** 格式化物品详情（编号查询） */
+  /** 按名称搜索物品（精确优先，再模糊） */
+  findItemsByName(query: string): Array<[string, ItemInfo]> {
+    const q = query.trim()
+    if (!q) return []
+    const exact: Array<[string, ItemInfo]> = []
+    const partial: Array<[string, ItemInfo]> = []
+    for (const [id, info] of Object.entries(this.items)) {
+      if (info.name === q) exact.push([id, info])
+      else if (info.name.includes(q)) partial.push([id, info])
+    }
+    return exact.length ? exact : partial
+  }
+
+  /** 格式化物品详情（编号/名称查询） */
   formatItemDetail(id: string | number): string | undefined {
     const info = this.getItem(id)
     if (!info) return undefined
@@ -222,29 +235,70 @@ export class GameData {
 
     const pct = (v: unknown) => typeof v === 'number' ? `${Math.round(v * 1000) / 10}%` : null
     const effects: string[] = []
+    const itemType = info.item_type ?? (info.type as string)
+
+    if (itemType === '药材') {
+      const elixirs = this.findElixirsForHerb(String(id))
+      if (elixirs.length) effects.push(`可炼制：${elixirs.join('、')}`)
+      const main = info['主药'] as { type?: number; power?: number; h_a_c?: { type?: number; power?: number } } | undefined
+      if (main?.h_a_c) {
+        effects.push(`主药冷热：${main.h_a_c.type === 0 ? '平' : main.h_a_c.type! > 0 ? '热' : '冷'}×${main.h_a_c.power ?? 1}`)
+      }
+    }
+
     const buffType = info.buff_type as string | undefined
     if (buffType) {
-      const buffLabels: Record<string, string> = {
-        hp: '回复气血/真元',
-        all: '完全恢复状态',
-        exp_up: '增加修为',
-        level_up_rate: '提升突破概率',
-        level_up_big: '大幅提升突破概率',
+      const buffVal = Number(info.buff ?? 0)
+      const labels: Record<string, string> = {
+        hp: `回复气血/真元 ${pct(buffVal) ?? buffVal}`,
+        all: '完全恢复气血与真元',
+        exp_up: `增加修为 ${Math.floor(buffVal)} 点`,
+        level_up_rate: `提升突破成功率 ${pct(buffVal) ?? buffVal}`,
+        level_up_big: `大幅提升突破成功率 ${pct(buffVal) ?? buffVal}`,
+        atk_buff: `永久增加攻击力 ${Math.floor(buffVal)} 点`,
       }
-      effects.push(buffLabels[buffType] ?? buffType)
-      if (info.buff !== undefined) effects.push(`效果系数：${info.buff}`)
+      effects.push(labels[buffType] ?? buffType)
+      if (info.day_num !== undefined) effects.push(`每日上限 ${info.day_num} 次`)
+      if (info.all_num !== undefined) effects.push(`总耐药上限 ${info.all_num} 次`)
     }
+
     const hpb = pct(info.hpbuff)
     const mpb = pct(info.mpbuff)
     const atkb = pct(info.atkbuff)
     const rateb = pct(info.ratebuff)
     const weaponAtk = pct(info.atk_buff)
-    if (hpb) effects.push(`气血加成：${hpb}`)
-    if (mpb) effects.push(`真元加成：${mpb}`)
-    if (atkb) effects.push(`攻击加成：${atkb}`)
-    if (rateb) effects.push(`闭关/修炼效率：${rateb}`)
-    if (weaponAtk) effects.push(`法器攻击加成：${weaponAtk}`)
-    if (info.price) effects.push(`参考价格：${info.price}灵石`)
+    const weaponCrit = pct(info.crit_buff)
+    const armorDef = pct(info.def_buff)
+    if (hpb) effects.push(`气血加成 ${hpb}`)
+    if (mpb) effects.push(`真元加成 ${mpb}`)
+    if (atkb) effects.push(`攻击加成 ${atkb}`)
+    if (rateb) effects.push(`闭关/修炼效率 ${rateb}`)
+    if (weaponAtk) effects.push(`攻击力提升 ${weaponAtk}`)
+    if (weaponCrit) effects.push(`会心率提升 ${weaponCrit}`)
+    if (armorDef) effects.push(`减伤率 ${armorDef}`)
+
+    if (itemType === '神通') {
+      const st = Number(info.skill_type ?? 0)
+      if (st === 1) {
+        const av = info.atkvalue
+        const m = Array.isArray(av) ? av[0] : av
+        effects.push(`直接伤害：攻击×${m}`)
+      }
+      if (info.rate !== undefined) effects.push(`发动概率 ${info.rate}%`)
+      if (info.hpcost) effects.push(`消耗气血 ${pct(info.hpcost)}`)
+      if (info.mpcost) effects.push(`消耗真元 ${pct(info.mpcost)}`)
+    }
+
+    if (itemType === '聚灵旗') {
+      const speed = info['修炼速度']
+      if (speed !== undefined) effects.push(`洞天福地修炼速度 +${speed}`)
+    }
+
+    if (itemType === '炼丹炉') {
+      effects.push('炼丹必备器具，持有方可炼制丹药')
+    }
+
+    if (info.price) effects.push(`参考价格 ${info.price} 灵石`)
     if (effects.length) lines.push(`效果：${effects.join('；')}`)
     else if (!info.desc) lines.push('效果：暂无详细说明')
 
@@ -259,5 +313,22 @@ export class GameData {
     const index = this.levelOrder.indexOf(level)
     if (index < 0) return 56
     return 56 - index
+  }
+
+  /** 药材可参与的合成丹药名称（按 elixir_config 类型匹配） */
+  findElixirsForHerb(herbId: string): string[] {
+    const herb = this.getItem(herbId)
+    if (!herb || herb.item_type !== '药材') return []
+    const mainType = String((herb['主药'] as { type?: number })?.type ?? '')
+    const fyType = String((herb['辅药'] as { type?: number })?.type ?? '')
+    const names = new Set<string>()
+    for (const [id, info] of Object.entries(this.getItemsByType(['合成丹药']))) {
+      const cfg = info.elixir_config as Record<string, number> | undefined
+      if (!cfg) continue
+      if (mainType && cfg[mainType] !== undefined) names.add(info.name)
+      if (fyType && cfg[fyType] !== undefined) names.add(info.name)
+      void id
+    }
+    return [...names].slice(0, 8)
   }
 }

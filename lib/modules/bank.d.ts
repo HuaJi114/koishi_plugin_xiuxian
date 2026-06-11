@@ -14,3 +14,4 @@ export interface XiuxianBank {
 }
 /** 灵庄（银行）模块：存取灵石、升级会员、结算利息 */
 export declare function applyBank(ctx: Context, _config: Config): void;
+//# sourceMappingURL=bank.d.ts.map

@@ -89,7 +89,7 @@ export function applyBack(ctx: Context, _config: Config) {
     .action((_, query) => {
       const valid = ['功法', '神通', '丹药', '合成丹药', '法器', '防具', '聚灵旗', '药材', '炼丹炉']
       if (!query?.trim()) {
-        return `请输入物品类型或编号。\n支持的类型：${valid.join('|')}\n示例：查看修仙界物品 1101`
+        return `请输入物品类型、编号或名称。\n支持的类型：${valid.join('|')}\n示例：查看修仙界物品 1101\n示例：查看修仙界物品 飞云劲`
       }
       query = query.trim()
       if (/^\d+$/.test(query)) {
@@ -97,7 +97,19 @@ export function applyBack(ctx: Context, _config: Config) {
         if (!detail) return `未找到编号为 ${query} 的物品。`
         return detail
       }
-      if (!valid.includes(query)) return `支持的类型：${valid.join('|')}；或输入物品编号查询详情。`
+      const byName = srv.data.findItemsByName(query)
+      if (byName.length === 1) {
+        return srv.data.formatItemDetail(byName[0][0])!
+      }
+      if (byName.length > 1) {
+        const lines = [`找到 ${byName.length} 个名称匹配「${query}」的物品：`]
+        for (const [id, info] of byName.slice(0, 20)) {
+          lines.push(`${id} ${info.level ?? ''} ${info.name}`)
+        }
+        lines.push('发送【查看修仙界物品 <编号>】查看详情')
+        return lines.join('\n')
+      }
+      if (!valid.includes(query)) return `支持的类型：${valid.join('|')}；或输入物品编号/名称查询详情。`
       const data = srv.data.getItemsByType([query])
       const list = Object.entries(data).slice(0, 50)
       if (!list.length) return '暂无该类型物品。'

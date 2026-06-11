@@ -1,7 +1,10 @@
 import { Context } from 'koishi'
 import { Config } from '../config'
 import { ADMIN_AUTHORITY } from '../helpers'
-import { isHeavilyInjured, numberTo, randChoice, randInt } from '../utils'
+import { buildFighter } from '../combat-stats'
+import { BATTLE_DETAIL_HINT, storeBattleDetail } from '../battle-detail'
+import { isHeavilyInjured, numberTo, playerFight, randChoice, randInt } from '../utils'
+import { Fighter } from '../types'
 
 declare module 'koishi' {
   interface Tables {
@@ -194,8 +197,8 @@ export function applyBoss(ctx: Context, _config: Config) {
     .action(async ({ session }, id) => {
       const userId = session!.userId!
       const pf = session!.platform
-      const realPlayer = await srv.getRealPlayer(userId)
-      if (!realPlayer) return '修仙界没有道友的信息，请输入【我要修仙】加入！'
+      const fighter = await buildFighter(srv, userId)
+      if (!fighter) return '修仙界没有道友的信息，请输入【我要修仙】加入！'
       const basePlayer = await srv.getPlayer(userId)
       if (!basePlayer) return '修仙界没有道友的信息，请输入【我要修仙】加入！'
       if (isHeavilyInjured(basePlayer.exp, basePlayer.hp)) return '道友重伤未愈，无法讨伐BOSS！'
@@ -205,21 +208,42 @@ export function applyBoss(ctx: Context, _config: Config) {
       const boss = id ? list.find((b) => b.id === id) : list[0]
       if (!boss) return '没有这个编号的世界BOSS！'
 
-      const dmg = Math.floor(realPlayer.atk * (0.95 + Math.random() * 0.1))
-      await recordBossDamage(boss.id, userId, pf, dmg)
+      const bossFighter: Fighter = {
+        userId: `boss-${boss.id}`,
+        name: boss.name,
+        hp: Math.max(boss.hp, 1),
+        atk: Math.floor(boss.atk),
+        mp: 0,
+        crit: 1,
+        critDamage: 1.5,
+        defense: 0,
+      }
+      fighter.hp = Math.max(basePlayer.hp, 1)
 
-      const bossHp = boss.hp - dmg
-      const bossDmg = Math.floor(boss.atk * (0.95 + Math.random() * 0.1))
-      const newHp = Math.max(basePlayer.hp - bossDmg, 0)
-      await srv.setHpMp(userId, newHp, basePlayer.mp)
+      const [log, victor, finalHp] = playerFight(fighter, bossFighter, srv.data)
+      const totalDmg = boss.hp - Math.max(finalHp[bossFighter.userId], 0)
+      await recordBossDamage(boss.id, userId, pf, totalDmg)
 
-      if (bossHp <= 0) {
+      storeBattleDetail({
+        kind: 'boss',
+        userId,
+        bossId: boss.id,
+        detail: log.join('\n'),
+      })
+
+      const playerHp = finalHp[fighter.userId] ?? 0
+      await srv.applyBattleHp(userId, playerHp)
+
+      if (victor === fighter.name) {
         await ctx.database.remove('xiuxian_boss', { id: boss.id })
         const rewardMsg = await distributeBossKillRewards(boss, userId, pf)
-        return `道友对${boss.name}造成${numberTo(dmg)}伤害，将其击杀！\n${rewardMsg}`
+        const injury = playerHp <= 0 ? '\n道友气血归零，已进入重伤状态。' : ''
+        return `道友历经${Math.ceil(log.length / 2)}回合，成功击杀【${boss.name}】！\n${rewardMsg}${injury}\n${BATTLE_DETAIL_HINT}`
       }
 
-      await ctx.database.set('xiuxian_boss', { id: boss.id }, { hp: bossHp })
-      return `道友对${boss.name}造成${numberTo(dmg)}伤害，BOSS剩余气血${numberTo(bossHp)}；BOSS反击造成${numberTo(bossDmg)}伤害，道友剩余气血${numberTo(newHp)}。`
+      const bossHpLeft = Math.max(finalHp[bossFighter.userId], 0)
+      await ctx.database.set('xiuxian_boss', { id: boss.id }, { hp: bossHpLeft })
+      const injury = playerHp <= 0 ? '\n道友气血归零，已进入重伤状态。' : ''
+      return `道友与【${boss.name}】激战落败，BOSS剩余气血${numberTo(bossHpLeft)}，道友剩余气血${numberTo(Math.max(playerHp, 0))}。${injury}\n${BATTLE_DETAIL_HINT}`
     })
 }

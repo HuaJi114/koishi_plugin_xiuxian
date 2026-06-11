@@ -52,6 +52,12 @@ export function apply(ctx: Context, config: Config) {
     ctx.xiuxian.ensurePresetSects().catch((err) => {
       ctx.logger('huaji-xiuxian').warn('初始化预设宗门失败：%s', (err as Error).message)
     })
+    ctx.xiuxian.migrateSkillsFromBuff().catch((err) => {
+      ctx.logger('huaji-xiuxian').warn('功法数据迁移失败：%s', (err as Error).message)
+    })
+    ctx.xiuxian.ensureDailyResetIfNeeded().catch((err) => {
+      ctx.logger('huaji-xiuxian').warn('每日重置校验失败：%s', (err as Error).message)
+    })
   })
 
   // 管理员首次发消息时补同步 authority（binding 可能尚未建立）
@@ -82,7 +88,7 @@ export function apply(ctx: Context, config: Config) {
         '— 灵庄：灵庄信息',
         '— 世界BOSS：世界boss帮助',
         '— 秘境：秘境帮助',
-        '— 炼丹：炼丹帮助',
+        '— 炼丹：炼丹帮助 / 炼丹 / 炼制',
         '— 传承：传承帮助',
       ].join('\n'))
 

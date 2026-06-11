@@ -1,0 +1,37 @@
+{"id":1,"type":"info","level":2,"name":"app","meta":{},"content":"\u001b[38;5;15;1mKoishi/4.18.11\u001b[0m","timestamp":1780649582174}
+{"id":2,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:entry\u001b[0m","timestamp":1780649582193}
+{"id":3,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:server\u001b[0m","timestamp":1780649582193}
+{"id":4,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mserver:p5vgxw\u001b[0m","timestamp":1780649582194}
+{"id":5,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:basic\u001b[0m","timestamp":1780649582366}
+{"id":6,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mcommands:ckqanq\u001b[0m","timestamp":1780649582367}
+{"id":7,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhelp:do3b4q\u001b[0m","timestamp":1780649582372}
+{"id":8,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhttp:ktv517\u001b[0m","timestamp":1780649582378}
+{"id":9,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mlocales:yzwfva\u001b[0m","timestamp":1780649582382}
+{"id":10,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mproxy-agent:wxbshp\u001b[0m","timestamp":1780649582394}
+{"id":11,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mrate-limit:g1qwdv\u001b[0m","timestamp":1780649582479}
+{"id":12,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mtelemetry:9o4qn9\u001b[0m","timestamp":1780649582488}
+{"id":13,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:console\u001b[0m","timestamp":1780649582508}
+{"id":14,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mactions:fqxmz1\u001b[0m","timestamp":1780649582508}
+{"id":15,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45manalytics:pe7f1n\u001b[0m","timestamp":1780649582514}
+{"id":16,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mconfig:sxmcu9\u001b[0m","timestamp":1780649582523}
+{"id":17,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mconsole:y8id5p\u001b[0m","timestamp":1780649582573}
+{"id":18,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mdataview:4tqnl0\u001b[0m","timestamp":1780649582592}
+{"id":19,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mexplorer:c556ld\u001b[0m","timestamp":1780649582604}
+{"id":20,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mlogger:u8sxc2\u001b[0m","timestamp":1780649582627}
+{"id":21,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45minsight:kx9h2z\u001b[0m","timestamp":1780649582637}
+{"id":22,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mmarket:6vlzmo\u001b[0m","timestamp":1780649582646}
+{"id":23,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mnotifier:iors19\u001b[0m","timestamp":1780649582697}
+{"id":24,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45moobe:mvnpze\u001b[0m","timestamp":1780649582705}
+{"id":25,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45msandbox:5fdj6q\u001b[0m","timestamp":1780649582712}
+{"id":26,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mstatus:iweqrx\u001b[0m","timestamp":1780649582723}
+{"id":27,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mtheme-vanilla:ip0ven\u001b[0m","timestamp":1780649582751}
+{"id":28,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:storage\u001b[0m","timestamp":1780649582760}
+{"id":29,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mdatabase-sqlite:ylldu6\u001b[0m","timestamp":1780649582760}
+{"id":30,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45massets-local:12ryfk\u001b[0m","timestamp":1780649582779}
+{"id":31,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:adapter\u001b[0m","timestamp":1780649582793}
+{"id":32,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:develop\u001b[0m","timestamp":1780649582794}
+{"id":33,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhmr:jks3uk\u001b[0m","timestamp":1780649582794}
+{"id":34,"type":"info","level":2,"name":"assets","meta":{"paths":["12ryfk"]},"content":"missing config \"selfUrl\", fallback to \"file:\" scheme","timestamp":1780649582881}
+{"id":35,"type":"info","level":2,"name":"server","meta":{"paths":["p5vgxw"]},"content":"server listening at \u001b[38;5;57mhttp://127.0.0.1:5140\u001b[0m","timestamp":1780649583359}
+{"id":46,"type":"info","level":2,"name":"console","meta":{"paths":["y8id5p"]},"content":"webui is available at \u001b[38;5;166mhttp://127.0.0.1:5140\u001b[0m","timestamp":1780649583441}
+{"id":87,"type":"warn","level":2,"name":"app","meta":{},"content":"Error: EBUSY: resource busy or locked, watch 'D:\\project\\koishi-plugin-xiuxian\\koishi-app\\external\\huaji-xiuxian\\data\\xiuxian\\font\\sarasa-mono-sc-regular.ttf'\n    at FSWatcher.<computed> (node:internal/fs/watchers:321:19)\n    at Object.watch (node:fs:2548:36)\n    at createFsWatchInstance (D:\\project\\koishi-plugin-xiuxian\\koishi-app\\node_modules\\chokidar\\lib\\nodefs-handler.js:119:15)\n    at setFsWatchListener (D:\\project\\koishi-plugin-xiuxian\\koishi-app\\node_modules\\chokidar\\lib\\nodefs-handler.js:166:15)\n    at NodeFsHandler._watchWithNodeFs (D:\\project\\koishi-plugin-xiuxian\\koishi-app\\node_modules\\chokidar\\lib\\nodefs-handler.js:331:14)\n    at NodeFsHandler._handleFile (D:\\project\\koishi-plugin-xiuxian\\koishi-app\\node_modules\\chokidar\\lib\\nodefs-handler.js:395:23)\n    at NodeFsHandler._addToNodeFs (D:\\project\\koishi-plugin-xiuxian\\koishi-app\\node_modules\\chokidar\\lib\\nodefs-handler.js:637:21)","timestamp":1780650056536}

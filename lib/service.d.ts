@@ -1,7 +1,7 @@
 import { Context, Service, Session } from 'koishi';
 import { Config } from './config';
 import { GameData } from './data';
-import { XiuxianBack, XiuxianBuff, XiuxianPlayer, XiuxianSect } from './types';
+import { XiuxianBack, XiuxianBuff, XiuxianPlayer, XiuxianSect, XiuxianSkill } from './types';
 declare module 'koishi' {
     interface Context {
         xiuxian: XiuxianService;
@@ -83,18 +83,32 @@ export declare class XiuxianService extends Service {
     setHpMp(userId: string, hp: number, mp: number): Promise<void>;
     /** 战斗结束后写入双方剩余气血 */
     applyBattleHp(userId: string, combatHp: number): Promise<void>;
-    /** 洗灵根（重入仙途） */
-    ramake(userId: string, root: string, rootType: string): Promise<string>;
+    /** 洗点重入：清除全部数据（保留灵石），返回后需重新【我要修仙】 */
+    wipeAndRemake(userId: string, platform: string): Promise<string>;
+    /** 清除用户全部游戏数据（不触碰 monetary 灵石） */
+    wipeUserData(userId: string): Promise<void>;
+    /** @deprecated 使用 wipeAndRemake */
+    ramake(userId: string, _root: string, _rootType: string): Promise<string>;
     /** 签到 */
     sign(userId: string, platform?: string): Promise<string>;
-    /** 每日 0 点重置：所有「单日仅可执行一次」的指令计数 */
+    /** 每日 0 点重置：所有「单日限次」指令计数 */
     resetDailyFlags(): Promise<void>;
+    /** 启动或跨日时补执行每日重置 */
+    ensureDailyResetIfNeeded(): Promise<void>;
+    getMeta(key: string): Promise<string | undefined>;
+    setMeta(key: string, value: string): Promise<void>;
     /** @deprecated 请使用 resetDailyFlags */
     resetSign(): Promise<void>;
     /** 获取用户状态，不存在则创建 */
     getCd(userId: string): Promise<import("./types").XiuxianCd | undefined>;
     /** 更新用户状态 */
     setState(userId: string, type: number, scheduledTime?: number): Promise<void>;
+    getLearnedSkills(userId: string): Promise<XiuxianSkill[]>;
+    hasSkill(userId: string, skillId: number): Promise<boolean>;
+    learnSkill(userId: string, skillId: number, skillType: XiuxianSkill['skillType']): Promise<void>;
+    getSecSkillIds(userId: string): Promise<number[]>;
+    /** 将旧 buff 单字段迁移到 skill 表 */
+    migrateSkillsFromBuff(): Promise<void>;
     /** 获取用户 Buff 信息，不存在则初始化 */
     getBuff(userId: string): Promise<XiuxianBuff>;
     setMainBuff(userId: string, id: number): Promise<void>;
@@ -146,3 +160,4 @@ export declare class XiuxianService extends Service {
     /** 宗门建设度排行榜 */
     sectScaleTop(): Promise<XiuxianSect[]>;
 }
+//# sourceMappingURL=service.d.ts.map

@@ -7,16 +7,16 @@
     "outDir": "lib",
     "rootDir": "src",
     "declaration": true,
+    "declarationMap": true,
     "sourceMap": true,
+    "composite": true,
+    "incremental": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "noUnusedLocals": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
   "include": ["src"],
-  "exclude": ["lib", "node_modules"]
+  "exclude": ["lib", "node_modules", "src/test"]
 }

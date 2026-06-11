@@ -3,48 +3,11 @@ import { Config } from '../config'
 import { ADMIN_AUTHORITY, breakthrough, getAtId } from '../helpers'
 import { formatPresetSectList, formatSectRegisterPrompt } from '../preset-sects'
 import { buildFighter } from '../combat-stats'
+import { BATTLE_DETAIL_HINT, getBattleDetail, storeBattleDetail } from '../battle-detail'
 import { dateDiffSeconds, generateRoot, getPowerRate, isHeavilyInjured, numberTo, playerFight, randInt } from '../utils'
 
 const REGISTER_PROMPT_MS = 120_000
-const ROB_BATTLE_DETAIL_TTL_MS = 120_000
 
-interface RobBattleRecord {
-  attackerId: string
-  defenderId: string
-  detail: string
-  expireAt: number
-}
-
-const robBattleRecords: RobBattleRecord[] = []
-
-function pruneRobBattleRecords(now = Date.now()): void {
-  for (let i = robBattleRecords.length - 1; i >= 0; i--) {
-    if (robBattleRecords[i].expireAt <= now) robBattleRecords.splice(i, 1)
-  }
-}
-
-function storeRobBattleDetail(attackerId: string, defenderId: string, log: string[]): void {
-  pruneRobBattleRecords()
-  robBattleRecords.push({
-    attackerId,
-    defenderId,
-    detail: log.join('\n'),
-    expireAt: Date.now() + ROB_BATTLE_DETAIL_TTL_MS,
-  })
-}
-
-function getRobBattleDetail(userId: string): RobBattleRecord | undefined {
-  const now = Date.now()
-  pruneRobBattleRecords(now)
-  for (let i = robBattleRecords.length - 1; i >= 0; i--) {
-    const record = robBattleRecords[i]
-    if (record.expireAt <= now) continue
-    if (record.attackerId === userId || record.defenderId === userId) return record
-  }
-  return undefined
-}
-
-const ROB_DETAIL_HINT = '120秒内可回复【查看战斗详情】查看战斗过程。'
 const HEAVY_INJURY_HINT = '气血归零，已进入重伤状态，需【闭关】并【出关】后方可恢复。'
 
 /** 建号后引导用户选择加入宗门或成为散修 */
@@ -105,12 +68,11 @@ export function applyBase(ctx: Context, config: Config) {
     .action(async ({ session }) => srv.sign(session!.userId!, session!.platform))
 
   // 重入仙途（洗灵根）
-  ctx.command('xiuxian/重入仙途', `重置灵根（消耗 ${config.remakeCost} 灵石）`)
+  ctx.command('xiuxian/重入仙途', `清除全部修仙数据并重新建号（消耗 ${config.remakeCost} 灵石，保留灵石）`)
     .action(async ({ session }) => {
       const player = await srv.getPlayer(session!.userId!)
       if (!player) return '修仙界没有道友的信息，请输入【我要修仙】加入！'
-      const [root, rootType] = generateRoot(srv.data)
-      return srv.ramake(session!.userId!, root, rootType)
+      return srv.wipeAndRemake(session!.userId!, session!.platform)
     })
 
   // 改名
@@ -274,8 +236,13 @@ export function applyBase(ctx: Context, config: Config) {
       const f1 = await buildFighter(srv, session!.userId!)
       const f2 = await buildFighter(srv, targetId)
       if (!f1 || !f2) return '战斗数据异常，请稍后再试！'
-      const [log, victor, finalHp] = playerFight(f1, f2)
-      storeRobBattleDetail(player.userId, target.userId, log)
+      const [log, victor, finalHp] = playerFight(f1, f2, srv.data)
+      storeBattleDetail({
+        kind: 'rob',
+        userId: player.userId,
+        otherId: target.userId,
+        detail: log.join('\n'),
+      })
       await srv.applyBattleHp(player.userId, finalHp[player.userId])
       await srv.applyBattleHp(target.userId, finalHp[target.userId])
 
@@ -295,14 +262,14 @@ export function applyBase(ctx: Context, config: Config) {
           await srv.costStoneForUser(target.userId, robbed, pf)
           await srv.gainStoneForUser(player.userId, robbed, pf)
           return appendInjury(
-            `大战一番，战胜对手，获取灵石${robbed}枚，修为增加${exps}，对手修为减少${Math.floor(exps / 2)}\n${ROB_DETAIL_HINT}`,
+            `大战一番，战胜对手，获取灵石${robbed}枚，修为增加${exps}，对手修为减少${Math.floor(exps / 2)}\n${BATTLE_DETAIL_HINT}`,
             finalHp[player.userId],
             finalHp[target.userId],
             target.userName,
           )
         }
         return appendInjury(
-          `大战一番，战胜对手，结果对方是个穷光蛋，修为增加${exps}，对手修为减少${Math.floor(exps / 2)}\n${ROB_DETAIL_HINT}`,
+          `大战一番，战胜对手，结果对方是个穷光蛋，修为增加${exps}，对手修为减少${Math.floor(exps / 2)}\n${BATTLE_DETAIL_HINT}`,
           finalHp[player.userId],
           finalHp[target.userId],
           target.userName,
@@ -317,27 +284,28 @@ export function applyBase(ctx: Context, config: Config) {
         await srv.costStoneForUser(player.userId, lost, pf)
         await srv.gainStoneForUser(target.userId, lost, pf)
         return appendInjury(
-          `大战一番，被对手反杀，损失灵石${lost}枚，修为减少${exps}\n${ROB_DETAIL_HINT}`,
+          `大战一番，被对手反杀，损失灵石${lost}枚，修为减少${exps}\n${BATTLE_DETAIL_HINT}`,
           finalHp[player.userId],
           finalHp[target.userId],
           target.userName,
         )
       }
       return appendInjury(
-        `大战一番，被对手反杀，修为减少${exps}\n${ROB_DETAIL_HINT}`,
+        `大战一番，被对手反杀，修为减少${exps}\n${BATTLE_DETAIL_HINT}`,
         finalHp[player.userId],
         finalHp[target.userId],
         target.userName,
       )
     })
 
-  ctx.command('xiuxian/查看战斗详情', '查看最近一场抢灵石战斗过程')
+  ctx.command('xiuxian/查看战斗详情', '查看最近一场战斗过程（抢灵石/讨伐BOSS）')
     .alias('战斗详情')
     .action(async ({ session }) => {
       const userId = session!.userId!
-      const record = getRobBattleDetail(userId)
+      const record = getBattleDetail(userId)
       if (!record) return '暂无可查看的战斗详情，或已超过120秒有效期。'
-      return record.detail
+      const title = record.kind === 'boss' ? '世界BOSS讨伐' : '抢灵石决斗'
+      return `【${title}】\n${record.detail}`
     })
 
   // 排行榜

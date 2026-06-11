@@ -1,0 +1,51 @@
+{"id":1,"type":"info","level":2,"name":"app","meta":{},"content":"\u001b[38;5;15;1mKoishi/4.18.11\u001b[0m","timestamp":1780651260291}
+{"id":2,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:entry\u001b[0m","timestamp":1780651260305}
+{"id":3,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:server\u001b[0m","timestamp":1780651260306}
+{"id":4,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mserver:p5vgxw\u001b[0m","timestamp":1780651260306}
+{"id":5,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:basic\u001b[0m","timestamp":1780651260487}
+{"id":6,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mcommands:ckqanq\u001b[0m","timestamp":1780651260488}
+{"id":7,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhelp:do3b4q\u001b[0m","timestamp":1780651260496}
+{"id":8,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhttp:ktv517\u001b[0m","timestamp":1780651260501}
+{"id":9,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mlocales:yzwfva\u001b[0m","timestamp":1780651260505}
+{"id":10,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mproxy-agent:wxbshp\u001b[0m","timestamp":1780651260517}
+{"id":11,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mrate-limit:g1qwdv\u001b[0m","timestamp":1780651260602}
+{"id":12,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mtelemetry:9o4qn9\u001b[0m","timestamp":1780651260612}
+{"id":13,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:console\u001b[0m","timestamp":1780651260634}
+{"id":14,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mactions:fqxmz1\u001b[0m","timestamp":1780651260634}
+{"id":15,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45manalytics:pe7f1n\u001b[0m","timestamp":1780651260641}
+{"id":16,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mconfig:sxmcu9\u001b[0m","timestamp":1780651260650}
+{"id":17,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mconsole:y8id5p\u001b[0m","timestamp":1780651260701}
+{"id":18,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mdataview:4tqnl0\u001b[0m","timestamp":1780651260720}
+{"id":19,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mexplorer:c556ld\u001b[0m","timestamp":1780651260732}
+{"id":20,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mlogger:u8sxc2\u001b[0m","timestamp":1780651260754}
+{"id":21,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45minsight:kx9h2z\u001b[0m","timestamp":1780651260766}
+{"id":22,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mmarket:6vlzmo\u001b[0m","timestamp":1780651260775}
+{"id":23,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mnotifier:iors19\u001b[0m","timestamp":1780651260831}
+{"id":24,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45moobe:mvnpze\u001b[0m","timestamp":1780651260838}
+{"id":25,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45msandbox:5fdj6q\u001b[0m","timestamp":1780651260845}
+{"id":26,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mstatus:iweqrx\u001b[0m","timestamp":1780651260856}
+{"id":27,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mtheme-vanilla:ip0ven\u001b[0m","timestamp":1780651260887}
+{"id":28,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:storage\u001b[0m","timestamp":1780651260897}
+{"id":29,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mdatabase-sqlite:ylldu6\u001b[0m","timestamp":1780651260897}
+{"id":30,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45massets-local:12ryfk\u001b[0m","timestamp":1780651260917}
+{"id":31,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:adapter\u001b[0m","timestamp":1780651260931}
+{"id":32,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:develop\u001b[0m","timestamp":1780651260932}
+{"id":33,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhmr:jks3uk\u001b[0m","timestamp":1780651260932}
+{"id":34,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhuaji-xiuxian:duexwm\u001b[0m","timestamp":1780651260970}
+{"id":35,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mmonetary:ji69dl\u001b[0m","timestamp":1780651261235}
+{"id":36,"type":"info","level":2,"name":"assets","meta":{"paths":["12ryfk"]},"content":"missing config \"selfUrl\", fallback to \"file:\" scheme","timestamp":1780651261297}
+{"id":37,"type":"info","level":2,"name":"server","meta":{"paths":["p5vgxw"]},"content":"server listening at \u001b[38;5;57mhttp://127.0.0.1:5140\u001b[0m","timestamp":1780651261739}
+{"id":38,"type":"info","level":2,"name":"huaji-xiuxian","meta":{"paths":["duexwm"]},"content":"花姬修仙插件已加载，发送 我要修仙 开始游戏~","timestamp":1780651261807}
+{"id":67,"type":"info","level":2,"name":"console","meta":{"paths":["y8id5p"]},"content":"webui is available at \u001b[38;5;166mhttp://127.0.0.1:5140\u001b[0m","timestamp":1780651261843}
+{"id":405,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"unload plugin \u001b[38;5;45mhuaji-xiuxian:duexwm\u001b[0m","timestamp":1780652191334}
+{"id":406,"type":"info","level":2,"name":"huaji-xiuxian","meta":{"paths":[]},"content":"huaji-xiuxian 插件已加载，发送 我要修仙 开始游戏~","timestamp":1780652191388}
+{"id":407,"type":"info","level":2,"name":"hmr","meta":{"paths":["jks3uk"]},"content":"reload plugin at \u001b[38;5;160mexternal\\huaji-xiuxian\\src\\index.ts\u001b[0m","timestamp":1780652191389}
+{"id":458,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"unload plugin \u001b[38;5;45mhuaji-xiuxian:duexwm\u001b[0m","timestamp":1780652210646}
+{"id":459,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhuaji-xiuxian:duexwm\u001b[0m","timestamp":1780652211961}
+{"id":460,"type":"info","level":2,"name":"huaji-xiuxian","meta":{"paths":[]},"content":"huaji-xiuxian 插件已加载，发送 我要修仙 开始游戏~","timestamp":1780652211993}
+{"id":769,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"unload plugin \u001b[38;5;45mhuaji-xiuxian:duexwm\u001b[0m","timestamp":1780653194242}
+{"id":770,"type":"info","level":2,"name":"huaji-xiuxian","meta":{"paths":[]},"content":"huaji-xiuxian 插件已加载，发送 我要修仙 开始游戏~","timestamp":1780653194279}
+{"id":771,"type":"info","level":2,"name":"hmr","meta":{"paths":["jks3uk"]},"content":"reload plugin at \u001b[38;5;160mexternal\\huaji-xiuxian\\src\\index.ts\u001b[0m","timestamp":1780653194281}
+{"id":881,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"unload plugin \u001b[38;5;45mhuaji-xiuxian:duexwm\u001b[0m","timestamp":1780653225233}
+{"id":882,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhuaji-xiuxian:duexwm\u001b[0m","timestamp":1780653226501}
+{"id":883,"type":"info","level":2,"name":"huaji-xiuxian","meta":{"paths":[]},"content":"huaji-xiuxian 插件已加载，发送 我要修仙 开始游戏~","timestamp":1780653226533}

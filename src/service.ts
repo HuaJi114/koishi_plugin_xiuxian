@@ -3,8 +3,10 @@ import { Config } from './config'
 import { GameData } from './data'
 import { calcInitialStats, clampBaseHpMp, getEffectiveMaxHpMp } from './utils'
 import { computeCombatStats } from './combat-stats'
+import { mergeSkillBuffs } from './skills'
+import { todayStr, META_LAST_DAILY_RESET } from './daily-utils'
 import { findPresetSect, PRESET_SECTS } from './preset-sects'
-import { XiuxianBack, XiuxianBuff, XiuxianPlayer, XiuxianSect } from './types'
+import { XiuxianBack, XiuxianBuff, XiuxianPlayer, XiuxianSect, XiuxianSkill } from './types'
 
 declare module 'koishi' {
   interface Context {
@@ -61,6 +63,9 @@ export class XiuxianService extends Service {
       blessedSpotFlag: { type: 'integer', initial: 0 },
       blessedSpotName: 'string',
       riftCd: 'timestamp',
+      riftDailyCount: { type: 'integer', initial: 0 },
+      workRefreshCount: { type: 'integer', initial: 0 },
+      lastSignDate: 'string',
     }, { primary: 'userId' })
 
     ctx.model.extend('xiuxian_cd', {
@@ -115,6 +120,13 @@ export class XiuxianService extends Service {
       key: 'string',
       value: 'string',
     }, { primary: 'key' })
+
+    ctx.model.extend('xiuxian_skill', {
+      userId: 'string',
+      skillId: 'unsigned',
+      skillType: 'string',
+      learnedAt: 'timestamp',
+    }, { primary: ['userId', 'skillId'] })
   }
 
   // ==================== 玩家信息 ====================
@@ -137,10 +149,11 @@ export class XiuxianService extends Service {
     const player = await this.getPlayer(userId)
     if (!player) return undefined
     const buff = await this.getBuff(userId)
-    const mainBuff = buff.mainBuff > 0 ? this.data.getItem(buff.mainBuff) : undefined
-    const stats = computeCombatStats(player, buff, this.data)
-    const mainHp = Number(mainBuff?.hpbuff ?? 0)
-    const mainMp = Number(mainBuff?.mpbuff ?? 0)
+    const skills = await this.getLearnedSkills(userId)
+    const merged = mergeSkillBuffs(skills, this.data)
+    const stats = computeCombatStats(player, buff, this.data, merged)
+    const mainHp = merged.hpbuff
+    const mainMp = merged.mpbuff
     const { maxHp, maxMp } = getEffectiveMaxHpMp(player.exp, mainHp, mainMp)
     const { hp: baseHp, mp: baseMp } = clampBaseHpMp(player.exp, player.hp, player.mp)
     return {
@@ -491,38 +504,88 @@ export class XiuxianService extends Service {
     await this.setHpMp(userId, Math.max(combatHp, 0), player.mp)
   }
 
-  /** 洗灵根（重入仙途） */
-  async ramake(userId: string, root: string, rootType: string): Promise<string> {
+  /** 洗点重入：清除全部数据（保留灵石），返回后需重新【我要修仙】 */
+  async wipeAndRemake(userId: string, platform: string): Promise<string> {
     const player = await this.getPlayer(userId)
     if (!player) return '修仙界没有你的足迹，输入 我要修仙 加入修仙世界吧！'
-    if (!(await this.costStoneForUser(userId, this.config.remakeCost, player.platform))) {
+    if (!(await this.costStoneForUser(userId, this.config.remakeCost, platform))) {
       return '你的灵石还不够呢，快去赚点灵石吧！'
     }
-    await this.ctx.database.set('xiuxian_player', { userId }, { root, rootType })
-    await this.updatePower(userId)
-    return `逆天之行，重获新生，新的灵根为：${root}，类型为：${rootType}`
+    const ownedSect = await this.getSectByOwner(userId)
+    if (ownedSect) {
+      return '道友为一宗之主，请先转让宗主之位或解散宗门后再重入仙途！'
+    }
+    await this.wipeUserData(userId)
+    return '逆天改命，前尘尽散！请发送【我要修仙】重新踏入仙路。'
+  }
+
+  /** 清除用户全部游戏数据（不触碰 monetary 灵石） */
+  async wipeUserData(userId: string): Promise<void> {
+    await this.ctx.database.remove('xiuxian_back', { userId })
+    await this.ctx.database.remove('xiuxian_buff', { userId })
+    await this.ctx.database.remove('xiuxian_cd', { userId })
+    await this.ctx.database.remove('xiuxian_skill', { userId })
+    await this.ctx.database.remove('xiuxian_work', { userId })
+    await this.ctx.database.remove('xiuxian_boss_participant', { userId })
+    await this.ctx.database.remove('xiuxian_player', { userId })
+  }
+
+  /** @deprecated 使用 wipeAndRemake */
+  async ramake(userId: string, _root: string, _rootType: string): Promise<string> {
+    const player = await this.getPlayer(userId)
+    if (!player) return '修仙界没有你的足迹，输入 我要修仙 加入修仙世界吧！'
+    return this.wipeAndRemake(userId, player.platform)
   }
 
   /** 签到 */
   async sign(userId: string, platform?: string): Promise<string> {
     const player = await this.getPlayer(userId)
     if (!player) return '修仙界没有你的足迹，输入 我要修仙 加入修仙世界吧！'
-    if (player.isSign === 1) return '今日已签到，请明日0点后再来。'
+    const today = todayStr()
+    if (player.isSign === 1 && player.lastSignDate === today) {
+      return '今日已签到，请明日0点后再来。'
+    }
     const { signInLingShiLowerLimit: lo, signInLingShiUpperLimit: hi } = this.config
     const stone = Math.floor(Math.random() * (hi - lo + 1)) + lo
-    await this.ctx.database.set('xiuxian_player', { userId }, { isSign: 1 })
+    await this.ctx.database.set('xiuxian_player', { userId }, { isSign: 1, lastSignDate: today })
     await this.gainStoneForUser(userId, stone, platform ?? player.platform)
     return `签到成功，获取${stone}块灵石!`
   }
 
-  /** 每日 0 点重置：所有「单日仅可执行一次」的指令计数 */
+  /** 每日 0 点重置：所有「单日限次」指令计数 */
   async resetDailyFlags(): Promise<void> {
     await this.ctx.database.set('xiuxian_player', {}, {
       isSign: 0,
       sectOfferingGet: 0,
       sectElixirGet: 0,
+      riftDailyCount: 0,
+      workRefreshCount: 0,
+      lastSignDate: '',
     })
     await this.ctx.database.set('xiuxian_back', {}, { dayNum: 0 })
+    await this.setMeta(META_LAST_DAILY_RESET, todayStr())
+  }
+
+  /** 启动或跨日时补执行每日重置 */
+  async ensureDailyResetIfNeeded(): Promise<void> {
+    const today = todayStr()
+    const last = await this.getMeta(META_LAST_DAILY_RESET)
+    if (last === today) return
+    await this.resetDailyFlags()
+  }
+
+  async getMeta(key: string): Promise<string | undefined> {
+    const [row] = await this.ctx.database.get('xiuxian_meta', { key })
+    return row?.value
+  }
+
+  async setMeta(key: string, value: string): Promise<void> {
+    const existing = await this.getMeta(key)
+    if (existing !== undefined) {
+      await this.ctx.database.set('xiuxian_meta', { key }, { value })
+    } else {
+      await this.ctx.database.create('xiuxian_meta', { key, value })
+    }
   }
 
   /** @deprecated 请使用 resetDailyFlags */
@@ -548,6 +611,50 @@ export class XiuxianService extends Service {
       createTime: type === 0 ? new Date(0) : new Date(),
       scheduledTime,
     })
+  }
+
+  // ==================== 功法 / 神通 ====================
+
+  async getLearnedSkills(userId: string): Promise<XiuxianSkill[]> {
+    return this.ctx.database.get('xiuxian_skill', { userId })
+  }
+
+  async hasSkill(userId: string, skillId: number): Promise<boolean> {
+    const [row] = await this.ctx.database.get('xiuxian_skill', { userId, skillId })
+    return !!row
+  }
+
+  async learnSkill(userId: string, skillId: number, skillType: XiuxianSkill['skillType']): Promise<void> {
+    if (await this.hasSkill(userId, skillId)) return
+    await this.ctx.database.create('xiuxian_skill', {
+      userId, skillId, skillType, learnedAt: new Date(),
+    })
+    const buff = await this.getBuff(userId)
+    const patch: Partial<XiuxianBuff> = {}
+    if (skillType === '功法' && !buff.mainBuff) patch.mainBuff = skillId
+    if (skillType === '神通' && !buff.secBuff) patch.secBuff = skillId
+    if (skillType === '辅修功法' && !buff.subBuff) patch.subBuff = skillId
+    if (Object.keys(patch).length) {
+      await this.ctx.database.set('xiuxian_buff', { userId }, patch)
+    }
+  }
+
+  async getSecSkillIds(userId: string): Promise<number[]> {
+    const skills = await this.getLearnedSkills(userId)
+    return skills.filter((s) => s.skillType === '神通').map((s) => s.skillId)
+  }
+
+  /** 将旧 buff 单字段迁移到 skill 表 */
+  async migrateSkillsFromBuff(): Promise<void> {
+    const FLAG = 'skill_table_migrated_v1'
+    if (await this.getMeta(FLAG)) return
+    const buffs = await this.ctx.database.get('xiuxian_buff', {})
+    for (const b of buffs) {
+      if (b.mainBuff > 0) await this.learnSkill(b.userId, b.mainBuff, '功法')
+      if (b.secBuff > 0) await this.learnSkill(b.userId, b.secBuff, '神通')
+      if (b.subBuff > 0) await this.learnSkill(b.userId, b.subBuff, '辅修功法')
+    }
+    await this.setMeta(FLAG, new Date().toISOString())
   }
 
   // ==================== Buff ====================

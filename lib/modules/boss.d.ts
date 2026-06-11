@@ -27,3 +27,4 @@ export interface XiuxianBossParticipant {
 }
 /** 世界 BOSS 模块：生成、查看、讨伐 */
 export declare function applyBoss(ctx: Context, _config: Config): void;
+//# sourceMappingURL=boss.d.ts.map

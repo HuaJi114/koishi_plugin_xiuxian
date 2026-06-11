@@ -330,7 +330,7 @@ export function applySect(ctx: Context, config: Config) {
       const { log, won, remainingHp, initialMonsterHp } = fightMissionMonsters(
         fighter,
         monsters,
-        playerFight,
+        (a, b) => playerFight(a, b, srv.data),
       )
       await srv.applyBattleHp(userId, remainingHp)
 

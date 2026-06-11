@@ -6,6 +6,7 @@ declare module 'koishi' {
         xiuxian_back: XiuxianBack;
         xiuxian_buff: XiuxianBuff;
         xiuxian_meta: XiuxianMeta;
+        xiuxian_skill: XiuxianSkill;
     }
 }
 /**
@@ -69,6 +70,12 @@ export interface XiuxianPlayer {
     blessedSpotName: string;
     /** 上次探索秘境时间（60 分钟 CD） */
     riftCd: Date;
+    /** 当日已探索秘境次数（0 点重置，每日上限 3） */
+    riftDailyCount: number;
+    /** 当日悬赏令刷新次数（0 点重置，每日上限 3） */
+    workRefreshCount: number;
+    /** 上次签到日期 YYYY-MM-DD，兜底重置 */
+    lastSignDate: string;
 }
 /** 用户状态/冷却表，对应原 user_cd 表 */
 export interface XiuxianCd {
@@ -180,6 +187,13 @@ export interface ItemInfo {
     price?: number;
     [key: string]: unknown;
 }
+/** 已学功法/神通 */
+export interface XiuxianSkill {
+    userId: string;
+    skillId: number;
+    skillType: '功法' | '辅修功法' | '神通';
+    learnedAt: Date;
+}
 /** 战斗角色快照 */
 export interface Fighter {
     userId: string;
@@ -193,4 +207,7 @@ export interface Fighter {
     critDamage: number;
     /** 减伤率 */
     defense: number;
+    /** 已学神通 ID 列表（战斗随机选用其一） */
+    secSkillIds?: number[];
 }
+//# sourceMappingURL=types.d.ts.map

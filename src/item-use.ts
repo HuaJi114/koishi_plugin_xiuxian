@@ -98,28 +98,15 @@ async function useSkillBook(
   info: ItemInfo,
 ): Promise<string> {
   const goodsId = back.goodsId
-  const buff = await srv.getBuff(userId)
-  const skillType = info.item_type ?? '功法'
+  const skillType = (info.item_type === '辅修功法' ? '辅修功法'
+    : info.item_type === '神通' ? '神通' : '功法') as '功法' | '辅修功法' | '神通'
 
-  if (skillType === '神通') {
-    if (buff.secBuff === goodsId) return `道友已学会该神通：${info.name}，请勿重复学习！`
-    await srv.setSecBuff(userId, goodsId)
-    await srv.reduceBack(userId, goodsId, 1, 0)
-    return `恭喜道友学会神通：${info.name}！`
+  if (await srv.hasSkill(userId, goodsId)) {
+    return `道友已学会该${skillType}：${info.name}，请勿重复学习！`
   }
-  if (skillType === '辅修功法') {
-    if (buff.subBuff === goodsId) return `道友已学会该辅修功法：${info.name}，请勿重复学习！`
-    await srv.setSubBuff(userId, goodsId)
-    await srv.reduceBack(userId, goodsId, 1, 0)
-    return `恭喜道友学会辅修功法：${info.name}！`
-  }
-  if (skillType === '功法' || skillType === '技能') {
-    if (buff.mainBuff === goodsId) return `道友已学会该功法：${info.name}，请勿重复学习！`
-    await srv.setMainBuff(userId, goodsId)
-    await srv.reduceBack(userId, goodsId, 1, 0)
-    return `恭喜道友学会功法：${info.name}！`
-  }
-  return '发生未知错误！'
+  await srv.learnSkill(userId, goodsId, skillType)
+  await srv.reduceBack(userId, goodsId, 1, 0)
+  return `恭喜道友学会${skillType}：${info.name}！`
 }
 
 async function useElixir(

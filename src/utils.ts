@@ -138,13 +138,36 @@ export function getPowerRate(mind: number, other: number): number | string {
 
 /**
  * 简单回合制战斗，对应原 OtherSet.player_fight。
- * @returns [战斗过程文本列表, 胜者道号, 双方剩余气血]
+ * 若传入 data 且攻击方有神通，随机选用一门神通（不叠加）。
  */
-export function playerFight(p1: Fighter, p2: Fighter): [string[], string, Record<string, number>] {
+export function playerFight(
+  p1: Fighter,
+  p2: Fighter,
+  data?: GameData,
+): [string[], string, Record<string, number>] {
   const log: string[] = []
   const hp = { [p1.userId]: Math.max(p1.hp, 1), [p2.userId]: Math.max(p2.hp, 1) }
   let victor = ''
+
+  const trySecSkill = (attacker: Fighter, defender: Fighter): boolean => {
+    if (!data || !attacker.secSkillIds?.length) return false
+    const skillId = randChoice(attacker.secSkillIds)
+    const skill = data.getItem(skillId)
+    if (!skill || Number(skill.skill_type) !== 1) return false
+    const rate = Number(skill.rate ?? 100)
+    if (randInt(0, 100) > rate) return false
+    const av = skill.atkvalue
+    const mult = Array.isArray(av) ? Number(av[0] ?? 1) : Number(av ?? 1)
+    let dmg = Math.floor(attacker.atk * mult * (1 - defender.defense))
+    if (dmg < 1) dmg = 1
+    hp[defender.userId] -= dmg
+    log.push(`${attacker.name}发动神通【${skill.name}】，造成了${dmg}伤害`)
+    log.push(`${defender.name}剩余血量${Math.max(hp[defender.userId], 0)}`)
+    return true
+  }
+
   const attack = (attacker: Fighter, defender: Fighter): void => {
+    if (trySecSkill(attacker, defender)) return
     let dmgBase = Math.floor((0.95 + Math.random() * 0.1) * attacker.atk)
     let crit = ''
     if (randInt(0, 100) <= attacker.crit) {

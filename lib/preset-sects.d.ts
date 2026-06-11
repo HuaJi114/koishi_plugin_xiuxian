@@ -25,3 +25,4 @@ export declare function formatSectRegisterPrompt(): string;
 export declare function formatPresetSectList(): string;
 /** 根据名称查找预设宗门（支持全名匹配） */
 export declare function findPresetSect(name: string): PresetSect | undefined;
+//# sourceMappingURL=preset-sects.d.ts.map

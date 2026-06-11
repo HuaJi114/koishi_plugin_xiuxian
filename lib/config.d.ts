@@ -46,3 +46,4 @@ export interface Config {
     globalCommandCd: number;
 }
 export declare const Config: Schema<Config>;
+//# sourceMappingURL=config.d.ts.map

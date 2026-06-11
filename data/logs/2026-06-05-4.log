@@ -1,0 +1,54 @@
+{"id":1,"type":"info","level":2,"name":"app","meta":{},"content":"\u001b[38;5;15;1mKoishi/4.18.11\u001b[0m","timestamp":1780650158878}
+{"id":2,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:entry\u001b[0m","timestamp":1780650158895}
+{"id":3,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:server\u001b[0m","timestamp":1780650158895}
+{"id":4,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mserver:p5vgxw\u001b[0m","timestamp":1780650158896}
+{"id":5,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:basic\u001b[0m","timestamp":1780650159096}
+{"id":6,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mcommands:ckqanq\u001b[0m","timestamp":1780650159097}
+{"id":7,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhelp:do3b4q\u001b[0m","timestamp":1780650159104}
+{"id":8,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhttp:ktv517\u001b[0m","timestamp":1780650159111}
+{"id":9,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mlocales:yzwfva\u001b[0m","timestamp":1780650159117}
+{"id":10,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mproxy-agent:wxbshp\u001b[0m","timestamp":1780650159132}
+{"id":11,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mrate-limit:g1qwdv\u001b[0m","timestamp":1780650159239}
+{"id":12,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mtelemetry:9o4qn9\u001b[0m","timestamp":1780650159249}
+{"id":13,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:console\u001b[0m","timestamp":1780650159274}
+{"id":14,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mactions:fqxmz1\u001b[0m","timestamp":1780650159274}
+{"id":15,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45manalytics:pe7f1n\u001b[0m","timestamp":1780650159282}
+{"id":16,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mconfig:sxmcu9\u001b[0m","timestamp":1780650159293}
+{"id":17,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mconsole:y8id5p\u001b[0m","timestamp":1780650159346}
+{"id":18,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mdataview:4tqnl0\u001b[0m","timestamp":1780650159366}
+{"id":19,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mexplorer:c556ld\u001b[0m","timestamp":1780650159381}
+{"id":20,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mlogger:u8sxc2\u001b[0m","timestamp":1780650159404}
+{"id":21,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45minsight:kx9h2z\u001b[0m","timestamp":1780650159416}
+{"id":22,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mmarket:6vlzmo\u001b[0m","timestamp":1780650159425}
+{"id":23,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mnotifier:iors19\u001b[0m","timestamp":1780650159481}
+{"id":24,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45moobe:mvnpze\u001b[0m","timestamp":1780650159487}
+{"id":25,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45msandbox:5fdj6q\u001b[0m","timestamp":1780650159495}
+{"id":26,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mstatus:iweqrx\u001b[0m","timestamp":1780650159507}
+{"id":27,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mtheme-vanilla:ip0ven\u001b[0m","timestamp":1780650159538}
+{"id":28,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:storage\u001b[0m","timestamp":1780650159547}
+{"id":29,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mdatabase-sqlite:ylldu6\u001b[0m","timestamp":1780650159547}
+{"id":30,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45massets-local:12ryfk\u001b[0m","timestamp":1780650159567}
+{"id":31,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:adapter\u001b[0m","timestamp":1780650159584}
+{"id":32,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mgroup:develop\u001b[0m","timestamp":1780650159584}
+{"id":33,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhmr:jks3uk\u001b[0m","timestamp":1780650159584}
+{"id":34,"type":"info","level":2,"name":"assets","meta":{"paths":["12ryfk"]},"content":"missing config \"selfUrl\", fallback to \"file:\" scheme","timestamp":1780650159677}
+{"id":35,"type":"info","level":2,"name":"server","meta":{"paths":["p5vgxw"]},"content":"server listening at \u001b[38;5;57mhttp://127.0.0.1:5140\u001b[0m","timestamp":1780650160130}
+{"id":46,"type":"info","level":2,"name":"console","meta":{"paths":["y8id5p"]},"content":"webui is available at \u001b[38;5;166mhttp://127.0.0.1:5140\u001b[0m","timestamp":1780650160242}
+{"id":81,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mmonetary:ji69dl\u001b[0m","timestamp":1780650272713}
+{"id":83,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170mmonetary\u001b[0m","timestamp":1780650272717}
+{"id":125,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"apply plugin \u001b[38;5;45mhuaji-xiuxian:duexwm\u001b[0m","timestamp":1780650428720}
+{"id":126,"type":"info","level":2,"name":"huaji-xiuxian:data","meta":{},"content":"游戏数据加载完成：境界 38 个，灵根 8 种，物品 320 件","timestamp":1780650428725}
+{"id":127,"type":"info","level":2,"name":"huaji-xiuxian","meta":{"paths":[]},"content":"花姬修仙插件已加载，发送 我要修仙 开始游戏~","timestamp":1780650428759}
+{"id":129,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170mxiuxian_player\u001b[0m","timestamp":1780650428761}
+{"id":132,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170mxiuxian_cd\u001b[0m","timestamp":1780650428764}
+{"id":135,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170mxiuxian_sect\u001b[0m","timestamp":1780650428766}
+{"id":138,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170mxiuxian_back\u001b[0m","timestamp":1780650428768}
+{"id":141,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170mxiuxian_buff\u001b[0m","timestamp":1780650428770}
+{"id":144,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170mxiuxian_work\u001b[0m","timestamp":1780650428773}
+{"id":147,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170mxiuxian_bank\u001b[0m","timestamp":1780650428775}
+{"id":150,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto creating table \u001b[38;5;170mxiuxian_boss\u001b[0m","timestamp":1780650428776}
+{"id":548,"type":"info","level":2,"name":"loader","meta":{"paths":[]},"content":"unload plugin \u001b[38;5;45mhuaji-xiuxian:duexwm\u001b[0m","timestamp":1780651212541}
+{"id":549,"type":"info","level":2,"name":"huaji-xiuxian:data","meta":{},"content":"游戏数据加载完成：境界 38 个，灵根 8 种，物品 320 件","timestamp":1780651212545}
+{"id":550,"type":"info","level":2,"name":"huaji-xiuxian","meta":{"paths":[]},"content":"花姬修仙插件已加载，发送 我要修仙 开始游戏~","timestamp":1780651212580}
+{"id":551,"type":"info","level":2,"name":"hmr","meta":{"paths":["jks3uk"]},"content":"reload plugin at \u001b[38;5;160mexternal\\huaji-xiuxian\\src\\index.ts\u001b[0m","timestamp":1780651212581}
+{"id":553,"type":"info","level":2,"name":"sqlite","meta":{"paths":["ylldu6"]},"content":"auto updating table \u001b[38;5;170mxiuxian_player\u001b[0m","timestamp":1780651212583}

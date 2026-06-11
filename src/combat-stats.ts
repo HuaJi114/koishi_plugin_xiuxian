@@ -1,4 +1,5 @@
 import { GameData } from './data'
+import { mergeSkillBuffs, MergedSkillBuffs } from './skills'
 import { Fighter, ItemInfo, XiuxianBuff, XiuxianPlayer } from './types'
 import type { XiuxianService } from './service'
 
@@ -16,6 +17,7 @@ export interface CombatStatBreakdown {
   permAtkBonus: number
   critRate: number
   defenseRate: number
+  merged: MergedSkillBuffs
 }
 
 /** 计算最终攻击与加成明细（对应 nonebot final_user_data） */
@@ -23,13 +25,14 @@ export function computeCombatStats(
   player: XiuxianPlayer,
   buff: XiuxianBuff,
   data: GameData,
+  merged?: MergedSkillBuffs,
 ): CombatStatBreakdown {
-  const mainBuff = buff.mainBuff > 0 ? data.getItem(buff.mainBuff) : undefined
+  const skillMerged = merged ?? { hpbuff: 0, mpbuff: 0, atkbuff: 0, ratebuff: 0 }
   const weapon = buff.faqiBuff > 0 ? data.getItem(buff.faqiBuff) : undefined
   const armor = buff.armorBuff > 0 ? data.getItem(buff.armorBuff) : undefined
 
   const practiceRate = player.atkPractice * 0.04
-  const mainAtkRate = num(mainBuff?.atkbuff)
+  const mainAtkRate = skillMerged.atkbuff
   const weaponAtkRate = num(weapon?.atk_buff)
   const permAtkBonus = num(buff.atkBuff)
 
@@ -49,10 +52,11 @@ export function computeCombatStats(
     permAtkBonus,
     critRate,
     defenseRate,
+    merged: skillMerged,
   }
 }
 
-/** 构建 PVP/PVE 战斗快照（含法器攻击/会心、防具减伤） */
+/** 构建 PVP/PVE 战斗快照（含法器攻击/会心、防具减伤、神通列表） */
 export async function buildFighter(srv: XiuxianService, userId: string): Promise<Fighter | undefined> {
   await srv.syncEquipBuffs(userId)
   const real = await srv.getRealPlayer(userId)
@@ -60,7 +64,10 @@ export async function buildFighter(srv: XiuxianService, userId: string): Promise
   if (!real || !base) return undefined
 
   const buff = await srv.getBuff(userId)
-  const stats = computeCombatStats(base, buff, srv.data)
+  const skills = await srv.getLearnedSkills(userId)
+  const merged = mergeSkillBuffs(skills, srv.data)
+  const stats = computeCombatStats(base, buff, srv.data, merged)
+  const secSkillIds = await srv.getSecSkillIds(userId)
 
   return {
     userId,
@@ -71,6 +78,7 @@ export async function buildFighter(srv: XiuxianService, userId: string): Promise
     crit: stats.critRate,
     critDamage: 1.5,
     defense: stats.defenseRate,
+    secSkillIds,
   }
 }
 

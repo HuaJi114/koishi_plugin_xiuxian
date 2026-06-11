@@ -6,3 +6,4 @@ import { Config } from '../config';
  * 保留"永久强化"的核心玩法。
  */
 export declare function applyImpart(ctx: Context, _config: Config): void;
+//# sourceMappingURL=impart.d.ts.map

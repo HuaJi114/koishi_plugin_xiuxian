@@ -1,6 +1,7 @@
 import { Context } from 'koishi'
 import { Config } from '../config'
 import { buildFighter, computeCombatStats, formatAtkBreakdown } from '../combat-stats'
+import { formatMergedSkillSummary, formatSkillEffect, mergeSkillBuffs } from '../skills'
 import { getEffectiveMaxHpMp, isHeavilyInjured, numberTo } from '../utils'
 
 /** 信息查询模块：我的修仙信息、我的状态、我的功法 */
@@ -29,12 +30,22 @@ export function applyInfo(ctx: Context, _config: Config) {
       const rate = srv.data.getLevelRate(player.level) + player.levelUpRate
 
       const buff = await srv.getBuff(userId)
-      const mainBuff = srv.data.getItem(buff.mainBuff)
-      const secBuff = srv.data.getItem(buff.secBuff)
+      const skills = await srv.getLearnedSkills(userId)
+      const merged = mergeSkillBuffs(skills, srv.data)
+      const stats = computeCombatStats(base, buff, srv.data, merged)
       const weapon = srv.data.getItem(buff.faqiBuff)
       const armor = srv.data.getItem(buff.armorBuff)
-      const stats = computeCombatStats(base, buff, srv.data)
-      const itemName = (i?: { name: string; level?: string }) => i ? `${i.name}(${i.level ?? ''})` : '无'
+
+      const gongfaLines = skills.filter((s) => s.skillType !== '神通').map((s) => {
+        const info = srv.data.getItem(s.skillId)
+        if (!info) return null
+        return `  · ${info.name}（${formatSkillEffect(info)}）`
+      }).filter(Boolean)
+      const secLines = skills.filter((s) => s.skillType === '神通').map((s) => {
+        const info = srv.data.getItem(s.skillId)
+        if (!info) return null
+        return `  · ${info.name}（${formatSkillEffect(info)}）`
+      }).filter(Boolean)
 
       let sectMsg = '散修'
       if (base.sectId) {
@@ -54,10 +65,13 @@ export function applyInfo(ctx: Context, _config: Config) {
         `会心率：${stats.critRate}%${stats.defenseRate > 0 ? `，减伤率：${Math.floor(stats.defenseRate * 100)}%` : ''}`,
         `攻修等级：${player.atkPractice}级`,
         `所在宗门：${sectMsg}`,
-        `主修功法：${itemName(mainBuff as never)}`,
-        `副修神通：${itemName(secBuff as never)}`,
-        `法器：${itemName(weapon as never)}`,
-        `防具：${itemName(armor as never)}`,
+        `已学功法（${gongfaLines.length}本，同属性取最高）：`,
+        ...(gongfaLines.length ? gongfaLines as string[] : ['  · 无']),
+        `合并功法增益：${formatMergedSkillSummary(merged)}`,
+        `已学神通（${secLines.length}本，战斗随机选用）：`,
+        ...(secLines.length ? secLines as string[] : ['  · 无']),
+        `法器：${weapon ? `${weapon.name}(${weapon.level ?? ''})` : '无'}`,
+        `防具：${armor ? `${armor.name}(${armor.level ?? ''})` : '无'}`,
       ].join('\n')
     })
 
@@ -67,12 +81,13 @@ export function applyInfo(ctx: Context, _config: Config) {
       const player = await srv.getRealPlayer(userId)
       if (!player) return '修仙界没有道友的信息，请输入【我要修仙】加入！'
       const buff = await srv.getBuff(userId)
-      const mainBuff = srv.data.getItem(buff.mainBuff)
-      const mainHp = (mainBuff?.hpbuff as number) ?? 0
-      const mainMp = (mainBuff?.mpbuff as number) ?? 0
+      const skills = await srv.getLearnedSkills(userId)
+      const merged = mergeSkillBuffs(skills, srv.data)
+      const mainHp = merged.hpbuff
+      const mainMp = merged.mpbuff
       const { maxHp, maxMp } = getEffectiveMaxHpMp(player.exp, mainHp, mainMp)
       const base = (await srv.getPlayer(userId))!
-      const stats = computeCombatStats(base, buff, srv.data)
+      const stats = computeCombatStats(base, buff, srv.data, merged)
       const lines = [
         `${player.userName} 道友的状态`,
         `气血：${numberTo(player.hp)} / ${numberTo(maxHp)}`,

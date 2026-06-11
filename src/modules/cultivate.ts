@@ -1,6 +1,7 @@
 import { Context } from 'koishi'
 import { Config } from '../config'
 import { getAtId } from '../helpers'
+import { mergeSkillBuffs } from '../skills'
 import { dateDiffSeconds, numberTo, randInt } from '../utils'
 
 const STONE_CULTIVATE_RATIO = 10
@@ -74,8 +75,9 @@ export function applyCultivate(ctx: Context, config: Config) {
     const rootRate = srv.data.roots[player.rootType]?.type_speeds ?? 1
     const realmRate = srv.data.levels[player.level]?.spend ?? 1
     const buff = await srv.getBuff(userId)
-    const mainBuff = srv.data.getItem(buff.mainBuff)
-    const rateBuff = (mainBuff?.ratebuff as number) ?? 0
+    const skills = await srv.getLearnedSkills(userId)
+    const merged = mergeSkillBuffs(skills, srv.data)
+    const rateBuff = merged.ratebuff
     let exp = Math.floor(expTime * config.closingExp * (rootRate * realmRate * (1 + rateBuff)))
 
     await srv.setState(userId, 0)
