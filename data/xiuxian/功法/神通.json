@@ -2,11 +2,14 @@
   "8001": {
     "name": "灵光印",
     "skill_type": 1,
-    "atkvalue": [ 1.2, 1.2 ],
+    "atkvalue": [
+      1.2,
+      1.2
+    ],
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "吔屎啦！",
+    "desc": "灵光印，斗法神通",
     "rate": 100,
     "rank": "人阶下品",
     "level": "50"
@@ -14,11 +17,13 @@
   "8002": {
     "name": "落石阵",
     "skill_type": 1,
-    "atkvalue": [ 2.4 ],
+    "atkvalue": [
+      2.4
+    ],
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "吔屎啦！",
+    "desc": "催动落石阵克敌制胜",
     "rate": 50,
     "rank": "人阶下品",
     "level": "50"
@@ -30,7 +35,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "吔屎啦！",
+    "desc": "真金印耗真元施为",
     "rate": 100,
     "rank": "人阶下品",
     "level": "50"
@@ -43,7 +48,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "你被强化了，快去送!",
+    "desc": "惊涛剑诀耗真元施为",
     "rate": 100,
     "rank": "人阶下品",
     "level": "50"
@@ -56,7 +61,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "不说了，开鳖!",
+    "desc": "鳖住耗真元施为",
     "rate": 100,
     "rank": "人阶下品",
     "level": "50"
@@ -64,11 +69,14 @@
   "8101": {
     "name": "化尘剑法",
     "skill_type": 1,
-    "atkvalue": [ 1.3, 1.3 ],
+    "atkvalue": [
+      1.3,
+      1.3
+    ],
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "吔屎啦！",
+    "desc": "化尘剑法耗真元施为",
     "rate": 100,
     "rank": "人阶上品",
     "level": "45"
@@ -76,11 +84,13 @@
   "8102": {
     "name": "三昧真火",
     "skill_type": 1,
-    "atkvalue": [ 2.6 ],
+    "atkvalue": [
+      2.6
+    ],
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "吔屎啦！",
+    "desc": "三昧真火，斗法神通",
     "rate": 50,
     "rank": "人阶上品",
     "level": "45"
@@ -92,7 +102,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "吔屎啦！",
+    "desc": "截脉，斗法神通",
     "rate": 100,
     "rank": "人阶上品",
     "level": "45"
@@ -105,7 +115,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "你被强化了，快去送!",
+    "desc": "催动灵息术克敌制胜",
     "rate": 100,
     "rank": "人阶上品",
     "level": "45"
@@ -118,7 +128,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "不说了，开鳖!",
+    "desc": "鳖鳖住，护体减伤之诀",
     "rate": 100,
     "rank": "人阶上品",
     "level": "45"
@@ -126,11 +136,14 @@
   "8201": {
     "name": "竹山剑法",
     "skill_type": 1,
-    "atkvalue": [ 1.4, 1.4 ],
+    "atkvalue": [
+      1.4,
+      1.4
+    ],
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "吔屎啦！",
+    "desc": "竹山剑法，斗法神通",
     "rate": 100,
     "rank": "黄阶下品",
     "level": "42"
@@ -138,11 +151,13 @@
   "8202": {
     "name": "碎剑诀",
     "skill_type": 1,
-    "atkvalue": [ 2.8 ],
+    "atkvalue": [
+      2.8
+    ],
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "吔屎啦！",
+    "desc": "碎剑诀耗真元施为",
     "rate": 50,
     "rank": "黄阶下品",
     "level": "42"
@@ -154,7 +169,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "吔屎啦！",
+    "desc": "催动灵体印克敌制胜",
     "rate": 100,
     "rank": "黄阶下品",
     "level": "42"
@@ -167,7 +182,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "你被强化了，快去送!",
+    "desc": "催动拟剑克敌制胜",
     "rate": 100,
     "rank": "黄阶下品",
     "level": "42"
@@ -180,7 +195,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "不说了，开鳖!",
+    "desc": "鳖鳖鳖住，护体减伤之诀",
     "rate": 100,
     "rank": "黄阶下品",
     "level": "42"
@@ -188,11 +203,14 @@
   "8301": {
     "name": "五毒摄魂阵",
     "skill_type": 1,
-    "atkvalue": [ 1.5, 1.5 ],
+    "atkvalue": [
+      1.5,
+      1.5
+    ],
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "吔屎啦！",
+    "desc": "五毒摄魂阵，斗法神通",
     "rate": 100,
     "rank": "黄阶上品",
     "level": "39"
@@ -200,11 +218,13 @@
   "8302": {
     "name": "矢神刺",
     "skill_type": 1,
-    "atkvalue": [ 3 ],
+    "atkvalue": [
+      3
+    ],
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "吔屎啦！",
+    "desc": "催动矢神刺克敌制胜",
     "rate": 50,
     "rank": "黄阶上品",
     "level": "39"
@@ -216,7 +236,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "吔屎啦！",
+    "desc": "催动摧血掌克敌制胜",
     "rate": 100,
     "rank": "黄阶上品",
     "level": "39"
@@ -229,7 +249,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "你被强化了，快去送!",
+    "desc": "归元剑气，斗法神通",
     "rate": 100,
     "rank": "黄阶上品",
     "level": "39"
@@ -242,7 +262,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "不说了，开鳖!",
+    "desc": "催动鳖鳖鳖鳖住克敌制胜",
     "rate": 100,
     "rank": "黄阶上品",
     "level": "39"
@@ -250,11 +270,14 @@
   "8401": {
     "name": "降魔锁骨阵",
     "skill_type": 1,
-    "atkvalue": [ 1.6, 1.6 ],
+    "atkvalue": [
+      1.6,
+      1.6
+    ],
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "吔屎啦！",
+    "desc": "降魔锁骨阵耗真元施为",
     "rate": 100,
     "rank": "玄阶下品",
     "level": "36"
@@ -262,11 +285,13 @@
   "8402": {
     "name": "鹤喙针",
     "skill_type": 1,
-    "atkvalue": [ 3.2 ],
+    "atkvalue": [
+      3.2
+    ],
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "吔屎啦！",
+    "desc": "催动鹤喙针克敌制胜",
     "rate": 50,
     "rank": "玄阶下品",
     "level": "36"
@@ -278,7 +303,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "吔屎啦！",
+    "desc": "祭血罩，斗法神通",
     "rate": 100,
     "rank": "玄阶下品",
     "level": "36"
@@ -291,7 +316,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "你被强化了，快去送!",
+    "desc": "分金印耗真元施为",
     "rate": 100,
     "rank": "玄阶下品",
     "level": "36"
@@ -304,7 +329,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "不说了，开鳖!",
+    "desc": "鳖鳖鳖鳖鳖住耗真元施为",
     "rate": 100,
     "rank": "玄阶下品",
     "level": "36"
@@ -312,11 +337,14 @@
   "8501": {
     "name": "苍云荫月",
     "skill_type": 1,
-    "atkvalue": [ 1.7, 1.7 ],
+    "atkvalue": [
+      1.7,
+      1.7
+    ],
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "吔屎啦！",
+    "desc": "苍云荫月，斗法神通",
     "rate": 100,
     "rank": "玄阶上品",
     "level": "33"
@@ -324,11 +352,13 @@
   "8502": {
     "name": "寸芒",
     "skill_type": 1,
-    "atkvalue": [ 3.4 ],
+    "atkvalue": [
+      3.4
+    ],
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "吔屎啦！",
+    "desc": "寸芒耗真元施为",
     "rate": 50,
     "rank": "玄阶上品",
     "level": "33"
@@ -340,7 +370,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "吔屎啦！",
+    "desc": "月华流照，斗法神通",
     "rate": 100,
     "rank": "玄阶上品",
     "level": "33"
@@ -353,7 +383,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "你被强化了，快去送!",
+    "desc": "催动九转游身剑克敌制胜",
     "rate": 100,
     "rank": "玄阶上品",
     "level": "33"
@@ -366,7 +396,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "不说了，开鳖!",
+    "desc": "催动鳖鳖鳖鳖鳖鳖住克敌制胜",
     "rate": 100,
     "rank": "玄阶上品",
     "level": "33"
@@ -374,11 +404,14 @@
   "8601": {
     "name": "开山诀",
     "skill_type": 1,
-    "atkvalue": [ 1.8, 1.8 ],
+    "atkvalue": [
+      1.8,
+      1.8
+    ],
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "吔屎啦！",
+    "desc": "开山诀，斗法神通",
     "rate": 100,
     "rank": "地阶下品",
     "level": "30"
@@ -386,11 +419,13 @@
   "8602": {
     "name": "离火绝炎",
     "skill_type": 1,
-    "atkvalue": [ 3.6 ],
+    "atkvalue": [
+      3.6
+    ],
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "吔屎啦！",
+    "desc": "离火绝炎，斗法神通",
     "rate": 50,
     "rank": "地阶下品",
     "level": "30"
@@ -402,7 +437,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "吔屎啦！",
+    "desc": "凝水归流，斗法神通",
     "rate": 100,
     "rank": "地阶下品",
     "level": "30"
@@ -415,7 +450,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "你被强化了，快去送!",
+    "desc": "五行颠倒术耗真元施为",
     "rate": 100,
     "rank": "地阶下品",
     "level": "30"
@@ -428,7 +463,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "不说了，开鳖!",
+    "desc": "鳖鳖鳖鳖鳖鳖鳖住耗真元施为",
     "rate": 100,
     "rank": "地阶下品",
     "level": "30"
@@ -436,11 +471,14 @@
   "8701": {
     "name": "怒水天殇",
     "skill_type": 1,
-    "atkvalue": [ 1.9, 1.9 ],
+    "atkvalue": [
+      1.9,
+      1.9
+    ],
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "吔屎啦！",
+    "desc": "怒水天殇，斗法神通",
     "rate": 100,
     "rank": "地阶上品",
     "level": "27"
@@ -448,11 +486,13 @@
   "8702": {
     "name": "炙炎轮回",
     "skill_type": 1,
-    "atkvalue": [ 3.8 ],
+    "atkvalue": [
+      3.8
+    ],
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "吔屎啦！",
+    "desc": "炙炎轮回耗真元施为",
     "rate": 50,
     "rank": "地阶上品",
     "level": "27"
@@ -464,7 +504,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "吔屎啦！",
+    "desc": "血魂煞耗真元施为",
     "rate": 100,
     "rank": "地阶上品",
     "level": "27"
@@ -477,7 +517,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "你被强化了，快去送!",
+    "desc": "万剑诀，斗法神通",
     "rate": 100,
     "rank": "地阶上品",
     "level": "27"
@@ -490,7 +530,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "不说了，开鳖!",
+    "desc": "鳖鳖鳖鳖鳖鳖鳖鳖住耗真元施为",
     "rate": 100,
     "rank": "地阶上品",
     "level": "27"
@@ -498,11 +538,14 @@
   "8801": {
     "name": "天星若雨",
     "skill_type": 1,
-    "atkvalue": [ 2, 2 ],
+    "atkvalue": [
+      2,
+      2
+    ],
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "吔屎啦！",
+    "desc": "天星若雨耗真元施为",
     "rate": 100,
     "rank": "天阶下品",
     "level": "24"
@@ -510,11 +553,13 @@
   "8802": {
     "name": "金虹贯日",
     "skill_type": 1,
-    "atkvalue": [ 4 ],
+    "atkvalue": [
+      4
+    ],
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "吔屎啦！",
+    "desc": "催动金虹贯日克敌制胜",
     "rate": 50,
     "rank": "天阶下品",
     "level": "24"
@@ -526,7 +571,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "吔屎啦！",
+    "desc": "都天烈火仙阵耗真元施为",
     "rate": 100,
     "rank": "天阶下品",
     "level": "24"
@@ -539,7 +584,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "你被强化了，快去送!",
+    "desc": "催动星微神灭诀克敌制胜",
     "rate": 100,
     "rank": "天阶下品",
     "level": "24"
@@ -552,7 +597,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "不说了，开鳖!",
+    "desc": "鳖鳖鳖鳖鳖鳖鳖鳖鳖住，护体减伤之诀",
     "rate": 100,
     "rank": "天阶下品",
     "level": "24"
@@ -560,11 +605,15 @@
   "8901": {
     "name": "横扫千军",
     "skill_type": 1,
-    "atkvalue": [ 1.6, 1.7, 1.8 ],
+    "atkvalue": [
+      1.6,
+      1.7,
+      1.8
+    ],
     "hpcost": 0.1,
     "mpcost": 0.5,
     "turncost": 1,
-    "desc": "吔屎啦！",
+    "desc": "催动横扫千军克敌制胜",
     "rate": 100,
     "rank": "天阶上品",
     "level": "21"
@@ -572,11 +621,13 @@
   "8902": {
     "name": "玄冰凝骨术",
     "skill_type": 1,
-    "atkvalue": [ 4.2 ],
+    "atkvalue": [
+      4.2
+    ],
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "吔屎啦！",
+    "desc": "催动玄冰凝骨术克敌制胜",
     "rate": 50,
     "rank": "天阶上品",
     "level": "21"
@@ -584,11 +635,11 @@
   "8903": {
     "name": "凤灵妖火",
     "skill_type": 2,
-    "atkvalue": 2.0,
+    "atkvalue": 2,
     "hpcost": 0,
     "mpcost": 0.5,
     "turncost": 3,
-    "desc": "吔屎啦！",
+    "desc": "催动凤灵妖火克敌制胜",
     "rate": 100,
     "rank": "天阶上品",
     "level": "21"
@@ -601,7 +652,7 @@
     "hpcost": 0,
     "mpcost": 0.5,
     "turncost": 3,
-    "desc": "你被强化了，快去送!",
+    "desc": "催动大吞焰术克敌制胜",
     "rate": 100,
     "rank": "天阶上品",
     "level": "21"
@@ -614,7 +665,7 @@
     "hpcost": 0,
     "mpcost": 0.4,
     "turncost": 3,
-    "desc": "不说了，开鳖!",
+    "desc": "鳖鳖鳖鳖鳖鳖鳖鳖鳖鳖住，护体减伤之诀",
     "rate": 100,
     "rank": "天阶上品",
     "level": "21"
@@ -634,11 +685,22 @@
   "8907": {
     "name": "雷霆十闪",
     "skill_type": 1,
-    "atkvalue": [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 ],
+    "atkvalue": [
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1
+    ],
     "hpcost": 0.2,
     "mpcost": 0.4,
     "turncost": 0,
-    "desc": "吔屎啦！",
+    "desc": "雷霆十闪耗真元施为",
     "rate": 70,
     "rank": "天阶上品",
     "level": "21"
@@ -646,11 +708,13 @@
   "8908": {
     "name": "天地同寿",
     "skill_type": 1,
-    "atkvalue": [ 20.5 ],
+    "atkvalue": [
+      20.5
+    ],
     "hpcost": 0.9,
     "mpcost": 0.9,
     "turncost": 9,
-    "desc": "吔屎啦！",
+    "desc": "催动天地同寿克敌制胜",
     "rate": 10,
     "rank": "天阶上品",
     "level": "21"
@@ -658,11 +722,15 @@
   "8911": {
     "name": "大罗仙印",
     "skill_type": 1,
-    "atkvalue": [ 1.0,2.0,3.0 ],
-    "hpcost": 0.0,
+    "atkvalue": [
+      1,
+      2,
+      3
+    ],
+    "hpcost": 0,
     "mpcost": 0.4,
     "turncost": 0,
-    "desc": "吔屎啦！",
+    "desc": "催动大罗仙印克敌制胜",
     "rate": 70,
     "rank": "仙阶上品",
     "level": "18"

@@ -1,11 +1,6 @@
 import { Context } from 'koishi'
 import { todayStr, META_LAST_DAILY_RESET } from './daily-utils'
-
-function msUntilNextMidnight(): number {
-  const now = new Date()
-  const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
-  return next.getTime() - now.getTime()
-}
+import { msUntilShanghaiMidnight } from './timezone'
 
 /**
  * 注册每日 0 点刷新；启动时补跑；每小时校验跨日。
@@ -32,7 +27,7 @@ export function setupDailyReset(ctx: Context): void {
     ctx.setTimeout(async () => {
       await runReset('0点定时')
       scheduleMidnight()
-    }, msUntilNextMidnight())
+    }, msUntilShanghaiMidnight())
   }
 
   ctx.inject(['xiuxian'], () => {

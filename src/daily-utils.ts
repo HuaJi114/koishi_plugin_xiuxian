@@ -1,9 +1,8 @@
-/** 本地日期 YYYY-MM-DD（用于每日重置兜底） */
+import { shanghaiTodayStr } from './timezone'
+
+/** 上海时区日期 YYYY-MM-DD（用于每日重置与签到） */
 export function todayStr(d = new Date()): string {
-  const y = d.getFullYear()
-  const m = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
-  return `${y}-${m}-${day}`
+  return shanghaiTodayStr(d)
 }
 
 export const META_LAST_DAILY_RESET = 'last_daily_reset_date'

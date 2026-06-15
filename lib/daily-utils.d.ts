@@ -1,4 +1,4 @@
-/** 本地日期 YYYY-MM-DD（用于每日重置兜底） */
+/** 上海时区日期 YYYY-MM-DD（用于每日重置与签到） */
 export declare function todayStr(d?: Date): string;
 export declare const META_LAST_DAILY_RESET = "last_daily_reset_date";
 export declare const RIFT_DAILY_LIMIT = 3;

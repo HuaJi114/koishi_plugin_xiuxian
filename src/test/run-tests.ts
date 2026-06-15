@@ -6,7 +6,7 @@ import { GameData } from '../data'
 import { mergeSkillBuffs, formatMergedSkillSummary } from '../skills'
 import { checkMix, tiaohe } from '../mix-elixir-util'
 import { todayStr, RIFT_DAILY_LIMIT, WORK_REFRESH_DAILY_LIMIT } from '../daily-utils'
-import { playerFight } from '../utils'
+import { formatAmount, playerFight } from '../utils'
 import { Fighter, XiuxianSkill } from '../types'
 
 let passed = 0
@@ -80,7 +80,19 @@ const data = new GameData()
   assert(hp.a <= 0 || hp.b <= 0, 'playerFight ends with one side at or below 0')
 }
 
-// 6. 精铁符剑 atk_buff
+// 6. formatAmount 精确整数
+{
+  assert(formatAmount(22578) === '22578', 'formatAmount exact')
+  assert(formatAmount(23000) !== '2.3万', 'formatAmount no wan unit')
+  assert(formatAmount(22578.9) === '22578', 'formatAmount trunc not round')
+}
+
+// 7. 辅修功法已加载
+{
+  assert(Object.keys(data.getItemsByType(['辅修功法'])).length > 0, 'sub skills loaded')
+}
+
+// 8. 精铁符剑 atk_buff
 {
   const sword = data.getItem(7001)
   if (sword) {

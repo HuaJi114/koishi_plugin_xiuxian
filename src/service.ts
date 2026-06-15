@@ -456,6 +456,12 @@ export class XiuxianService extends Service {
     await this.ctx.database.set('xiuxian_player', { userId }, (row) => ({ atkPractice: $.add(row.atkPractice, amount) }))
   }
 
+  /** 炼体数据 */
+  async getExercises(userId: string) {
+    const [row] = await this.ctx.database.get('xiuxian_exercises', { userId })
+    return row
+  }
+
   /** 更新境界 */
   async setLevel(userId: string, level: string): Promise<void> {
     await this.ctx.database.set('xiuxian_player', { userId }, { level })
@@ -527,6 +533,8 @@ export class XiuxianService extends Service {
     await this.ctx.database.remove('xiuxian_skill', { userId })
     await this.ctx.database.remove('xiuxian_work', { userId })
     await this.ctx.database.remove('xiuxian_boss_participant', { userId })
+    await this.ctx.database.remove('xiuxian_exercises', { userId })
+    await this.ctx.database.remove('xiuxian_bank', { userId })
     await this.ctx.database.remove('xiuxian_player', { userId })
   }
 

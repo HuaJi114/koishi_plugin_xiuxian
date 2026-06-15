@@ -2,7 +2,7 @@ import { Context } from 'koishi'
 import { Config } from '../config'
 import { buildFighter, computeCombatStats, formatAtkBreakdown } from '../combat-stats'
 import { formatMergedSkillSummary, formatSkillEffect, mergeSkillBuffs } from '../skills'
-import { getEffectiveMaxHpMp, isHeavilyInjured, numberTo } from '../utils'
+import { getEffectiveMaxHpMp, isHeavilyInjured, formatAmount } from '../utils'
 
 /** 信息查询模块：我的修仙信息、我的状态、我的功法 */
 export function applyInfo(ctx: Context, _config: Config) {
@@ -25,7 +25,7 @@ export function applyInfo(ctx: Context, _config: Config) {
         expMsg = '位面至高'
       } else {
         const need = srv.data.getLevelPower(nextLevel) - base.exp
-        expMsg = need > 0 ? `还需${numberTo(need)}修为可突破！` : '可突破！'
+        expMsg = need > 0 ? `还需${formatAmount(need)}修为可突破！` : '可突破！'
       }
       const rate = srv.data.getLevelRate(player.level) + player.levelUpRate
 
@@ -36,7 +36,12 @@ export function applyInfo(ctx: Context, _config: Config) {
       const weapon = srv.data.getItem(buff.faqiBuff)
       const armor = srv.data.getItem(buff.armorBuff)
 
-      const gongfaLines = skills.filter((s) => s.skillType !== '神通').map((s) => {
+      const gongfaLines = skills.filter((s) => s.skillType === '功法').map((s) => {
+        const info = srv.data.getItem(s.skillId)
+        if (!info) return null
+        return `  · ${info.name}（${formatSkillEffect(info)}）`
+      }).filter(Boolean)
+      const subLines = skills.filter((s) => s.skillType === '辅修功法').map((s) => {
         const info = srv.data.getItem(s.skillId)
         if (!info) return null
         return `  · ${info.name}（${formatSkillEffect(info)}）`
@@ -57,16 +62,18 @@ export function applyInfo(ctx: Context, _config: Config) {
         `${player.userName || '无名氏(发送 改名+道号 更新)'} 道友的信息`,
         `灵根：${player.root}(${player.rootType}+${Math.floor(rootRate * 100)}%)`,
         `境界：${player.level}(境界+${Math.floor(realmRate * 100)}%)`,
-        `修为：${numberTo(base.exp)}`,
-        `灵石：${numberTo(stone)}`,
-        `战力：${numberTo(Math.floor(base.exp * rootRate * realmRate))}`,
+        `修为：${formatAmount(base.exp)}`,
+        `灵石：${formatAmount(stone)}`,
+        `战力：${formatAmount(Math.floor(base.exp * rootRate * realmRate))}`,
         `突破状态：${expMsg}概率：${rate}%`,
-        `攻击力：${numberTo(player.atk)}（${formatAtkBreakdown(stats)}）`,
+        `攻击力：${formatAmount(player.atk)}（${formatAtkBreakdown(stats)}）`,
         `会心率：${stats.critRate}%${stats.defenseRate > 0 ? `，减伤率：${Math.floor(stats.defenseRate * 100)}%` : ''}`,
         `攻修等级：${player.atkPractice}级`,
         `所在宗门：${sectMsg}`,
-        `已学功法（${gongfaLines.length}本，同属性取最高）：`,
+        `已学功法（${gongfaLines.length}本）：`,
         ...(gongfaLines.length ? gongfaLines as string[] : ['  · 无']),
+        `辅修功法（${subLines.length}本）：`,
+        ...(subLines.length ? subLines as string[] : ['  · 无']),
         `合并功法增益：${formatMergedSkillSummary(merged)}`,
         `已学神通（${secLines.length}本，战斗随机选用）：`,
         ...(secLines.length ? secLines as string[] : ['  · 无']),
@@ -90,9 +97,9 @@ export function applyInfo(ctx: Context, _config: Config) {
       const stats = computeCombatStats(base, buff, srv.data, merged)
       const lines = [
         `${player.userName} 道友的状态`,
-        `气血：${numberTo(player.hp)} / ${numberTo(maxHp)}`,
-        `真元：${numberTo(player.mp)} / ${numberTo(maxMp)}`,
-        `攻击：${numberTo(player.atk)}（${formatAtkBreakdown(stats)}）`,
+        `气血：${formatAmount(player.hp)} / ${formatAmount(maxHp)}`,
+        `真元：${formatAmount(player.mp)} / ${formatAmount(maxMp)}`,
+        `攻击：${formatAmount(player.atk)}（${formatAtkBreakdown(stats)}）`,
         `会心率：${stats.critRate}%${stats.defenseRate > 0 ? `，减伤率：${Math.floor(stats.defenseRate * 100)}%` : ''}`,
       ]
       if (isHeavilyInjured(base.exp, base.hp)) {

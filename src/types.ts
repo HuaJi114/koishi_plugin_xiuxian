@@ -9,6 +9,8 @@ declare module 'koishi' {
     xiuxian_buff: XiuxianBuff
     xiuxian_meta: XiuxianMeta
     xiuxian_skill: XiuxianSkill
+    xiuxian_exercises: XiuxianExercises
+    xiuxian_shop: XiuxianShopItem
   }
 }
 
@@ -205,6 +207,30 @@ export interface XiuxianSkill {
   skillId: number
   skillType: '功法' | '辅修功法' | '神通'
   learnedAt: Date
+}
+
+/** 炼体数据 */
+export interface XiuxianExercises {
+  userId: string
+  exercisesLevel: number
+  atkBuff: number
+  defBuff: number
+  critBuff: number
+  critDmgBuff: number
+}
+
+/** 坊市条目 */
+export interface XiuxianShopItem {
+  id: number
+  guildId: string
+  sellerId: string
+  sellerName: string
+  goodsId: number
+  goodsName: string
+  goodsType: string
+  price: number
+  goodsNum: number
+  createTime: Date
 }
 
 /** 战斗角色快照 */

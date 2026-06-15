@@ -5,7 +5,7 @@
     "mpbuff": 0.02,
     "atkbuff": 0.03,
     "ratebuff": 0.02,
-    "desc": "",
+    "desc": "参悟吐纳功法益修为",
     "rank": "人阶下品",
     "level": "50"
   },
@@ -15,7 +15,7 @@
     "mpbuff": 0.02,
     "atkbuff": 0,
     "ratebuff": 0.02,
-    "desc": "",
+    "desc": "参悟冰心诀益修为",
     "rank": "人阶下品",
     "level": "50"
   },
@@ -25,7 +25,7 @@
     "mpbuff": 0.02,
     "atkbuff": 0.05,
     "ratebuff": 0,
-    "desc": "",
+    "desc": "修习飞云劲可强根骨",
     "rank": "人阶下品",
     "level": "50"
   },
@@ -35,7 +35,7 @@
     "mpbuff": 0.02,
     "atkbuff": 0,
     "ratebuff": 0.05,
-    "desc": "",
+    "desc": "沛然决乃入门心法",
     "rank": "人阶下品",
     "level": "50"
   },
@@ -45,7 +45,7 @@
     "mpbuff": 0.02,
     "atkbuff": 0.05,
     "ratebuff": 0.05,
-    "desc": "",
+    "desc": "修习练体术可强根骨",
     "rank": "人阶下品",
     "level": "50"
   },
@@ -55,7 +55,7 @@
     "mpbuff": 0.04,
     "atkbuff": 0.06,
     "ratebuff": 0.04,
-    "desc": "",
+    "desc": "禾山经乃入门心法",
     "rank": "人阶上品",
     "level": "45"
   },
@@ -65,7 +65,7 @@
     "mpbuff": 0.04,
     "atkbuff": 0.1,
     "ratebuff": 0,
-    "desc": "",
+    "desc": "浪击决，调息炼气之法",
     "rank": "人阶上品",
     "level": "45"
   },
@@ -75,7 +75,7 @@
     "mpbuff": 0.04,
     "atkbuff": 0,
     "ratebuff": 0.1,
-    "desc": "",
+    "desc": "参悟地元炼体功益修为",
     "rank": "人阶上品",
     "level": "45"
   },
@@ -85,17 +85,7 @@
     "mpbuff": 0.04,
     "atkbuff": 0.06,
     "ratebuff": 0,
-    "desc": "",
-    "rank": "人阶上品",
-    "level": "45"
-  },
-  "9100": {
-    "name": "化焰诀",
-    "hpbuff": 0.06,
-    "mpbuff": 0.04,
-    "atkbuff": 0.09,
-    "ratebuff": 0.06,
-    "desc": "",
+    "desc": "上青诀乃入门心法",
     "rank": "人阶上品",
     "level": "45"
   },
@@ -105,9 +95,19 @@
     "mpbuff": 0.04,
     "atkbuff": 0.09,
     "ratebuff": 0.06,
-    "desc": "",
+    "desc": "弄焰诀乃入门心法",
     "rank": "人阶上品",
     "level": "42"
+  },
+  "9100": {
+    "name": "化焰诀",
+    "hpbuff": 0.06,
+    "mpbuff": 0.04,
+    "atkbuff": 0.09,
+    "ratebuff": 0.06,
+    "desc": "化焰诀，调息炼气之法",
+    "rank": "人阶上品",
+    "level": "45"
   },
   "9101": {
     "name": "长生诀",
@@ -115,7 +115,7 @@
     "mpbuff": 0.06,
     "atkbuff": 0.04,
     "ratebuff": 0.1,
-    "desc": "",
+    "desc": "长生诀乃入门心法",
     "rank": "黄阶下品",
     "level": "42"
   },
@@ -125,7 +125,7 @@
     "mpbuff": 0.06,
     "atkbuff": 0.2,
     "ratebuff": 0.04,
-    "desc": "",
+    "desc": "烈焰诀乃入门心法",
     "rank": "黄阶下品",
     "level": "42"
   },
@@ -135,7 +135,7 @@
     "mpbuff": 0.06,
     "atkbuff": 0,
     "ratebuff": 0.04,
-    "desc": "",
+    "desc": "幽魂录乃入门心法",
     "rank": "黄阶下品",
     "level": "42"
   },
@@ -145,7 +145,7 @@
     "mpbuff": 0.06,
     "atkbuff": 0.1,
     "ratebuff": 0.04,
-    "desc": "",
+    "desc": "修习魑魅鬼卷可强根骨",
     "rank": "黄阶下品",
     "level": "42"
   },
@@ -155,7 +155,7 @@
     "mpbuff": 0.06,
     "atkbuff": 0.15,
     "ratebuff": 0.04,
-    "desc": "",
+    "desc": "参悟夺灵诀益修为",
     "rank": "黄阶下品",
     "level": "42"
   },
@@ -165,7 +165,7 @@
     "mpbuff": 0.1,
     "atkbuff": 0.1,
     "ratebuff": 0.1,
-    "desc": "",
+    "desc": "修习万木诀可强根骨",
     "rank": "黄阶上品",
     "level": "39"
   },
@@ -175,7 +175,7 @@
     "mpbuff": 0.1,
     "atkbuff": 0.05,
     "ratebuff": 0.05,
-    "desc": "",
+    "desc": "修习真阳功可强根骨",
     "rank": "黄阶上品",
     "level": "39"
   },
@@ -185,7 +185,7 @@
     "mpbuff": 0.1,
     "atkbuff": 0,
     "ratebuff": 0.2,
-    "desc": "",
+    "desc": "修习龟息术可强根骨",
     "rank": "黄阶上品",
     "level": "39"
   },
@@ -195,7 +195,7 @@
     "mpbuff": 0.1,
     "atkbuff": 0.2,
     "ratebuff": 0,
-    "desc": "",
+    "desc": "修习天晶诀可强根骨",
     "rank": "黄阶上品",
     "level": "39"
   },
@@ -205,7 +205,7 @@
     "mpbuff": 0.1,
     "atkbuff": 0.1,
     "ratebuff": 0.15,
-    "desc": "",
+    "desc": "五府锻元诀乃入门心法",
     "rank": "黄阶上品",
     "level": "39"
   },
@@ -215,7 +215,7 @@
     "mpbuff": 0.1,
     "atkbuff": 0.2,
     "ratebuff": 0.1,
-    "desc": "",
+    "desc": "参悟水灵妙法益修为",
     "rank": "玄阶下品",
     "level": "36"
   },
@@ -225,7 +225,7 @@
     "mpbuff": 0.1,
     "atkbuff": 0.1,
     "ratebuff": 0.2,
-    "desc": "",
+    "desc": "五藏炼尘功乃入门心法",
     "rank": "玄阶下品",
     "level": "36"
   },
@@ -235,7 +235,7 @@
     "mpbuff": 0.1,
     "atkbuff": 0.3,
     "ratebuff": 0,
-    "desc": "",
+    "desc": "修习游神御水诀可强根骨",
     "rank": "玄阶下品",
     "level": "36"
   },
@@ -245,7 +245,7 @@
     "mpbuff": 0.1,
     "atkbuff": 0.1,
     "ratebuff": 0,
-    "desc": "",
+    "desc": "聚尘诀，调息炼气之法",
     "rank": "玄阶下品",
     "level": "36"
   },
@@ -255,7 +255,7 @@
     "mpbuff": 0.1,
     "atkbuff": 0.2,
     "ratebuff": 0.1,
-    "desc": "",
+    "desc": "参悟流光真诀益修为",
     "rank": "玄阶下品",
     "level": "36"
   },
@@ -265,7 +265,7 @@
     "mpbuff": 0.2,
     "atkbuff": 0.2,
     "ratebuff": 0.2,
-    "desc": "",
+    "desc": "参悟混元引气诀益修为",
     "rank": "玄阶上品",
     "level": "33"
   },
@@ -275,7 +275,7 @@
     "mpbuff": 0.2,
     "atkbuff": 0.05,
     "ratebuff": 0.235,
-    "desc": "",
+    "desc": "修习焚心诀可强根骨",
     "rank": "玄阶上品",
     "level": "33"
   },
@@ -285,7 +285,7 @@
     "mpbuff": 0.2,
     "atkbuff": 0.35,
     "ratebuff": 0.05,
-    "desc": "",
+    "desc": "修习怒涛诀可强根骨",
     "rank": "玄阶上品",
     "level": "33"
   },
@@ -295,7 +295,7 @@
     "mpbuff": 0.2,
     "atkbuff": 0.1,
     "ratebuff": 0.1,
-    "desc": "",
+    "desc": "三才化甲诀乃入门心法",
     "rank": "玄阶上品",
     "level": "33"
   },
@@ -305,7 +305,7 @@
     "mpbuff": 0.2,
     "atkbuff": 0.3,
     "ratebuff": 0.2,
-    "desc": "",
+    "desc": "混元尘引录乃入门心法",
     "rank": "玄阶上品",
     "level": "33"
   },
@@ -315,7 +315,7 @@
     "mpbuff": 0.2,
     "atkbuff": 0.2,
     "ratebuff": 0.2,
-    "desc": "",
+    "desc": "紫阳混元劲，调息炼气之法",
     "rank": "地阶下品",
     "level": "30"
   },
@@ -325,7 +325,7 @@
     "mpbuff": 0.2,
     "atkbuff": 0.05,
     "ratebuff": 0.235,
-    "desc": "",
+    "desc": "修习浑天术可强根骨",
     "rank": "地阶下品",
     "level": "30"
   },
@@ -335,7 +335,7 @@
     "mpbuff": 0.2,
     "atkbuff": 0.35,
     "ratebuff": 0.05,
-    "desc": "",
+    "desc": "七杀剑诀乃入门心法",
     "rank": "地阶下品",
     "level": "30"
   },
@@ -345,7 +345,7 @@
     "mpbuff": 0.2,
     "atkbuff": 0.1,
     "ratebuff": 0.1,
-    "desc": "",
+    "desc": "重水普渡诀，调息炼气之法",
     "rank": "地阶下品",
     "level": "30"
   },
@@ -355,7 +355,7 @@
     "mpbuff": 0.2,
     "atkbuff": 0.3,
     "ratebuff": 0.2,
-    "desc": "",
+    "desc": "九龙引雷诀，调息炼气之法",
     "rank": "地阶下品",
     "level": "30"
   },
@@ -365,7 +365,7 @@
     "mpbuff": 0.4,
     "atkbuff": 0.4,
     "ratebuff": 0.4,
-    "desc": "",
+    "desc": "大罗千幻诀乃入门心法",
     "rank": "地阶上品",
     "level": "27"
   },
@@ -375,7 +375,7 @@
     "mpbuff": 0.4,
     "atkbuff": 0.2,
     "ratebuff": 0.6,
-    "desc": "",
+    "desc": "神威录，调息炼气之法",
     "rank": "地阶上品",
     "level": "27"
   },
@@ -385,7 +385,7 @@
     "mpbuff": 0.4,
     "atkbuff": 0.6,
     "ratebuff": 0.2,
-    "desc": "",
+    "desc": "幻影神行诀乃入门心法",
     "rank": "地阶上品",
     "level": "27"
   },
@@ -395,7 +395,7 @@
     "mpbuff": 0.4,
     "atkbuff": 0.2,
     "ratebuff": 0.2,
-    "desc": "",
+    "desc": "天星润水诀乃入门心法",
     "rank": "地阶上品",
     "level": "27"
   },
@@ -405,7 +405,7 @@
     "mpbuff": 0.4,
     "atkbuff": 0.5,
     "ratebuff": 0.5,
-    "desc": "",
+    "desc": "太乙玄功，调息炼气之法",
     "rank": "地阶上品",
     "level": "27"
   },
@@ -415,7 +415,7 @@
     "mpbuff": 0.5,
     "atkbuff": 0.5,
     "ratebuff": 0.5,
-    "desc": "",
+    "desc": "朝元御金诀，调息炼气之法",
     "rank": "天阶下品",
     "level": "24"
   },
@@ -425,7 +425,7 @@
     "mpbuff": 0.5,
     "atkbuff": 0.3,
     "ratebuff": 0.7,
-    "desc": "",
+    "desc": "参悟太上化龙诀益修为",
     "rank": "天阶下品",
     "level": "24"
   },
@@ -435,7 +435,7 @@
     "mpbuff": 0.5,
     "atkbuff": 0.7,
     "ratebuff": 0.3,
-    "desc": "",
+    "desc": "修习玄阳哺焰诀可强根骨",
     "rank": "天阶下品",
     "level": "24"
   },
@@ -445,7 +445,7 @@
     "mpbuff": 0.5,
     "atkbuff": 0.3,
     "ratebuff": 0.3,
-    "desc": "",
+    "desc": "太阴六虚功乃入门心法",
     "rank": "天阶下品",
     "level": "24"
   },
@@ -455,7 +455,7 @@
     "mpbuff": 0.5,
     "atkbuff": 0.6,
     "ratebuff": 0.6,
-    "desc": "",
+    "desc": "修习三阳玄火变可强根骨",
     "rank": "天阶下品",
     "level": "24"
   },
@@ -465,7 +465,7 @@
     "mpbuff": 0.5,
     "atkbuff": 0.6,
     "ratebuff": 0.7,
-    "desc": "",
+    "desc": "玄武吐纳术，调息炼气之法",
     "rank": "天阶上品",
     "level": "21"
   },
@@ -475,7 +475,7 @@
     "mpbuff": 0.2,
     "atkbuff": 0.2,
     "ratebuff": 0.9,
-    "desc": "",
+    "desc": "太上化龙真诀乃入门心法",
     "rank": "天阶上品",
     "level": "21"
   },
@@ -485,17 +485,17 @@
     "mpbuff": 0.5,
     "atkbuff": 0.9,
     "ratebuff": 0.7,
-    "desc": "",
+    "desc": "修习煮海诀可强根骨",
     "rank": "天阶上品",
     "level": "21"
   },
   "9804": {
     "name": "万尘归灵诀",
-    "hpbuff": 1.0,
-    "mpbuff": 1.0,
+    "hpbuff": 1,
+    "mpbuff": 1,
     "atkbuff": 0.6,
     "ratebuff": 0.7,
-    "desc": "",
+    "desc": "万尘归灵诀乃入门心法",
     "rank": "天阶上品",
     "level": "21"
   },
@@ -505,17 +505,17 @@
     "mpbuff": 0.2,
     "atkbuff": 0.8,
     "ratebuff": 0.8,
-    "desc": "",
+    "desc": "玄清天衍录乃入门心法",
     "rank": "天阶上品",
     "level": "21"
   },
   "9901": {
     "name": "万象诀",
     "hpbuff": 0.6,
-    "mpbuff": 2.0,
+    "mpbuff": 2,
     "atkbuff": 0.6,
     "ratebuff": 0.7,
-    "desc": "",
+    "desc": "万象诀，调息炼气之法",
     "rank": "天阶上品",
     "level": "21"
   },
@@ -525,17 +525,17 @@
     "mpbuff": 0.9,
     "atkbuff": 0.9,
     "ratebuff": 0.9,
-    "desc": "",
+    "desc": "参悟元磁神光益修为",
     "rank": "仙阶下品",
     "level": "18"
   },
   "9911": {
     "name": "天罗真功",
-    "hpbuff": 2.0,
-    "mpbuff": 2.0,
+    "hpbuff": 2,
+    "mpbuff": 2,
     "atkbuff": 0.8,
     "ratebuff": 0.8,
-    "desc": "",
+    "desc": "天罗真功，调息炼气之法",
     "rank": "仙阶下品",
     "level": "18"
   },
@@ -544,8 +544,8 @@
     "hpbuff": 0.6,
     "mpbuff": 0.6,
     "atkbuff": 0.8,
-    "ratebuff": 1.0,
-    "desc": "",
+    "ratebuff": 1,
+    "desc": "托天魔功乃入门心法",
     "rank": "仙阶下品",
     "level": "18"
   }

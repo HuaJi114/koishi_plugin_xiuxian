@@ -68,16 +68,26 @@ export async function buildFighter(srv: XiuxianService, userId: string): Promise
   const merged = mergeSkillBuffs(skills, srv.data)
   const stats = computeCombatStats(base, buff, srv.data, merged)
   const secSkillIds = await srv.getSecSkillIds(userId)
+  const ex = await srv.getExercises(userId)
+
+  let atk = stats.finalAtk
+  let defense = stats.defenseRate
+  let crit = stats.critRate
+  if (ex) {
+    atk += ex.atkBuff
+    defense = Math.min(defense + ex.defBuff / 10000, 0.9)
+    crit += ex.critBuff
+  }
 
   return {
     userId,
     name: real.userName,
     hp: Math.max(base.hp, 0),
-    atk: stats.finalAtk,
+    atk,
     mp: base.mp,
-    crit: stats.critRate,
-    critDamage: 1.5,
-    defense: stats.defenseRate,
+    crit,
+    critDamage: 1.5 + (ex?.critDmgBuff ?? 0) / 1000,
+    defense,
     secSkillIds,
   }
 }

@@ -12,12 +12,18 @@ import { applyBoss } from './modules/boss'
 import { applyRift } from './modules/rift'
 import { applyMixElixir } from './modules/mixelixir'
 import { applyImpart } from './modules/impart'
+import { applyExercises } from './modules/exercises'
+import { applyShop } from './modules/shop'
 import { ensureAdminAuthority, syncAllAdminAuthority } from './helpers'
 import { setupDailyReset } from './daily-reset'
+import { formatLongTextReply } from './message-reply'
 
 export const name = 'huaji-xiuxian'
 
-export const inject = ['database', 'monetary']
+export const inject = {
+  required: ['database', 'monetary'],
+  optional: ['markdownToImage'],
+}
 
 export { Config }
 
@@ -82,14 +88,16 @@ export function apply(ctx: Context, config: Config) {
         '— 突破：我的突破概率 / 突破 / 直接突破 / 渡厄突破',
         '— 修炼：闭关 / 出关 / 灵石修炼 / 双修',
         '— 经济：灵石 / 送灵石 / 偷灵石 / 抢劫 / 查看战斗详情 / 排行榜',
-        '— 背包：我的背包 / 使用 / 换装 / 查看修仙界物品',
+        '— 背包：我的背包 / 使用 / 换装 / 查看修仙界物品 / 背包帮助',
+        '— 坊市：坊市查看 / 坊市购买 / 坊市上架 / 坊市下架',
         '— 宗门：宗门帮助 / 宗门每日供奉 / 接取宗门任务 / 完成宗门任务',
         '— 悬赏：悬赏令帮助',
-        '— 灵庄：灵庄信息',
+        '— 灵庄：灵庄帮助 / 灵庄信息 / 灵庄升级会员',
         '— 世界BOSS：世界boss帮助',
         '— 秘境：秘境帮助',
         '— 炼丹：炼丹帮助 / 炼丹 / 炼制',
-        '— 传承：传承帮助',
+        '— 传承：传承帮助 / 参悟传承',
+        '— 炼体：炼体帮助 / 炼体查看 / 炼体',
       ].join('\n'))
 
     applyBase(cmdCtx, config)
@@ -103,6 +111,16 @@ export function apply(ctx: Context, config: Config) {
     applyRift(cmdCtx, config)
     applyMixElixir(cmdCtx, config)
     applyImpart(cmdCtx, config)
+    applyExercises(cmdCtx, config)
+    applyShop(cmdCtx, config)
+
+    cmdCtx.middleware(async (session, next) => {
+      const result = await next()
+      if (typeof result === 'string') {
+        return formatLongTextReply(root, config, result, session)
+      }
+      return result
+    }, true)
 
     root.logger('huaji-xiuxian').info('huaji-xiuxian 插件已加载，发送 我要修仙 开始游戏~')
   })

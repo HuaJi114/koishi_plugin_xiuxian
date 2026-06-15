@@ -44,6 +44,12 @@ export interface Config {
     giveStoneTax: number;
     /** 全局指令调用冷却（秒），0 表示关闭 */
     globalCommandCd: number;
+    /** 长文本自动转图片 */
+    longTextToImage: boolean;
+    /** 超过该行数时转图片 */
+    longTextLineThreshold: number;
+    /** 坊市手续费比例 */
+    shopServiceCharge: number;
 }
 export declare const Config: Schema<Config>;
 //# sourceMappingURL=config.d.ts.map

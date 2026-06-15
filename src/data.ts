@@ -85,6 +85,7 @@ export class GameData {
       [['装备', '防具.json'], '防具'],
       [['装备', '法器.json'], '法器'],
       [['功法', '主功法.json'], '功法'],
+      [['功法', '辅修功法.json'], '辅修功法'],
       [['功法', '神通.json'], '神通'],
       [['丹药', '丹药.json'], '丹药'],
       [['丹药', '药材.json'], '药材'],
@@ -102,7 +103,7 @@ export class GameData {
       }
       for (const [id, info] of Object.entries(data)) {
         // 功法/神通的 level 与 rank 字段需要互换，并统一标记为技能
-        if (itemType === '功法' || itemType === '神通') {
+        if (itemType === '功法' || itemType === '神通' || itemType === '辅修功法') {
           const swap = info.rank
           info.rank = info.level as string | number
           info.level = swap as string
@@ -283,10 +284,27 @@ export class GameData {
         const av = info.atkvalue
         const m = Array.isArray(av) ? av[0] : av
         effects.push(`直接伤害：攻击×${m}`)
+      } else if (st === 2) {
+        effects.push(`持续伤害：${Math.floor(Number(info.atkvalue ?? 0) * 100)}%攻击/回合×${info.turncost ?? 1}回合`)
+      } else if (st === 3) {
+        const bt = Number(info.bufftype ?? 0)
+        const bv = Math.floor(Number(info.buffvalue ?? 0) * 100)
+        if (bt === 2) effects.push(`战斗减伤提升 ${bv}%`)
+        else if (bt === 1) effects.push(`攻击增益 ${bv}%`)
+        else effects.push(`战斗增益(类型${bt})`)
       }
       if (info.rate !== undefined) effects.push(`发动概率 ${info.rate}%`)
-      if (info.hpcost) effects.push(`消耗气血 ${pct(info.hpcost)}`)
-      if (info.mpcost) effects.push(`消耗真元 ${pct(info.mpcost)}`)
+      if (info.mpcost) effects.push(`消耗真元 ${Math.round(Number(info.mpcost) * 1000) / 10}%`)
+      if (info.hpcost) effects.push(`消耗气血 ${Math.round(Number(info.hpcost) * 1000) / 10}%`)
+    }
+
+    if (itemType === '辅修功法') {
+      const hpb = pct(info.hpbuff)
+      const mpb = pct(info.mpbuff)
+      const atkb = pct(info.atkbuff)
+      if (hpb) effects.push(`辅修气血 ${hpb}`)
+      if (mpb) effects.push(`辅修真元 ${mpb}`)
+      if (atkb) effects.push(`辅修攻击 ${atkb}`)
     }
 
     if (itemType === '聚灵旗') {
@@ -298,7 +316,7 @@ export class GameData {
       effects.push('炼丹必备器具，持有方可炼制丹药')
     }
 
-    if (info.price) effects.push(`参考价格 ${info.price} 灵石`)
+    if (info.price) effects.push(`参考价格 ${Math.trunc(Number(info.price))} 灵石`)
     if (effects.length) lines.push(`效果：${effects.join('；')}`)
     else if (!info.desc) lines.push('效果：暂无详细说明')
 

@@ -45,6 +45,12 @@ export interface Config {
   giveStoneTax: number
   /** 全局指令调用冷却（秒），0 表示关闭 */
   globalCommandCd: number
+  /** 长文本自动转图片 */
+  longTextToImage: boolean
+  /** 超过该行数时转图片 */
+  longTextLineThreshold: number
+  /** 坊市手续费比例 */
+  shopServiceCharge: number
 }
 
 export const Config: Schema<Config> = Schema.intersect([
@@ -84,4 +90,10 @@ export const Config: Schema<Config> = Schema.intersect([
     sectMinLevel: Schema.string().default('铭纹境圆满').description('创建宗门所需最低境界。'),
     sectCreateCost: Schema.number().default(5000000).description('创建宗门的消费。'),
   }).description('宗门设置'),
+
+  Schema.object({
+    longTextToImage: Schema.boolean().default(false).description('启用后，超长回复将转为图片发出（需安装 koishi-plugin-markdown-to-image-service）。'),
+    longTextLineThreshold: Schema.number().default(20).description('超过该行数的文本将自动转为图片。'),
+    shopServiceCharge: Schema.number().role('').default(0.05).description('坊市成交手续费比例。'),
+  }).description('消息与坊市'),
 ])

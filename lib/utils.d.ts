@@ -1,9 +1,11 @@
 import { GameData } from './data';
 import { Fighter } from './types';
 /**
- * 数字单位化，对应原 utils.number_to。
- * 精确到最大单位 + 小数点后一位（万 / 亿）。
+ * 展示用整数格式化（禁止万/亿缩写与四舍五入）。
+ * 用于灵石、修为、气血、真元等所有玩家可见数值。
  */
+export declare function formatAmount(num: number): string;
+/** @deprecated 请使用 formatAmount */
 export declare function numberTo(num: number): string;
 /** 区间内随机整数（含两端） */
 export declare function randInt(min: number, max: number): number;

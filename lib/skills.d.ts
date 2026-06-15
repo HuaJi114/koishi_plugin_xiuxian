@@ -7,7 +7,7 @@ export interface MergedSkillBuffs {
     atkbuff: number;
     ratebuff: number;
 }
-/** 数值型功法加成：同属性取最高，不叠加 */
+/** 数值型功法加成：同属性取最高，不叠加（含辅修功法） */
 export declare function mergeSkillBuffs(skills: XiuxianSkill[], data: GameData): MergedSkillBuffs;
 export declare function formatSkillEffect(info: ItemInfo): string;
 export declare function formatMergedSkillSummary(merged: MergedSkillBuffs): string;

@@ -69,6 +69,8 @@ export declare class XiuxianService extends Service {
     reduceExp(userId: string, exp: number): Promise<void>;
     /** 增加攻击修炼等级（传承） */
     addAtkPractice(userId: string, amount: number): Promise<void>;
+    /** 炼体数据 */
+    getExercises(userId: string): Promise<import("./types").XiuxianExercises>;
     /** 更新境界 */
     setLevel(userId: string, level: string): Promise<void>;
     /** 更新突破冷却为当前时间 */

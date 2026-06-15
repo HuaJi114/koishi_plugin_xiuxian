@@ -2,7 +2,8 @@ import { Context } from 'koishi'
 import { Config } from '../config'
 import { getAtId } from '../helpers'
 import { mergeSkillBuffs } from '../skills'
-import { dateDiffSeconds, numberTo, randInt } from '../utils'
+import { todayStr } from '../daily-utils'
+import { dateDiffSeconds, formatAmount, randInt } from '../utils'
 
 const STONE_CULTIVATE_RATIO = 10
 
@@ -17,8 +18,8 @@ function stoneCultivateUsage(): string {
 function stoneCultivateInsufficient(amount: number, stone: number): string {
   return [
     '灵石不足，无法修炼。',
-    `当前灵石：${numberTo(stone)}枚`,
-    `本次需要：${numberTo(amount)}枚（可获得约 ${Math.floor(amount / STONE_CULTIVATE_RATIO)} 修为）`,
+    `当前灵石：${formatAmount(stone)}枚`,
+    `本次需要：${formatAmount(amount)}枚（可获得约 ${Math.floor(amount / STONE_CULTIVATE_RATIO)} 修为）`,
     stoneCultivateUsage(),
   ].join('\n')
 }
@@ -28,14 +29,14 @@ const twoExpCount = new Map<string, { date: string; count: number }>()
 const TWO_EXP_LIMIT = 3
 
 function getTwoExpCount(userId: string): number {
-  const today = new Date().toDateString()
+  const today = todayStr()
   const rec = twoExpCount.get(userId)
   if (!rec || rec.date !== today) return 0
   return rec.count
 }
 
 function addTwoExpCount(userId: string): void {
-  const today = new Date().toDateString()
+  const today = todayStr()
   const rec = twoExpCount.get(userId)
   if (!rec || rec.date !== today) twoExpCount.set(userId, { date: today, count: 1 })
   else rec.count += 1
@@ -131,7 +132,7 @@ export function applyCultivate(ctx: Context, config: Config) {
       if (exp <= 0) {
         return [
           `灵石数量过少，至少需要 ${STONE_CULTIVATE_RATIO} 灵石方可修炼。`,
-          `当前输入：${amount}，当前灵石：${numberTo(stone)}枚`,
+          `当前输入：${amount}，当前灵石：${formatAmount(stone)}枚`,
           stoneCultivateUsage(),
         ].join('\n')
       }

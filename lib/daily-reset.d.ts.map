@@ -1,1 +1,1 @@
-{"version":3,"file":"daily-reset.d.ts","sourceRoot":"","sources":["../src/daily-reset.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,MAAM,QAAQ,CAAA;AAShC;;GAEG;AACH,wBAAgB,eAAe,CAAC,GAAG,EAAE,OAAO,GAAG,IAAI,CAgClD"}
+{"version":3,"file":"daily-reset.d.ts","sourceRoot":"","sources":["../src/daily-reset.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,MAAM,QAAQ,CAAA;AAIhC;;GAEG;AACH,wBAAgB,eAAe,CAAC,GAAG,EAAE,OAAO,GAAG,IAAI,CAgClD"}
