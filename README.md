@@ -2,7 +2,7 @@
 
 群聊修仙文字 MUD，由 [nonebot-plugin-xiuxian-2](https://github.com/luolianxiyou/nonebot-plugin-xiuxian-2) 移植并重构为 Koishi 插件。
 
-当前版本：**0.5.0**
+当前版本：**0.5.3**
 
 ## 依赖
 
@@ -18,7 +18,7 @@
 2. 发送 **我要修仙** 创建角色
 3. 发送 **修仙帮助** 查看指令
 
-## 0.5.0 更新摘要
+## 0.5.3 更新摘要
 
 ### 数值显示
 
