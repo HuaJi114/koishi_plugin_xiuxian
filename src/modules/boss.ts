@@ -145,9 +145,9 @@ export function applyBoss(ctx: Context, _config: Config) {
     }
 
     const partCount = rewarded.size
-    let msg = `${boss.name}已被讨伐！${partCount}位参与者各获修为${formatAmount(exp)}、灵石${formatAmount(stone)}枚。`
+    let msg = `【${boss.name}】已被讨伐！${partCount}位参与者各获修为${formatAmount(exp)}、灵石${formatAmount(stone)}枚。`
     if (itemLines.length) {
-      msg += `\n最后一击由你完成，额外获得战利品：${itemLines.join('、')}`
+      msg += `\n最后一击由你完成，另获战利品：${itemLines.join('、')}`
     } else {
       msg += '\n最后一击由你完成！'
     }
@@ -181,7 +181,7 @@ export function applyBoss(ctx: Context, _config: Config) {
         stone: Math.floor(bossExp * 0.5),
         expReward: Math.floor(bossExp * 0.1),
       })
-      return `天降妖魔！世界BOSS【${boss.name}】（编号${boss.id}）现世，气血${formatAmount(boss.maxHp)}，攻击${formatAmount(boss.atk)}，速速讨伐！`
+      return `妖气冲天，大妖【${boss.name}】（编号${boss.id}）现世，气血${formatAmount(boss.maxHp)}，攻击${formatAmount(boss.atk)}，速速讨伐！`
     })
 
   ctx.command('xiuxian/查看世界boss', '查看当前群内的世界BOSS')
@@ -237,13 +237,13 @@ export function applyBoss(ctx: Context, _config: Config) {
       if (victor === fighter.name) {
         await ctx.database.remove('xiuxian_boss', { id: boss.id })
         const rewardMsg = await distributeBossKillRewards(boss, userId, pf)
-        const injury = playerHp <= 0 ? '\n道友气血归零，已进入重伤状态。' : ''
-        return `道友历经${Math.ceil(log.length / 2)}回合，成功击杀【${boss.name}】！\n${rewardMsg}${injury}\n${BATTLE_DETAIL_HINT}`
+        const injury = playerHp <= 0 ? '\n道友气血耗尽，重伤濒危。' : ''
+        return `道友历经${Math.ceil(log.length / 2)}回合，终斩【${boss.name}】！\n${rewardMsg}${injury}\n${BATTLE_DETAIL_HINT}`
       }
 
       const bossHpLeft = Math.max(finalHp[bossFighter.userId], 0)
       await ctx.database.set('xiuxian_boss', { id: boss.id }, { hp: bossHpLeft })
-      const injury = playerHp <= 0 ? '\n道友气血归零，已进入重伤状态。' : ''
-      return `道友与【${boss.name}】激战落败，BOSS剩余气血${formatAmount(bossHpLeft)}，道友剩余气血${formatAmount(Math.max(playerHp, 0))}。${injury}\n${BATTLE_DETAIL_HINT}`
+      const injury = playerHp <= 0 ? '\n道友气血耗尽，重伤濒危。' : ''
+      return `道友不敌【${boss.name}】，败下阵来，BOSS剩余气血${formatAmount(bossHpLeft)}，道友剩余气血${formatAmount(Math.max(playerHp, 0))}。${injury}\n${BATTLE_DETAIL_HINT}`
     })
 }

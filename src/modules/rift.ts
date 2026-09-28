@@ -50,29 +50,29 @@ export function applyRift(ctx: Context, _config: Config) {
       if (roll <= 40) {
         const stone = randInt(Math.floor(baseExp * 0.05) + 1, Math.floor(baseExp * 0.2) + 100)
         await srv.gainStoneForUser(userId, stone, session!.platform)
-        result = `${randChoice(['道友在秘境深处发现一处灵石矿脉', '道友击败了守护灵兽'])}，获得灵石${formatAmount(stone)}枚！`
+        result = `${randChoice(['道友于秘境深处发现一处灵石矿脉', '道友击败守护灵兽'])}，获得灵石${formatAmount(stone)}枚！`
       } else if (roll <= 70) {
         const exp = randInt(Math.floor(baseExp * 0.02) + 1, Math.floor(baseExp * 0.1) + 50)
         await srv.addExp(userId, exp)
         await srv.updatePower(userId)
-        result = `道友在秘境中参悟了一处古老石刻，修为增加${formatAmount(exp)}！`
+        result = `道友于秘境中参悟一处古老石刻，修为增加${formatAmount(exp)}！`
       } else if (roll <= 90) {
         const item = srv.data.randomItemIdByRank(srv.data.itemRankByLevel(realPlayer.level))
         if (item !== 0) {
           const info = srv.data.getItem(item)
           if (info) {
             await srv.sendBack(userId, Number(item), info.name, (info.item_type as string) ?? '物品', 1)
-            result = `道友在秘境中觅得机缘，获得物品：${info.level ?? ''}${info.name}！`
+            result = `道友于秘境中觅得机缘，获得物品：${info.level ?? ''}${info.name}！`
           } else {
-            result = '道友在秘境中转了一圈，却一无所获。'
+            result = '道友于秘境中遍寻无果。'
           }
         } else {
-          result = '道友在秘境中转了一圈，却一无所获。'
+          result = '道友于秘境中遍寻无果。'
         }
       } else {
         const lost = Math.max(Math.floor(basePlayer.hp * 0.3), 1)
         await srv.setHpMp(userId, Math.max(basePlayer.hp - lost, 0), basePlayer.mp)
-        result = `道友在秘境中遭遇强敌，气血损失${formatAmount(lost)}，险些殒命！`
+        result = `道友于秘境中遭遇强敌，气血损失${formatAmount(lost)}，险些殒命！`
       }
 
       await ctx.database.set('xiuxian_player', { userId }, {

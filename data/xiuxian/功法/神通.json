@@ -9,7 +9,7 @@
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "灵光印，斗法神通",
+    "desc": "灵光一印，破邪镇煞。",
     "rate": 100,
     "rank": "人阶下品",
     "level": "50"
@@ -23,7 +23,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "催动落石阵克敌制胜",
+    "desc": "落石为阵，困敌于中。",
     "rate": 50,
     "rank": "人阶下品",
     "level": "50"
@@ -35,7 +35,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "真金印耗真元施为",
+    "desc": "真金凝印，无坚不摧。",
     "rate": 100,
     "rank": "人阶下品",
     "level": "50"
@@ -48,7 +48,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "惊涛剑诀耗真元施为",
+    "desc": "剑势如涛，一波惊天地。",
     "rate": 100,
     "rank": "人阶下品",
     "level": "50"
@@ -61,7 +61,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "鳖住耗真元施为",
+    "desc": "缩身如鳖，稳守第一重。",
     "rate": 100,
     "rank": "人阶下品",
     "level": "50"
@@ -76,7 +76,7 @@
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "化尘剑法耗真元施为",
+    "desc": "剑化微尘，无孔不入。",
     "rate": 100,
     "rank": "人阶上品",
     "level": "45"
@@ -90,7 +90,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "三昧真火，斗法神通",
+    "desc": "三昧真火，焚尽妖邪。",
     "rate": 50,
     "rank": "人阶上品",
     "level": "45"
@@ -102,7 +102,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "截脉，斗法神通",
+    "desc": "截断经脉，一招制敌。",
     "rate": 100,
     "rank": "人阶上品",
     "level": "45"
@@ -115,7 +115,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "催动灵息术克敌制胜",
+    "desc": "吐纳灵息，气机绵长。",
     "rate": 100,
     "rank": "人阶上品",
     "level": "45"
@@ -128,7 +128,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "鳖鳖住，护体减伤之诀",
+    "desc": "双鳖并守，固若金汤。",
     "rate": 100,
     "rank": "人阶上品",
     "level": "45"
@@ -143,7 +143,7 @@
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "竹山剑法，斗法神通",
+    "desc": "竹山剑意，清雅而锐。",
     "rate": 100,
     "rank": "黄阶下品",
     "level": "42"
@@ -157,7 +157,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "碎剑诀耗真元施为",
+    "desc": "碎剑为芒，铺天盖地。",
     "rate": 50,
     "rank": "黄阶下品",
     "level": "42"
@@ -169,7 +169,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "催动灵体印克敌制胜",
+    "desc": "灵体凝印，护佑周身。",
     "rate": 100,
     "rank": "黄阶下品",
     "level": "42"
@@ -182,7 +182,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "催动拟剑克敌制胜",
+    "desc": "以气拟剑，无形胜有形。",
     "rate": 100,
     "rank": "黄阶下品",
     "level": "42"
@@ -195,7 +195,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "鳖鳖鳖住，护体减伤之诀",
+    "desc": "三重守势，滴水不漏。",
     "rate": 100,
     "rank": "黄阶下品",
     "level": "42"
@@ -210,7 +210,7 @@
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "五毒摄魂阵，斗法神通",
+    "desc": "五毒布阵，摄人心魂。",
     "rate": 100,
     "rank": "黄阶上品",
     "level": "39"
@@ -224,7 +224,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "催动矢神刺克敌制胜",
+    "desc": "矢发如神刺，直取神魂。",
     "rate": 50,
     "rank": "黄阶上品",
     "level": "39"
@@ -236,7 +236,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "催动摧血掌克敌制胜",
+    "desc": "一掌摧血，气劲透骨。",
     "rate": 100,
     "rank": "黄阶上品",
     "level": "39"
@@ -249,7 +249,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "归元剑气，斗法神通",
+    "desc": "剑气归元，返璞归真。",
     "rate": 100,
     "rank": "黄阶上品",
     "level": "39"
@@ -262,7 +262,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "催动鳖鳖鳖鳖住克敌制胜",
+    "desc": "四重守势，稳如泰山。",
     "rate": 100,
     "rank": "黄阶上品",
     "level": "39"
@@ -277,7 +277,7 @@
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "降魔锁骨阵耗真元施为",
+    "desc": "锁骨锁魂，降魔之阵。",
     "rate": 100,
     "rank": "玄阶下品",
     "level": "36"
@@ -291,7 +291,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "催动鹤喙针克敌制胜",
+    "desc": "针如鹤喙，精准凌厉。",
     "rate": 50,
     "rank": "玄阶下品",
     "level": "36"
@@ -303,7 +303,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "祭血罩，斗法神通",
+    "desc": "以血祭罩，护体御敌。",
     "rate": 100,
     "rank": "玄阶下品",
     "level": "36"
@@ -316,7 +316,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "分金印耗真元施为",
+    "desc": "分金断玉，一印裂石。",
     "rate": 100,
     "rank": "玄阶下品",
     "level": "36"
@@ -329,7 +329,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "鳖鳖鳖鳖鳖住耗真元施为",
+    "desc": "五重守势，坚不可摧。",
     "rate": 100,
     "rank": "玄阶下品",
     "level": "36"
@@ -344,7 +344,7 @@
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "苍云荫月，斗法神通",
+    "desc": "苍云蔽月，剑意朦胧。",
     "rate": 100,
     "rank": "玄阶上品",
     "level": "33"
@@ -358,7 +358,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "寸芒耗真元施为",
+    "desc": "寸芒虽小，直刺要害。",
     "rate": 50,
     "rank": "玄阶上品",
     "level": "33"
@@ -370,7 +370,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "月华流照，斗法神通",
+    "desc": "月华流泻，普照周身。",
     "rate": 100,
     "rank": "玄阶上品",
     "level": "33"
@@ -383,7 +383,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "催动九转游身剑克敌制胜",
+    "desc": "剑走九转，游身无定。",
     "rate": 100,
     "rank": "玄阶上品",
     "level": "33"
@@ -396,7 +396,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "催动鳖鳖鳖鳖鳖鳖住克敌制胜",
+    "desc": "六重守势，诸邪不侵。",
     "rate": 100,
     "rank": "玄阶上品",
     "level": "33"
@@ -411,7 +411,7 @@
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "开山诀，斗法神通",
+    "desc": "一诀开山，势不可挡。",
     "rate": 100,
     "rank": "地阶下品",
     "level": "30"
@@ -425,7 +425,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "离火绝炎，斗法神通",
+    "desc": "离火绝炎，焚天灼地。",
     "rate": 50,
     "rank": "地阶下品",
     "level": "30"
@@ -437,7 +437,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "凝水归流，斗法神通",
+    "desc": "凝水为势，归流一击。",
     "rate": 100,
     "rank": "地阶下品",
     "level": "30"
@@ -450,7 +450,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "五行颠倒术耗真元施为",
+    "desc": "五行颠倒，乱敌阵脚。",
     "rate": 100,
     "rank": "地阶下品",
     "level": "30"
@@ -463,7 +463,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "鳖鳖鳖鳖鳖鳖鳖住耗真元施为",
+    "desc": "七重守势，固若磐石。",
     "rate": 100,
     "rank": "地阶下品",
     "level": "30"
@@ -478,7 +478,7 @@
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "怒水天殇，斗法神通",
+    "desc": "怒水滔天，一泻千里。",
     "rate": 100,
     "rank": "地阶上品",
     "level": "27"
@@ -492,7 +492,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "炙炎轮回耗真元施为",
+    "desc": "炙炎轮回，烈焰不尽。",
     "rate": 50,
     "rank": "地阶上品",
     "level": "27"
@@ -504,7 +504,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "血魂煞耗真元施为",
+    "desc": "血魂煞气，慑人心魄。",
     "rate": 100,
     "rank": "地阶上品",
     "level": "27"
@@ -517,7 +517,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "万剑诀，斗法神通",
+    "desc": "万剑齐发，铺天盖地。",
     "rate": 100,
     "rank": "地阶上品",
     "level": "27"
@@ -530,7 +530,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "鳖鳖鳖鳖鳖鳖鳖鳖住耗真元施为",
+    "desc": "八重守势，不动如山。",
     "rate": 100,
     "rank": "地阶上品",
     "level": "27"
@@ -545,7 +545,7 @@
     "hpcost": 0.1,
     "mpcost": 0.3,
     "turncost": 1,
-    "desc": "天星若雨耗真元施为",
+    "desc": "天星如雨，倾泻而下。",
     "rate": 100,
     "rank": "天阶下品",
     "level": "24"
@@ -559,7 +559,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "催动金虹贯日克敌制胜",
+    "desc": "金虹贯日，一往无前。",
     "rate": 50,
     "rank": "天阶下品",
     "level": "24"
@@ -571,7 +571,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "都天烈火仙阵耗真元施为",
+    "desc": "都天烈火，焚尽仙凡。",
     "rate": 100,
     "rank": "天阶下品",
     "level": "24"
@@ -584,7 +584,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "催动星微神灭诀克敌制胜",
+    "desc": "星微神灭，一念破敌。",
     "rate": 100,
     "rank": "天阶下品",
     "level": "24"
@@ -597,7 +597,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 2,
-    "desc": "鳖鳖鳖鳖鳖鳖鳖鳖鳖住，护体减伤之诀",
+    "desc": "九重守势，混元如一。",
     "rate": 100,
     "rank": "天阶下品",
     "level": "24"
@@ -613,7 +613,7 @@
     "hpcost": 0.1,
     "mpcost": 0.5,
     "turncost": 1,
-    "desc": "催动横扫千军克敌制胜",
+    "desc": "横扫千军，势如破竹。",
     "rate": 100,
     "rank": "天阶上品",
     "level": "21"
@@ -627,7 +627,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 0,
-    "desc": "催动玄冰凝骨术克敌制胜",
+    "desc": "玄冰凝骨，寒彻心髓。",
     "rate": 50,
     "rank": "天阶上品",
     "level": "21"
@@ -639,7 +639,7 @@
     "hpcost": 0,
     "mpcost": 0.5,
     "turncost": 3,
-    "desc": "催动凤灵妖火克敌制胜",
+    "desc": "凤灵妖火，灼魂蚀魄。",
     "rate": 100,
     "rank": "天阶上品",
     "level": "21"
@@ -652,7 +652,7 @@
     "hpcost": 0,
     "mpcost": 0.5,
     "turncost": 3,
-    "desc": "催动大吞焰术克敌制胜",
+    "desc": "大吞焰术，鲸吞天下。",
     "rate": 100,
     "rank": "天阶上品",
     "level": "21"
@@ -665,7 +665,7 @@
     "hpcost": 0,
     "mpcost": 0.4,
     "turncost": 3,
-    "desc": "鳖鳖鳖鳖鳖鳖鳖鳖鳖鳖住，护体减伤之诀",
+    "desc": "十重守势，金刚不坏。",
     "rate": 100,
     "rank": "天阶上品",
     "level": "21"
@@ -676,7 +676,7 @@
     "hpcost": 0,
     "mpcost": 0.3,
     "turncost": 3,
-    "desc": "吔屎啦!",
+    "desc": "日月同辉，乾坤在握。",
     "rate": 50,
     "success": 100,
     "rank": "天阶上品",
@@ -700,7 +700,7 @@
     "hpcost": 0.2,
     "mpcost": 0.4,
     "turncost": 0,
-    "desc": "雷霆十闪耗真元施为",
+    "desc": "雷霆十闪，电光石火。",
     "rate": 70,
     "rank": "天阶上品",
     "level": "21"
@@ -714,7 +714,7 @@
     "hpcost": 0.9,
     "mpcost": 0.9,
     "turncost": 9,
-    "desc": "催动天地同寿克敌制胜",
+    "desc": "与天同寿，与地同力。",
     "rate": 10,
     "rank": "天阶上品",
     "level": "21"
@@ -730,7 +730,7 @@
     "hpcost": 0,
     "mpcost": 0.4,
     "turncost": 0,
-    "desc": "催动大罗仙印克敌制胜",
+    "desc": "大罗仙印，镇压万方。",
     "rate": 70,
     "rank": "仙阶上品",
     "level": "18"

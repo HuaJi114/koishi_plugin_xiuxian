@@ -160,7 +160,7 @@ export function playerFight(
       let dmg = Math.floor(attacker.atk * mult * (1 - defender.defense))
       if (dmg < 1) dmg = 1
       hp[defender.userId] -= dmg
-      log.push(`${attacker.name}发动神通【${skill.name}】，造成了${formatAmount(dmg)}伤害`)
+      log.push(`${attacker.name}催动神通【${skill.name}】，造成${formatAmount(dmg)}伤害`)
       log.push(`${defender.name}剩余血量${formatAmount(Math.max(hp[defender.userId], 0))}`)
       return true
     }
@@ -171,7 +171,7 @@ export function playerFight(
       const turns = Math.max(Number(skill.turncost ?? 1), 1)
       for (let t = 0; t < turns; t++) {
         hp[defender.userId] -= dmg
-        log.push(`${attacker.name}神通【${skill.name}】第${t + 1}回合造成${formatAmount(dmg)}伤害`)
+        log.push(`${attacker.name}神通【${skill.name}】持续，第${t + 1}回合造成${formatAmount(dmg)}伤害`)
         if (hp[defender.userId] <= 0) break
       }
       log.push(`${defender.name}剩余血量${formatAmount(Math.max(hp[defender.userId], 0))}`)
@@ -182,14 +182,14 @@ export function playerFight(
       const buffType = Number(skill.bufftype ?? 0)
       if (buffType === 2) {
         defender.defense = Math.min(defender.defense + buffVal, 0.9)
-        log.push(`${attacker.name}发动神通【${skill.name}】，减伤提升${formatAmount(Math.floor(buffVal * 100))}%`)
+        log.push(`${attacker.name}催动神通【${skill.name}】，减伤提升${formatAmount(Math.floor(buffVal * 100))}%`)
       } else if (buffType === 1) {
         const bonus = Math.floor(attacker.atk * buffVal)
         hp[defender.userId] -= bonus
-        log.push(`${attacker.name}发动神通【${skill.name}】，附加${formatAmount(bonus)}伤害`)
+        log.push(`${attacker.name}催动神通【${skill.name}】，附加${formatAmount(bonus)}伤害`)
         log.push(`${defender.name}剩余血量${formatAmount(Math.max(hp[defender.userId], 0))}`)
       } else {
-        log.push(`${attacker.name}发动神通【${skill.name}】，获得战斗增益`)
+        log.push(`${attacker.name}催动神通【${skill.name}】，获得战斗增益`)
       }
       return true
     }
@@ -202,11 +202,11 @@ export function playerFight(
     let crit = ''
     if (randInt(0, 100) <= attacker.crit) {
       dmgBase = Math.floor(dmgBase * attacker.critDamage)
-      crit = '会心一击，'
+      crit = '正中要害，'
     }
     const dmg = Math.floor(dmgBase * (1 - defender.defense))
     hp[defender.userId] -= dmg
-    log.push(`${attacker.name}发起${crit}造成了${dmg}伤害`)
+    log.push(`${attacker.name}出手${crit}造成${dmg}伤害`)
     log.push(`${defender.name}剩余血量${formatAmount(Math.max(hp[defender.userId], 0))}`)
   }
   // 防止异常数据导致死循环
@@ -217,6 +217,6 @@ export function playerFight(
     if (hp[p1.userId] <= 0) { victor = p2.name; break }
   }
   if (!victor) victor = hp[p1.userId] >= hp[p2.userId] ? p1.name : p2.name
-  log.push(`${victor}胜利`)
+  log.push(`${victor}胜`)
   return [log, victor, { ...hp }]
 }
