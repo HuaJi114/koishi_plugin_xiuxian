@@ -4,7 +4,7 @@ import { ADMIN_AUTHORITY, breakthrough, getAtId } from '../helpers'
 import { formatPresetSectList, formatSectRegisterPrompt } from '../preset-sects'
 import { buildFighter } from '../combat-stats'
 import { BATTLE_DETAIL_HINT, getBattleDetail, storeBattleDetail } from '../battle-detail'
-import { dateDiffSeconds, generateRoot, getPowerRate, isHeavilyInjured, numberTo, playerFight, randInt } from '../utils'
+import { dateDiffSeconds, generateRoot, getPowerRate, isHeavilyInjured, formatAmount, playerFight, randInt } from '../utils'
 
 const REGISTER_PROMPT_MS = 120_000
 
@@ -320,24 +320,24 @@ export function applyBase(ctx: Context, config: Config) {
       if (type === '灵石') {
         const list = await srv.stoneTop()
         let msg = '✨位面灵石排行榜TOP10✨\n'
-        list.forEach((i, n) => { msg += `第${n + 1}位  ${i.userName}  灵石：${numberTo(i.stone)}枚\n` })
+        list.forEach((i, n) => { msg += `第${n + 1}位  ${i.userName}  灵石：${formatAmount(i.stone)}枚\n` })
         return msg
       }
       if (type === '战力') {
         const list = await srv.powerTop()
         let msg = '✨位面战力排行榜TOP10✨\n'
-        list.forEach((i, n) => { msg += `第${n + 1}位  ${i.userName}  战力：${numberTo(i.power)}\n` })
+        list.forEach((i, n) => { msg += `第${n + 1}位  ${i.userName}  战力：${formatAmount(i.power)}\n` })
         return msg
       }
       if (type === '宗门') {
         const list = await srv.sectScaleTop()
         let msg = '✨位面宗门建设排行榜TOP10✨\n'
-        list.forEach((i, n) => { msg += `第${n + 1}位  ${i.sectName}  建设度：${numberTo(i.sectScale)}\n` })
+        list.forEach((i, n) => { msg += `第${n + 1}位  ${i.sectName}  建设度：${formatAmount(i.sectScale)}\n` })
         return msg
       }
       const list = await srv.realmTop()
       let msg = '✨位面境界排行榜TOP10✨\n'
-      list.forEach((i, n) => { msg += `第${n + 1}位 ${i.userName} ${i.level}，修为${numberTo(i.exp)}\n` })
+      list.forEach((i, n) => { msg += `第${n + 1}位 ${i.userName} ${i.level}，修为${formatAmount(i.exp)}\n` })
       return msg
     })
 

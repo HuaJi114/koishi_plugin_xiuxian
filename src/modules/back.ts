@@ -1,7 +1,7 @@
 import { Context } from 'koishi'
 import { Config } from '../config'
 import { getItemUseCategory, unequipItem, useBackItem } from '../item-use'
-import { numberTo } from '../utils'
+import { formatAmount } from '../utils'
 
 /** 背包 / 坊市模块：查看背包、使用物品、装备、换装、查看物品 */
 export function applyBack(ctx: Context, _config: Config) {
@@ -12,7 +12,7 @@ export function applyBack(ctx: Context, _config: Config) {
       const player = await srv.getPlayer(session!.userId!)
       if (!player) return '修仙界没有道友的信息，请输入【我要修仙】加入！'
       const stone = await srv.getStoneForUser(session!.userId!, session!.platform)
-      return `道友现在拥有灵石：${numberTo(stone)}枚`
+      return `道友现在拥有灵石：${formatAmount(stone)}枚`
     })
 
   ctx.command('xiuxian/我的背包', '查看背包内的物品')

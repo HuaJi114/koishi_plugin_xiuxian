@@ -3,7 +3,7 @@ import { Config } from '../config'
 import { ADMIN_AUTHORITY } from '../helpers'
 import { buildFighter } from '../combat-stats'
 import { BATTLE_DETAIL_HINT, storeBattleDetail } from '../battle-detail'
-import { isHeavilyInjured, numberTo, playerFight, randChoice, randInt } from '../utils'
+import { isHeavilyInjured, formatAmount, playerFight, randChoice, randInt } from '../utils'
 import { Fighter } from '../types'
 
 declare module 'koishi' {
@@ -145,7 +145,7 @@ export function applyBoss(ctx: Context, _config: Config) {
     }
 
     const partCount = rewarded.size
-    let msg = `${boss.name}已被讨伐！${partCount}位参与者各获修为${numberTo(exp)}、灵石${numberTo(stone)}枚。`
+    let msg = `${boss.name}已被讨伐！${partCount}位参与者各获修为${formatAmount(exp)}、灵石${formatAmount(stone)}枚。`
     if (itemLines.length) {
       msg += `\n最后一击由你完成，额外获得战利品：${itemLines.join('、')}`
     } else {
@@ -181,7 +181,7 @@ export function applyBoss(ctx: Context, _config: Config) {
         stone: Math.floor(bossExp * 0.5),
         expReward: Math.floor(bossExp * 0.1),
       })
-      return `天降妖魔！世界BOSS【${boss.name}】（编号${boss.id}）现世，气血${numberTo(boss.maxHp)}，攻击${numberTo(boss.atk)}，速速讨伐！`
+      return `天降妖魔！世界BOSS【${boss.name}】（编号${boss.id}）现世，气血${formatAmount(boss.maxHp)}，攻击${formatAmount(boss.atk)}，速速讨伐！`
     })
 
   ctx.command('xiuxian/查看世界boss', '查看当前群内的世界BOSS')
@@ -189,7 +189,7 @@ export function applyBoss(ctx: Context, _config: Config) {
       const list = await ctx.database.get('xiuxian_boss', { channelId: channelOf(session!) })
       if (!list.length) return '本群暂无世界BOSS，可由管理员【创建世界boss】。'
       const lines = ['✨当前世界BOSS✨']
-      list.forEach((b) => lines.push(`编号${b.id} ${b.name}（${b.level}） 气血：${numberTo(b.hp)}/${numberTo(b.maxHp)}`))
+      list.forEach((b) => lines.push(`编号${b.id} ${b.name}（${b.level}） 气血：${formatAmount(b.hp)}/${formatAmount(b.maxHp)}`))
       return lines.join('\n')
     })
 
@@ -244,6 +244,6 @@ export function applyBoss(ctx: Context, _config: Config) {
       const bossHpLeft = Math.max(finalHp[bossFighter.userId], 0)
       await ctx.database.set('xiuxian_boss', { id: boss.id }, { hp: bossHpLeft })
       const injury = playerHp <= 0 ? '\n道友气血归零，已进入重伤状态。' : ''
-      return `道友与【${boss.name}】激战落败，BOSS剩余气血${numberTo(bossHpLeft)}，道友剩余气血${numberTo(Math.max(playerHp, 0))}。${injury}\n${BATTLE_DETAIL_HINT}`
+      return `道友与【${boss.name}】激战落败，BOSS剩余气血${formatAmount(bossHpLeft)}，道友剩余气血${formatAmount(Math.max(playerHp, 0))}。${injury}\n${BATTLE_DETAIL_HINT}`
     })
 }

@@ -75,7 +75,6 @@ export function applyCultivate(ctx: Context, config: Config) {
     const expTime = Math.floor(dateDiffSeconds(new Date(), cd.createTime) / 60)
     const rootRate = srv.data.roots[player.rootType]?.type_speeds ?? 1
     const realmRate = srv.data.levels[player.level]?.spend ?? 1
-    const buff = await srv.getBuff(userId)
     const skills = await srv.getLearnedSkills(userId)
     const merged = mergeSkillBuffs(skills, srv.data)
     const rateBuff = merged.ratebuff

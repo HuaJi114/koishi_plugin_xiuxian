@@ -9,7 +9,7 @@ import {
   pickRandomMission,
   SECT_MISSION_CD_SECONDS,
 } from '../sect-missions'
-import { dateDiffSeconds, isHeavilyInjured, numberTo, playerFight, randInt } from '../utils'
+import { dateDiffSeconds, isHeavilyInjured, formatAmount, playerFight, randInt } from '../utils'
 import { buildFighter } from '../combat-stats'
 
 /** 各职位供奉丹药概率（%） */
@@ -85,12 +85,12 @@ export function applySect(ctx: Context, config: Config) {
       const members = await srv.getSectMembers(sect.sectId)
       return [
         `宗门名称：${sect.sectName}（编号 ${sect.sectId}）`,
-        `建设度：${numberTo(sect.sectScale)}`,
-        `可用灵石：${numberTo(sect.sectUsedStone)}`,
-        `宗门资材：${numberTo(sect.sectMaterials)}`,
+        `建设度：${formatAmount(sect.sectScale)}`,
+        `可用灵石：${formatAmount(sect.sectUsedStone)}`,
+        `宗门资材：${formatAmount(sect.sectMaterials)}`,
         `成员数量：${members.length}`,
         `道友职位：${srv.data.sectTitle(player.sectPosition)}`,
-        `道友贡献：${numberTo(player.sectContribution)}`,
+        `道友贡献：${formatAmount(player.sectContribution)}`,
       ].join('\n')
     })
 
@@ -145,7 +145,7 @@ export function applySect(ctx: Context, config: Config) {
       const sects = await srv.sectScaleTop()
       if (!sects.length) return '修仙界还没有宗门，道友可以创建一个！'
       const lines = ['✨宗门列表✨']
-      sects.forEach((s) => lines.push(`编号${s.sectId} ${s.sectName} 建设度：${numberTo(s.sectScale)}`))
+      sects.forEach((s) => lines.push(`编号${s.sectId} ${s.sectName} 建设度：${formatAmount(s.sectScale)}`))
       return lines.join('\n')
     })
 
@@ -159,7 +159,7 @@ export function applySect(ctx: Context, config: Config) {
       const lines = ['宗门成员：']
       members
         .sort((a, b) => a.sectPosition - b.sectPosition)
-        .forEach((m) => lines.push(`${srv.data.sectTitle(m.sectPosition)}：${m.userName}（贡献 ${numberTo(m.sectContribution)}）`))
+        .forEach((m) => lines.push(`${srv.data.sectTitle(m.sectPosition)}：${m.userName}（贡献 ${formatAmount(m.sectContribution)}）`))
       return lines.join('\n')
     })
 
@@ -220,7 +220,7 @@ export function applySect(ctx: Context, config: Config) {
       await srv.gainStoneForUser(userId, stone, pf)
       await ctx.database.set('xiuxian_player', { userId }, { sectOfferingGet: 1 })
 
-      let msg = `领取${srv.data.sectTitle(position)}供奉，获得灵石${numberTo(stone)}枚。`
+      let msg = `领取${srv.data.sectTitle(position)}供奉，获得灵石${formatAmount(stone)}枚。`
       const pillRate = SECT_OFFERING_PILL_RATE[position] ?? SECT_OFFERING_PILL_RATE[4]
       if (randInt(1, 100) <= pillRate) {
         const itemId = srv.data.randomItemIdByRank(srv.data.itemRankByLevel(player.level), ['丹药'])
@@ -342,7 +342,7 @@ export function applySect(ctx: Context, config: Config) {
         `宗门任务完成！${mission.text}`,
         `共遭遇${monsters.length}只妖兽：${monsterNames}`,
         ...log.slice(-8),
-        `任务酬劳：${numberTo(reward)}枚灵石（已发放）`,
+        `任务酬劳：${formatAmount(reward)}枚灵石（已发放）`,
         `下次可接取时间：${SECT_MISSION_CD_SECONDS / 3600} 小时后。`,
       ].join('\n')
     })

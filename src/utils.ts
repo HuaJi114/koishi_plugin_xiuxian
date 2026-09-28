@@ -10,11 +10,6 @@ export function formatAmount(num: number): string {
   return String(Math.trunc(num))
 }
 
-/** @deprecated 请使用 formatAmount */
-export function numberTo(num: number): string {
-  return formatAmount(num)
-}
-
 /** 区间内随机整数（含两端） */
 export function randInt(min: number, max: number): number {
   if (max < min) [min, max] = [max, min]

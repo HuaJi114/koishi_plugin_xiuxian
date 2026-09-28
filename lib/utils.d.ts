@@ -5,8 +5,6 @@ import { Fighter } from './types';
  * 用于灵石、修为、气血、真元等所有玩家可见数值。
  */
 export declare function formatAmount(num: number): string;
-/** @deprecated 请使用 formatAmount */
-export declare function numberTo(num: number): string;
 /** 区间内随机整数（含两端） */
 export declare function randInt(min: number, max: number): number;
 /** 从数组中随机取一个元素 */

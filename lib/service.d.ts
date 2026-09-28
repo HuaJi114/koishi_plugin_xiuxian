@@ -41,8 +41,6 @@ export declare class XiuxianService extends Service {
      * 获取写入 monetary 时使用的 canonical uid（不创建新用户，避免重复 uid）。
      */
     getCanonicalUid(userId: string, platform?: string): Promise<number>;
-    /** @deprecated 请使用 getCanonicalUid */
-    resolveMonetaryUid(userId: string, platform?: string): Promise<number>;
     /** 只读汇总用户在所有候选 uid/currency 下的灵石总额 */
     private sumMonetary;
     /** 将余额迁移到 canonical uid + 配置 currency，避免分散在多条记录 */
@@ -59,8 +57,6 @@ export declare class XiuxianService extends Service {
     gainStone(uid: number, amount: number, currency?: string): Promise<void>;
     /** 扣除灵石，成功返回 true，余额不足返回 false */
     costStone(uid: number, amount: number, currency?: string): Promise<boolean>;
-    /** 通过平台用户 ID 查询灵石 */
-    getStoneByUserId(userId: string, platform?: string): Promise<number>;
     /** 更新战力：power = exp * 灵根倍率 * 境界倍率 */
     updatePower(userId: string): Promise<void>;
     /** 增加修为 */
@@ -89,8 +85,6 @@ export declare class XiuxianService extends Service {
     wipeAndRemake(userId: string, platform: string): Promise<string>;
     /** 清除用户全部游戏数据（不触碰 monetary 灵石） */
     wipeUserData(userId: string): Promise<void>;
-    /** @deprecated 使用 wipeAndRemake */
-    ramake(userId: string, _root: string, _rootType: string): Promise<string>;
     /** 签到 */
     sign(userId: string, platform?: string): Promise<string>;
     /** 每日 0 点重置：所有「单日限次」指令计数 */
@@ -99,8 +93,6 @@ export declare class XiuxianService extends Service {
     ensureDailyResetIfNeeded(): Promise<void>;
     getMeta(key: string): Promise<string | undefined>;
     setMeta(key: string, value: string): Promise<void>;
-    /** @deprecated 请使用 resetDailyFlags */
-    resetSign(): Promise<void>;
     /** 获取用户状态，不存在则创建 */
     getCd(userId: string): Promise<import("./types").XiuxianCd | undefined>;
     /** 更新用户状态 */
@@ -144,7 +136,6 @@ export declare class XiuxianService extends Service {
         userName: string;
         stone: number;
     }>>;
-    /** 初始化系统预设四大宗门（不存在则创建） */
     /** 修正所有玩家超出上限的气血/真元 */
     normalizeAllPlayerHpMp(): Promise<void>;
     /** 一次性迁移：升级前已存在的账号默认归一为散修（不自动加入任何宗门） */

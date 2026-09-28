@@ -302,11 +302,6 @@ export class XiuxianService extends Service {
     return 0
   }
 
-  /** @deprecated 请使用 getCanonicalUid */
-  async resolveMonetaryUid(userId: string, platform?: string): Promise<number> {
-    return this.getCanonicalUid(userId, platform)
-  }
-
   /** 只读汇总用户在所有候选 uid/currency 下的灵石总额 */
   private async sumMonetary(userId: string, platform?: string): Promise<number> {
     const uids = await this.collectMonetaryUids(userId, platform)
@@ -422,13 +417,6 @@ export class XiuxianService extends Service {
     return true
   }
 
-  /** 通过平台用户 ID 查询灵石 */
-  async getStoneByUserId(userId: string, platform?: string): Promise<number> {
-    const player = await this.getPlayer(userId)
-    if (!player) return 0
-    return this.getStoneForUser(userId, platform ?? player.platform)
-  }
-
   // ==================== 修为 / 战力 / 境界 ====================
 
   /** 更新战力：power = exp * 灵根倍率 * 境界倍率 */
@@ -489,9 +477,9 @@ export class XiuxianService extends Service {
   async resetState(userId?: string): Promise<void> {
     const query = userId ? { userId } : {}
     await this.ctx.database.set('xiuxian_player', query, (row) => ({
-      hp: $.multiply(row.exp, 0.5),
-      mp: row.exp,
-      atk: $.multiply(row.exp, 0.1),
+      hp: $.floor($.multiply(row.exp, 0.5)),
+      mp: $.floor(row.exp),
+      atk: $.floor($.multiply(row.exp, 0.1)),
     }))
   }
 
@@ -536,13 +524,6 @@ export class XiuxianService extends Service {
     await this.ctx.database.remove('xiuxian_exercises', { userId })
     await this.ctx.database.remove('xiuxian_bank', { userId })
     await this.ctx.database.remove('xiuxian_player', { userId })
-  }
-
-  /** @deprecated 使用 wipeAndRemake */
-  async ramake(userId: string, _root: string, _rootType: string): Promise<string> {
-    const player = await this.getPlayer(userId)
-    if (!player) return '修仙界没有你的足迹，输入 我要修仙 加入修仙世界吧！'
-    return this.wipeAndRemake(userId, player.platform)
   }
 
   /** 签到 */
@@ -594,11 +575,6 @@ export class XiuxianService extends Service {
     } else {
       await this.ctx.database.create('xiuxian_meta', { key, value })
     }
-  }
-
-  /** @deprecated 请使用 resetDailyFlags */
-  async resetSign(): Promise<void> {
-    return this.resetDailyFlags()
   }
 
   // ==================== 状态 / 冷却 ====================
@@ -845,7 +821,6 @@ export class XiuxianService extends Service {
 
   // ==================== 宗门 ====================
 
-  /** 初始化系统预设四大宗门（不存在则创建） */
   /** 修正所有玩家超出上限的气血/真元 */
   async normalizeAllPlayerHpMp(): Promise<void> {
     const players = await this.ctx.database.get('xiuxian_player', {})

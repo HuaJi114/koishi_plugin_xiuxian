@@ -1,4 +1,4 @@
-import { Context, h, Session } from 'koishi'
+import { Context, h } from 'koishi'
 import { Config } from './config'
 
 declare module 'koishi' {
@@ -28,7 +28,6 @@ export async function formatLongTextReply(
   ctx: Context,
   config: Config,
   text: string,
-  session?: Session,
 ): Promise<string | h> {
   if (!config.longTextToImage) return text
   if (countLines(text) <= config.longTextLineThreshold) return text

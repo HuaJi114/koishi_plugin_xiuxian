@@ -1,6 +1,6 @@
 import { Context } from 'koishi'
 import { Config } from '../config'
-import { buildFighter, computeCombatStats, formatAtkBreakdown } from '../combat-stats'
+import { computeCombatStats, formatAtkBreakdown } from '../combat-stats'
 import { formatMergedSkillSummary, formatSkillEffect, mergeSkillBuffs } from '../skills'
 import { getEffectiveMaxHpMp, isHeavilyInjured, formatAmount } from '../utils'
 

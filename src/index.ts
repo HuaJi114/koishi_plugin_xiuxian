@@ -114,10 +114,10 @@ export function apply(ctx: Context, config: Config) {
     applyExercises(cmdCtx, config)
     applyShop(cmdCtx, config)
 
-    cmdCtx.middleware(async (session, next) => {
+    cmdCtx.middleware(async (_session, next) => {
       const result = await next()
       if (typeof result === 'string') {
-        return formatLongTextReply(root, config, result, session)
+        return formatLongTextReply(root, config, result)
       }
       return result
     }, true)
