@@ -50,6 +50,12 @@ export interface Config {
     longTextLineThreshold: number;
     /** 坊市手续费比例 */
     shopServiceCharge: number;
+    /** 神秘人补货阈值：坊市全部商品数低于该值才自动补货 */
+    shopRestockThreshold: number;
+    /** 坊市容量上限：商品总数达到该值后禁止上架 */
+    shopCapacity: number;
+    /** 坊市物品过期小时数：超过该时长无人购买自动下架 */
+    shopExpireHours: number;
 }
 export declare const Config: Schema<Config>;
 //# sourceMappingURL=config.d.ts.map

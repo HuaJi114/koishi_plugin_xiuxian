@@ -62,11 +62,14 @@ export class XiuxianService extends Service {
       sectOfferingGet: { type: 'integer', initial: 0 },
       blessedSpotFlag: { type: 'integer', initial: 0 },
       blessedSpotName: 'string',
+      plotCount: { type: 'integer', initial: 0 },
       riftCd: 'timestamp',
       riftDailyCount: { type: 'integer', initial: 0 },
       workRefreshCount: { type: 'integer', initial: 0 },
       lastSignDate: 'string',
       rebirth: { type: 'integer', initial: 0 },
+      stealCd: 'timestamp',
+      robCd: 'timestamp',
     }, { primary: 'userId' })
 
     ctx.model.extend('xiuxian_cd', {
@@ -461,6 +464,11 @@ export class XiuxianService extends Service {
     await this.ctx.database.set('xiuxian_player', { userId }, { levelUpCd: new Date() })
   }
 
+  /** 更新玩家表的单个时间戳字段（用于偷/抢等独立 CD） */
+  async setPlayerCd(userId: string, field: 'stealCd' | 'robCd'): Promise<void> {
+    await this.ctx.database.set('xiuxian_player', { userId }, { [field]: new Date() })
+  }
+
   /** 更新突破附加概率 */
   async setLevelRate(userId: string, rate: number): Promise<void> {
     await this.ctx.database.set('xiuxian_player', { userId }, { levelUpRate: rate })
@@ -524,6 +532,7 @@ export class XiuxianService extends Service {
     await this.ctx.database.remove('xiuxian_boss_participant', { userId })
     await this.ctx.database.remove('xiuxian_exercises', { userId })
     await this.ctx.database.remove('xiuxian_bank', { userId })
+    await this.ctx.database.remove('xiuxian_plot', { userId })
     await this.ctx.database.remove('xiuxian_player', { userId })
   }
 

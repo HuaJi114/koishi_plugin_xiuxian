@@ -278,5 +278,47 @@ const data = new GameData()
   assert(minRankWithLuck < 47, `满气运应能命中高于自身境界的法器，实际最小 rank ${minRankWithLuck}`)
 }
 
+// 13. 物品详情功效数值展示（formatItemDetail）
+{
+  // 突破丹（level_up_big）：buff 为整数百分比，应直接显示 +30%，而非 3000%
+  const jidan = data.formatItemDetail('1400')!
+  assert(jidan.includes('大幅提升突破成功率 30%'), `筑基丹应显示 +30% 突破成功率，实际：${jidan}`)
+  assert(!jidan.includes('3000%'), `筑基丹不应显示 3000%，实际：${jidan}`)
+
+  // level_up_rate 丹（buff=1 → +1%）
+  const bingxin = data.formatItemDetail('1500')!
+  assert(bingxin.includes('提升突破成功率 1%'), `冰心丹应显示 +1% 突破成功率，实际：${bingxin}`)
+
+  // 渡厄丹（level_up）：特殊处理
+  const duedan = data.formatItemDetail('1999')!
+  assert(duedan.includes('渡厄') && duedan.includes('不丢失修为'), `渡厄丹应显示特殊效果，实际：${duedan}`)
+
+  // 辅修功法：buff_type 数字码映射
+  const yinxue = data.formatItemDetail('10001')!
+  assert(yinxue.includes('气血吸取'), `饮血术(buff_type=6)应显示气血吸取，实际：${yinxue}`)
+  assert(!yinxue.includes('效果：6'), `辅修功法不应输出裸数字码，实际：${yinxue}`)
+  const wufu = data.formatItemDetail('10003')!
+  assert(wufu.includes('暴击率'), `五府锻元诀(buff_type=2)应显示暴击率，实际：${wufu}`)
+  const yangdao = data.formatItemDetail('10102')!
+  assert(yangdao.includes('暴击伤害'), `养刀术(buff_type=3)应显示暴击伤害，实际：${yangdao}`)
+  const xuedu = data.formatItemDetail('10408')!
+  assert(xuedu.includes('中毒'), `血毒经(buff_type=8)应显示中毒，实际：${xuedu}`)
+
+  // 法器破甲
+  const fajian = data.formatItemDetail('7001')!
+  assert(fajian.includes('破甲 8%'), `精铁符剑应显示破甲 8%，实际：${fajian}`)
+  assert(!fajian.includes('0%'), `法器不应显示 0% 的无意义加成，实际：${fajian}`)
+
+  // 聚灵旗药材速度
+  const julingqi = data.formatItemDetail('2500')!
+  assert(julingqi.includes('灵田药材生长速度 +1'), `一级聚灵旗应显示药材速度，实际：${julingqi}`)
+
+  // 炼丹炉 buff
+  const danlu = data.formatItemDetail('4001')!
+  assert(danlu.includes('丹成额外多 2 枚'), `寒铁铸心炉应显示丹成额外多 2 枚，实际：${danlu}`)
+  const yuntielu = data.formatItemDetail('4003')!
+  assert(yuntielu.includes('持有方可炼制丹药'), `陨铁炉(buff=0)应显示基础说明，实际：${yuntielu}`)
+}
+
 console.log(`\n测试结果：${passed} 通过，${failed} 失败`)
 process.exit(failed > 0 ? 1 : 0)

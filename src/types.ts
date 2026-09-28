@@ -73,6 +73,8 @@ export interface XiuxianPlayer {
   blessedSpotFlag: number
   /** 洞天福地名称 */
   blessedSpotName: string
+  /** 洞天灵田数量（开辟洞府自动 1 块，可花钱开垦） */
+  plotCount?: number
   /** 上次探索秘境时间（60 分钟 CD） */
   riftCd: Date
   /** 当日已探索秘境次数（0 点重置，每日上限 3） */
@@ -83,6 +85,10 @@ export interface XiuxianPlayer {
   lastSignDate: string
   /** 飞升转世次数（满级后重置境界累积） */
   rebirth?: number
+  /** 上次偷灵石时间（CD 由 config.stealCd 控制） */
+  stealCd?: Date
+  /** 上次抢劫时间（CD 由 config.robCd 控制） */
+  robCd?: Date
 }
 
 /** 用户状态/冷却表，对应原 user_cd 表 */
@@ -233,6 +239,19 @@ export interface XiuxianShopItem {
   price: number
   goodsNum: number
   createTime: Date
+}
+
+/** 洞天灵田（每块一行，按 plotIndex 区分） */
+export interface XiuxianPlot {
+  userId: string
+  /** 灵田序号，从 1 开始 */
+  plotIndex: number
+  /** 灵田正在种植的药材物品 ID（0 表示空闲） */
+  plantId: number
+  /** 灵田播种时间 */
+  plantAt: Date
+  /** 灵田成熟所需分钟数 */
+  plantMinutes: number
 }
 
 /** 战斗角色快照 */

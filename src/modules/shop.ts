@@ -49,11 +49,28 @@ export function applyShop(ctx: Context, config: Config) {
     return ctx.database.get('xiuxian_shop', { guildId }, { sort: { id: 'asc' } })
   }
 
-  /** 每 3 小时对有坊市记录的群自动补货 */
+  /** 每 3 小时对有坊市记录的群自动补货，并清理过期商品 */
   ctx.setInterval(async () => {
     const all = await ctx.database.get('xiuxian_shop', {})
     const guildIds = [...new Set(all.map((r) => r.guildId))]
+
+    // 1) 过期商品静默下架（神秘人直接删除，玩家发回背包）
+    const expireMs = config.shopExpireHours * 3600 * 1000
+    const now = Date.now()
+    const expired = all.filter((r) => now - new Date(r.createTime).getTime() > expireMs)
+    for (const item of expired) {
+      if (item.sellerId !== '0') {
+        await srv.sendBack(item.sellerId, item.goodsId, item.goodsName, item.goodsType, item.goodsNum)
+      }
+      await ctx.database.remove('xiuxian_shop', { id: item.id })
+      ctx.logger('huaji-xiuxian').info('坊市过期下架：群 %s 物品 %s（卖家 %s）', item.guildId, item.goodsName, item.sellerName)
+    }
+
+    // 2) 补货：仅当坊市全部商品数低于阈值时，神秘人补 1 件
     for (const guildId of guildIds) {
+      const count = (await listShop(guildId)).length
+      if (count >= config.shopRestockThreshold) continue
+      if (count >= config.shopCapacity) continue
       const pick = randChoice(SHOP_AUTO_ITEMS)
       const info = srv.data.getItem(pick.id)
       if (!info) continue
@@ -129,6 +146,8 @@ export function applyShop(ctx: Context, config: Config) {
       const player = await srv.getPlayer(userId)
       if (!player) return '修仙界没有道友的信息，请输入【我要修仙】加入！'
       if (!price || price <= 0) return '请输入正确的价格！'
+      const shopItems = await listShop(gid)
+      if (shopItems.length >= config.shopCapacity) return `坊市货架已满（上限${config.shopCapacity}件），请稍后再来！`
       const backs = await srv.getBack(userId)
       const back = backs.find((b) => b.goodsName === name || b.goodsName.includes(name))
       if (!back || back.goodsNum < 1) return `背包中没有【${name}】！`
@@ -145,7 +164,7 @@ export function applyShop(ctx: Context, config: Config) {
         goodsNum: 1,
         createTime: new Date(),
       })
-      return `【${back.goodsName}】已上架坊市，标价${formatAmount(price)}灵石！`
+      return `【${back.goodsName}】已上架坊市，标价${formatAmount(price)}灵石！\n（若${config.shopExpireHours}小时内无人购买将自动下架退回）`
     })
 
   ctx.command('xiuxian/坊市下架 <num:integer>', '下架坊市物品')
@@ -172,6 +191,8 @@ export function applyShop(ctx: Context, config: Config) {
       const gid = guildOf(session!)
       if (!gid) return '坊市仅在群聊中使用！'
       if (!price || price <= 0) return '请输入正确的价格！'
+      const shopItems = await listShop(gid)
+      if (shopItems.length >= config.shopCapacity) return `坊市货架已满（上限${config.shopCapacity}件），请稍后再来！`
       const found = srv.data.findItemsByName(name)
       if (!found.length) return `找不到物品【${name}】！`
       const [id, info] = found[0]

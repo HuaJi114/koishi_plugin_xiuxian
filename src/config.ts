@@ -51,6 +51,12 @@ export interface Config {
   longTextLineThreshold: number
   /** 坊市手续费比例 */
   shopServiceCharge: number
+  /** 神秘人补货阈值：坊市全部商品数低于该值才自动补货 */
+  shopRestockThreshold: number
+  /** 坊市容量上限：商品总数达到该值后禁止上架 */
+  shopCapacity: number
+  /** 坊市物品过期小时数：超过该时长无人购买自动下架 */
+  shopExpireHours: number
 }
 
 export const Config: Schema<Config> = Schema.intersect([
@@ -58,7 +64,7 @@ export const Config: Schema<Config> = Schema.intersect([
     currency: Schema.string().default('default').description('灵石所使用的 monetary 货币种类标识。'),
     groupOnly: Schema.boolean().default(true).description('是否仅在群聊（非私聊）中响应指令。'),
     adminQQ: Schema.array(String).role('table').default([]).description('管理员 QQ 号列表。填写后自动将对应用户的 Koishi authority 设为 999，可执行需 authority 999 的管理指令。'),
-    globalCommandCd: Schema.number().default(0).description('全局指令调用冷却（秒），0 表示关闭。'),
+    globalCommandCd: Schema.number().default(0).description('全局指令冷却（秒）。同一群内任一玩家触发某指令后，该群所有玩家对该指令进入冷却，0 表示关闭。'),
   }).description('基础设置'),
 
   Schema.object({
@@ -80,10 +86,10 @@ export const Config: Schema<Config> = Schema.intersect([
     remakeCost: Schema.number().default(100000).description('重入仙途（洗灵根）的消费。'),
     giveStoneTax: Schema.number().role('').default(0.1).description('赠送灵石的手续费比例。'),
     stealCost: Schema.number().default(1000000).description('偷灵石失败的赔偿。'),
-    stealCd: Schema.number().default(600).description('偷灵石冷却时间（秒）。'),
+    stealCd: Schema.number().default(600).description('偷灵石冷却时间（秒）。每次出手（无论成败）后进入冷却。'),
     stealLowerLimit: Schema.number().role('').default(0.01).description('偷灵石获取下限（百分比）。'),
     stealUpperLimit: Schema.number().role('').default(0.2).description('偷灵石获取上限（百分比）。'),
-    robCd: Schema.number().default(600).description('抢劫冷却时间（秒）。'),
+    robCd: Schema.number().default(600).description('抢劫冷却时间（秒）。每次发起决斗后进入冷却。'),
   }).description('灵石互动'),
 
   Schema.object({
@@ -95,5 +101,8 @@ export const Config: Schema<Config> = Schema.intersect([
     longTextToImage: Schema.boolean().default(false).description('启用后，超长回复将转为图片发出（需安装 koishi-plugin-markdown-to-image-service）。'),
     longTextLineThreshold: Schema.number().default(20).description('超过该行数的文本将自动转为图片。'),
     shopServiceCharge: Schema.number().role('').default(0.05).description('坊市成交手续费比例。'),
+    shopRestockThreshold: Schema.number().default(5).description('神秘人补货阈值：坊市全部商品数低于该值时，神秘人才会自动上架补货。'),
+    shopCapacity: Schema.number().default(30).description('坊市容量上限：商品总数达到该值后禁止任何上架（含玩家与系统）。'),
+    shopExpireHours: Schema.number().default(72).description('坊市物品过期小时数：超过该时长无人购买将自动下架（玩家物品发回背包）。'),
   }).description('消息与坊市'),
 ])

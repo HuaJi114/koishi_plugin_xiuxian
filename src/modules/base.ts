@@ -192,6 +192,8 @@ export function applyBase(ctx: Context, config: Config) {
     .action(async ({ session }) => {
       const player = await srv.getPlayer(session!.userId!)
       if (!player) return '修仙界没有道友的信息，请输入【我要修仙】加入！'
+      const cdMsg = checkSecondCd(player.stealCd, config.stealCd, '偷灵石')
+      if (cdMsg) return cdMsg
       const targetId = getAtId(session!)
       if (!targetId) return '请 @ 要下手的道友！'
       if (targetId === session!.userId) return '请不要偷自己刷成就！'
@@ -202,6 +204,7 @@ export function applyBase(ctx: Context, config: Config) {
       if (config.stealCost > myStone) return '道友的偷窃准备(灵石)不足，请打工之后再切格瓦拉！'
       const result = getPowerRate(player.power, target.power)
       if (typeof result === 'string') return result
+      await srv.setPlayerCd(player.userId, 'stealCd')
       if (randInt(0, 100) > result) {
         await srv.costStoneForUser(player.userId, config.stealCost, pf)
         await srv.gainStoneForUser(target.userId, config.stealCost, pf)
@@ -223,6 +226,8 @@ export function applyBase(ctx: Context, config: Config) {
       let player = await srv.getRealPlayer(session!.userId!)
       if (!player) return '修仙界没有道友的信息，请输入【我要修仙】加入！'
       if (player.root === '器师') return '目前职业无法抢劫！'
+      const cdMsg = checkSecondCd((await srv.getPlayer(session!.userId!))?.robCd, config.robCd, '抢劫')
+      if (cdMsg) return cdMsg
       const targetId = getAtId(session!)
       if (!targetId) return '请 @ 要抢劫的道友！'
       if (targetId === session!.userId) return '请不要抢自己刷成就！'
@@ -237,6 +242,7 @@ export function applyBase(ctx: Context, config: Config) {
       const f1 = await buildFighter(srv, session!.userId!)
       const f2 = await buildFighter(srv, targetId)
       if (!f1 || !f2) return '战斗数据异常，请稍后再试！'
+      await srv.setPlayerCd(player.userId, 'robCd')
       const [log, victor, finalHp] = playerFight(f1, f2, srv.data)
       storeBattleDetail({
         kind: 'rob',
@@ -376,6 +382,17 @@ export function applyBase(ctx: Context, config: Config) {
     const diff = dateDiffSeconds(new Date(), levelUpCd)
     if (diff < cdMinutes * 60) {
       return `目前无法突破，还需要${cdMinutes - Math.floor(diff / 60)}分钟`
+    }
+    return undefined
+  }
+
+  /** 校验秒级 CD，返回剩余秒数提示或空 */
+  function checkSecondCd(lastAt: Date | undefined, cdSeconds: number, action: string): string | undefined {
+    if (cdSeconds <= 0) return undefined
+    if (!lastAt || lastAt.getTime() <= 0) return undefined
+    const diff = dateDiffSeconds(new Date(), lastAt)
+    if (diff < cdSeconds) {
+      return `${action}冷却中，请${cdSeconds - Math.floor(diff)}秒后再试`
     }
     return undefined
   }

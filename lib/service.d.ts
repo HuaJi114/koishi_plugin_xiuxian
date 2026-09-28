@@ -71,6 +71,8 @@ export declare class XiuxianService extends Service {
     setLevel(userId: string, level: string): Promise<void>;
     /** 更新突破冷却为当前时间 */
     setLevelCd(userId: string): Promise<void>;
+    /** 更新玩家表的单个时间戳字段（用于偷/抢等独立 CD） */
+    setPlayerCd(userId: string, field: 'stealCd' | 'robCd'): Promise<void>;
     /** 更新突破附加概率 */
     setLevelRate(userId: string, rate: number): Promise<void>;
     /** 更新道号，已存在则返回提示 */

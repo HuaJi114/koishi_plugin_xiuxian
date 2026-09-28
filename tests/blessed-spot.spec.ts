@@ -108,10 +108,29 @@ describe('洞天经营（blessed-spot）', () => {
     await seedPlayer('6104', 3000000)
     const client = app.mock.client('6104')
     await client.receive('开辟洞府')
-    const plant = await client.receive('灵田种植')
+    // 注入 1 份药材，按序号种植（绕过交互 prompt）
+    await app.database.create('xiuxian_back', {
+      userId: '6104', goodsId: 90909, goodsName: '测试灵草', goodsType: '药材', goodsNum: 5,
+      createTime: new Date(), updateTime: new Date(), remake: '', dayNum: 0, allNum: 0,
+      actionTime: new Date(), state: 0, bindNum: 0,
+    })
+    const plant = await client.receive('灵田种植 1')
     expectInclude(plant, '灵田', '种植')
-    const harvest = await client.receive('灵田收获')
+    const harvest = await client.receive('灵田收获 1')
     expectInclude(harvest, '尚未成熟')
+  })
+
+  it('成熟灵田收获按灵气等级获得 2~8 份', async () => {
+    await seedPlayer('6104b', 3000000)
+    const client = app.mock.client('6104b')
+    await client.receive('开辟洞府')
+    // 将第 1 块灵田设为已成熟（播种于 2 小时前，成熟 60 分钟）
+    await app.database.set('xiuxian_plot', { userId: '6104b', plotIndex: 1 }, {
+      plantId: 90909, plantAt: new Date(Date.now() - 2 * 3600 * 1000), plantMinutes: 60,
+    })
+    const harvest = await client.receive('灵田收获 1')
+    expectInclude(harvest, '收成')
+    expectInclude(harvest, '第 1 块灵田')
   })
 
   it('洞府帮助返回玩法说明', async () => {
@@ -119,13 +138,24 @@ describe('洞天经营（blessed-spot）', () => {
     const client = app.mock.client('6105')
     const replies = await client.receive('洞府帮助')
     expectInclude(replies, '开辟洞府')
+    expectInclude(replies, '开垦灵田')
   })
 
-  it('灵田空闲时收获提示无作物', async () => {
+  it('灵田空闲时收获提示无成熟作物', async () => {
     await seedPlayer('6106', 2000000)
     const client = app.mock.client('6106')
     await client.receive('开辟洞府')
     const replies = await client.receive('灵田收获')
-    expectInclude(replies, '空空如也')
+    expectInclude(replies, '暂无成熟作物')
+  })
+
+  it('开垦灵田扩建并可在灵田情况查看', async () => {
+    await seedPlayer('6107', 5000000)
+    const client = app.mock.client('6107')
+    await client.receive('开辟洞府')
+    const open = await client.receive('开垦灵田')
+    expectInclude(open, '新辟第 2 块', '开垦')
+    const info = await client.receive('灵田情况')
+    expectInclude(info, '共 2 块')
   })
 })
