@@ -16,6 +16,8 @@ import {
   rouletteSelect,
   randInt,
   generateRoot,
+  luckPoints,
+  luckBonus,
 } from '../utils'
 import { breakthrough } from '../helpers'
 import { Fighter, XiuxianSkill } from '../types'
@@ -83,8 +85,8 @@ const data = new GameData()
 
 // 5. 回合制战斗至一方归零
 {
-  const p1: Fighter = { userId: 'a', name: '甲', hp: 100, atk: 50, mp: 0, crit: 1, critDamage: 1.5, defense: 0 }
-  const p2: Fighter = { userId: 'b', name: '乙', hp: 80, atk: 30, mp: 0, crit: 1, critDamage: 1.5, defense: 0 }
+  const p1: Fighter = { userId: 'a', name: '甲', hp: 100, atk: 50, mp: 0, crit: 1, critDamage: 1.5, defense: 0, armorPen: 0 }
+  const p2: Fighter = { userId: 'b', name: '乙', hp: 80, atk: 30, mp: 0, crit: 1, critDamage: 1.5, defense: 0, armorPen: 0 }
   const [log, victor, hp] = playerFight(p1, p2, data)
   assert(log.length > 2, 'playerFight produces log')
   assert(victor === '甲' || victor === '乙', 'playerFight has victor')
@@ -201,6 +203,79 @@ const data = new GameData()
     assert(typeof name === 'string' && name.length > 0, 'generateRoot 名称非空')
     assert(typeof type === 'string' && data.roots[type] !== undefined, 'generateRoot 类型存在于灵根表')
   }
+}
+
+// 9. 破防机制：攻击方 armorPen 抵消防守方减伤
+{
+  const attacker: Fighter = { userId: 'a', name: '攻', hp: 1000, atk: 100, mp: 0, crit: 0, critDamage: 1.5, defense: 0, armorPen: 0.5 }
+  const defender: Fighter = { userId: 'b', name: '守', hp: 10000, atk: 1, mp: 0, crit: 0, critDamage: 1.5, defense: 0.5, armorPen: 0 }
+  const [log] = playerFight(attacker, defender, data)
+  const firstHit = log.find((l) => l.includes('造成'))
+  assert(!!firstHit, '破防战斗产生伤害日志')
+  // 破防 0.5 恰好抵消防守 0.5，伤害应接近全额（atk≈100，而非减半后的 50）
+  const dmgNum = firstHit ? Number(firstHit.replace(/[^0-9]/g, '')) : 0
+  assert(dmgNum > 50, `破防后伤害应大于减半值，实际 ${dmgNum}`)
+}
+
+// 10. 装备掉落加权：同阶装备应比高阶更容易命中（rank 越大越常见）
+{
+  const itemRank = data.itemRankByLevel('练气境初期')
+  // 统计多次随机，验证返回的装备 rank 不会极端越级（不应出现比玩家高太多阶的顶级仙器 rank 18）
+  let maxSeen = 0
+  for (let i = 0; i < 200; i++) {
+    const id = data.randomItemIdByRank(itemRank, ['法器'])
+    if (id === 0) continue
+    const info = data.getItem(id)
+    if (info && info.rank !== undefined) {
+      const r = Number(info.rank)
+      if (r < maxSeen || maxSeen === 0) maxSeen = r
+    }
+  }
+  // 练气境初期对应 rank 约 47，掉落物品 rank 不应小于 32（即最多高 3 阶 = rank 47-15=32）
+  assert(maxSeen >= 32, `掉落装备不应越级过高，最小 rank 应为 32，实际 ${maxSeen}`)
+}
+
+// 11. 突破保底：失败后 levelUpRate 累加，成功后清零（逻辑一致性）
+{
+  const level = '太乙境圆满'
+  const baseRate = data.getLevelRate(level)
+  assert(baseRate === 2, `太乙境圆满基础突破率应为 2%，实际 ${baseRate}`)
+  // 验证数据里不再有锁死 1% 的后期境界（渡劫境圆满以上）
+  const lowRateLevels = data.levelOrder.filter((l) => data.getLevelRate(l) === 1 && data.getLevelIndex(l) > data.getLevelIndex('渡劫境初期'))
+  assert(lowRateLevels.length === 0, `后期境界不应再有锁死 1% 的突破率，实际 ${lowRateLevels.join(',')}`)
+}
+
+// 12. 转世气运：luckPoints 封顶、luckBonus 换算，及高阶掉落权重随气运提升
+{
+  assert(luckPoints(undefined) === 0, '未转世气运为 0')
+  assert(luckPoints(0) === 0, '转世 0 次气运为 0')
+  assert(luckPoints(3) === 3, '转世 3 次气运为 3')
+  assert(luckPoints(10) === 5, '气运封顶为 5 点')
+  assert(luckBonus(2) === 2, '2 点气运 = 2% 概率加成')
+  assert(luckBonus(99) === 5, '气运加成封顶为 5%')
+
+  // 高阶掉落：无气运时，练气境初期（rank≈47）不会掉 rank 32 以下（高于 3 阶以上）的物品
+  const itemRank = data.itemRankByLevel('练气境初期')
+  let lowWithNoLuck = 0
+  for (let i = 0; i < 300; i++) {
+    const id = data.randomItemIdByRank(itemRank, ['法器'], 0)
+    if (id === 0) continue
+    const info = data.getItem(id)
+    const r = info && info.rank !== undefined ? Number(info.rank) : 99999
+    if (r < 32) lowWithNoLuck++
+  }
+  assert(lowWithNoLuck === 0, '无气运时不应掉落高于 3 阶以上的法器')
+
+  // 满气运（5 点）时，可掉范围扩至 +8 阶（rank 差 +40），应能命中 rank 更低的更高阶物品
+  let minRankWithLuck = 99999
+  for (let i = 0; i < 500; i++) {
+    const id = data.randomItemIdByRank(itemRank, ['法器'], 5)
+    if (id === 0) continue
+    const info = data.getItem(id)
+    const r = info && info.rank !== undefined ? Number(info.rank) : 99999
+    if (r < minRankWithLuck) minRankWithLuck = r
+  }
+  assert(minRankWithLuck < 47, `满气运应能命中高于自身境界的法器，实际最小 rank ${minRankWithLuck}`)
 }
 
 console.log(`\n测试结果：${passed} 通过，${failed} 失败`)

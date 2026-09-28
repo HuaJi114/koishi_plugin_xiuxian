@@ -16,6 +16,26 @@ export function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+/** 转世气运加成上限（超出部分不再叠加） */
+const LUCK_CAP = 5
+/** 每次转世提供的单点气运对应的概率/权重加成（百分点） */
+const LUCK_POINT_BONUS = 1
+
+/**
+ * 计算转世带来的「气运」加成点数。
+ * 每转世一次积累一点气运，上限 LUCK_CAP 点；每点气运在
+ * 突破、顿悟、珍稀物品掉落等概率判定中提供 LUCK_POINT_BONUS 的加成。
+ * @param rebirth 转世次数
+ */
+export function luckPoints(rebirth: number | undefined): number {
+  return Math.min(Math.max(rebirth ?? 0, 0), LUCK_CAP)
+}
+
+/** 气运加成点数换算为概率百分点（突破/顿悟等百分比判定直接叠加） */
+export function luckBonus(rebirth: number | undefined): number {
+  return luckPoints(rebirth) * LUCK_POINT_BONUS
+}
+
 /** 从数组中随机取一个元素 */
 export function randChoice<T>(list: T[]): T {
   return list[Math.floor(Math.random() * list.length)]
@@ -143,6 +163,12 @@ export function playerFight(
   const hp = { [p1.userId]: Math.max(p1.hp, 1), [p2.userId]: Math.max(p2.hp, 1) }
   let victor = ''
 
+  /** 计算防守方实际减伤：减伤率扣除攻击方破防，最低 0 */
+  const effectiveDefense = (attacker: Fighter, defender: Fighter): number => {
+    const pen = attacker.armorPen ?? 0
+    return Math.max((defender.defense ?? 0) - pen, 0)
+  }
+
   const trySecSkill = (attacker: Fighter, defender: Fighter): boolean => {
     if (!data || !attacker.secSkillIds?.length) return false
     const skillId = randChoice(attacker.secSkillIds)
@@ -157,7 +183,7 @@ export function playerFight(
     if (st === 1) {
       const av = skill.atkvalue
       const mult = Array.isArray(av) ? Number(av[0] ?? 1) : Number(av ?? 1)
-      let dmg = Math.floor(attacker.atk * mult * (1 - defender.defense))
+      let dmg = Math.floor(attacker.atk * mult * (1 - effectiveDefense(attacker, defender)))
       if (dmg < 1) dmg = 1
       hp[defender.userId] -= dmg
       log.push(`${attacker.name}催动神通【${skill.name}】，造成${formatAmount(dmg)}伤害`)
@@ -166,7 +192,7 @@ export function playerFight(
     }
     if (st === 2) {
       const ratio = Number(skill.atkvalue ?? 0)
-      let dmg = Math.floor(attacker.atk * ratio * (1 - defender.defense))
+      let dmg = Math.floor(attacker.atk * ratio * (1 - effectiveDefense(attacker, defender)))
       if (dmg < 1) dmg = 1
       const turns = Math.max(Number(skill.turncost ?? 1), 1)
       for (let t = 0; t < turns; t++) {
@@ -204,7 +230,7 @@ export function playerFight(
       dmgBase = Math.floor(dmgBase * attacker.critDamage)
       crit = '正中要害，'
     }
-    const dmg = Math.floor(dmgBase * (1 - defender.defense))
+    const dmg = Math.floor(dmgBase * (1 - effectiveDefense(attacker, defender)))
     hp[defender.userId] -= dmg
     log.push(`${attacker.name}出手${crit}造成${dmg}伤害`)
     log.push(`${defender.name}剩余血量${formatAmount(Math.max(hp[defender.userId], 0))}`)

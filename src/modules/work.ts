@@ -1,7 +1,7 @@
 import { Context } from 'koishi'
 import { Config } from '../config'
 import { WORK_REFRESH_DAILY_LIMIT } from '../daily-utils'
-import { randChoice, randInt, rouletteSelect } from '../utils'
+import { randChoice, randInt, rouletteSelect, luckPoints } from '../utils'
 
 declare module 'koishi' {
   interface Tables {
@@ -70,7 +70,7 @@ export function applyWork(ctx: Context, _config: Config) {
   }
 
   /** 生成悬赏令列表，对应 workmake */
-  function makeWork(level: string, exp: number): WorkOption[] {
+  function makeWork(level: string, exp: number, rebirth?: number): WorkOption[] {
     const workLevel = level === '江湖好手' ? '江湖好手' : level.slice(0, 3)
     const sources = [srv.data.work.yaocai, srv.data.work.ansha, srv.data.work.zuoyao]
     const result: WorkOption[] = []
@@ -85,7 +85,7 @@ export function applyWork(ctx: Context, _config: Config) {
       if (!priceData) continue
       const [rate, isOut] = countRate(exp, priceData.needexp)
       const itemType = rouletteSelect({ 功法: 400, 神通: 400, 药材: 400 })
-      const itemId = srv.data.randomItemIdByRank(srv.data.itemRankByLevel(level), [itemType])
+      const itemId = srv.data.randomItemIdByRank(srv.data.itemRankByLevel(level), [itemType], luckPoints(rebirth))
       result.push({
         name,
         rate,
@@ -126,7 +126,7 @@ export function applyWork(ctx: Context, _config: Config) {
       await ctx.database.set('xiuxian_player', { userId }, { workRefreshCount: refreshCount + 1 })
     }
 
-    const list = makeWork(player.level, player.exp)
+    const list = makeWork(player.level, player.exp, player.rebirth)
     if (!list.length) return '道友的境界暂无可用悬赏令！'
     pending.set(userId, list)
     const updated = isManual ? refreshCount + 1 : refreshCount
@@ -167,11 +167,9 @@ export function applyWork(ctx: Context, _config: Config) {
       return `接取任务【${work.name}】成功，预计需要${work.time}分钟。`
     })
 
-  ctx.command('xiuxian/悬赏令结算', '结算悬赏令（获得修为）')
-    .action(async ({ session }) => doSettle(session!.userId!, 'exp'))
-
-  ctx.command('xiuxian/最后的悬赏令', '结算悬赏令（获得灵石，用于卡住时）')
-    .action(async ({ session }) => doSettle(session!.userId!, 'stone'))
+  ctx.command('xiuxian/悬赏令结算 [reward:string]', '结算悬赏令（默认获得修为，可用「灵石」获得灵石）')
+    .alias('最后的悬赏令', { args: ['stone'] })
+    .action(async ({ session }, reward) => doSettle(session!.userId!, reward === 'stone' || reward === '灵石' ? 'stone' : 'exp'))
 
   async function doSettle(userId: string, reward: 'exp' | 'stone'): Promise<string> {
     const player = await srv.getPlayer(userId)
@@ -237,7 +235,7 @@ export function applyWork(ctx: Context, _config: Config) {
       `2、悬赏令刷新：刷新悬赏令，每日免费${FREE_REFRESH}次`,
       '3、悬赏令接取 <编号>：接取对应悬赏令',
       '4、悬赏令结算：结算悬赏奖励（修为）',
-      '5、悬赏令终止：终止当前悬赏令任务',
-      '6、最后的悬赏令：结算并获得灵石（用于卡住的道友）',
+      '5、悬赏令结算 灵石：结算悬赏奖励（灵石，用于修为已满时）',
+      '6、悬赏令终止：终止当前悬赏令任务',
     ].join('\n'))
 }

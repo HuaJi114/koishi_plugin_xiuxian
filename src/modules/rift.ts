@@ -1,7 +1,7 @@
 import { Context } from 'koishi'
 import { Config } from '../config'
 import { RIFT_DAILY_LIMIT } from '../daily-utils'
-import { dateDiffSeconds, formatAmount, randChoice, randInt } from '../utils'
+import { dateDiffSeconds, formatAmount, randChoice, randInt, luckPoints } from '../utils'
 
 const RIFT_CD_SECONDS = 60 * 60
 
@@ -57,7 +57,7 @@ export function applyRift(ctx: Context, _config: Config) {
         await srv.updatePower(userId)
         result = `道友于秘境中参悟一处古老石刻，修为增加${formatAmount(exp)}！`
       } else if (roll <= 90) {
-        const item = srv.data.randomItemIdByRank(srv.data.itemRankByLevel(realPlayer.level))
+        const item = srv.data.randomItemIdByRank(srv.data.itemRankByLevel(realPlayer.level), undefined, luckPoints(realPlayer.rebirth))
         if (item !== 0) {
           const info = srv.data.getItem(item)
           if (info) {

@@ -3,7 +3,7 @@ import { Config } from '../config'
 import { ADMIN_AUTHORITY } from '../helpers'
 import { buildFighter } from '../combat-stats'
 import { BATTLE_DETAIL_HINT, storeBattleDetail } from '../battle-detail'
-import { isHeavilyInjured, formatAmount, playerFight, randChoice, randInt } from '../utils'
+import { isHeavilyInjured, formatAmount, playerFight, randChoice, randInt, luckPoints } from '../utils'
 import { Fighter } from '../types'
 
 declare module 'koishi' {
@@ -123,15 +123,16 @@ export function applyBoss(ctx: Context, _config: Config) {
     const killerPlayer = await srv.getPlayer(killerId)
     const killerLevel = killerPlayer?.level ?? boss.level
     const itemRank = srv.data.itemRankByLevel(killerLevel)
+    const luck = luckPoints(killerPlayer?.rebirth)
     const itemLines: string[] = []
     const itemCount = randInt(1, 3)
 
     function pickKillLoot(preferredType: string): string | 0 {
-      let id = srv.data.randomItemIdByRank(itemRank, [preferredType])
+      let id = srv.data.randomItemIdByRank(itemRank, [preferredType], luck)
       if (id !== 0) return id
-      id = srv.data.randomItemIdByRank(itemRank, KILLER_ITEM_TYPES)
+      id = srv.data.randomItemIdByRank(itemRank, KILLER_ITEM_TYPES, luck)
       if (id !== 0) return id
-      return srv.data.randomItemIdByRank(itemRank)
+      return srv.data.randomItemIdByRank(itemRank, undefined, luck)
     }
 
     for (let i = 0; i < itemCount; i++) {
@@ -217,6 +218,7 @@ export function applyBoss(ctx: Context, _config: Config) {
         crit: 1,
         critDamage: 1.5,
         defense: 0,
+        armorPen: 0,
       }
       fighter.hp = Math.max(basePlayer.hp, 1)
 

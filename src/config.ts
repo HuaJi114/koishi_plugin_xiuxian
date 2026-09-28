@@ -19,7 +19,7 @@ export interface Config {
   levelPunishmentFloor: number
   /** 突破失败扣除修为惩罚上限（百分比） */
   levelPunishmentLimit: number
-  /** 突破失败增加当前境界突破概率的比例 */
+  /** 突破失败时固定增加的成功率（百分比），用于失败累计保底 */
   levelUpProbability: number
   /** 每日签到灵石下限 */
   signInLingShiLowerLimit: number
@@ -73,7 +73,7 @@ export const Config: Schema<Config> = Schema.intersect([
     levelUpCd: Schema.number().default(60).description('突破冷却时间（分钟）。'),
     levelPunishmentFloor: Schema.number().default(1).description('突破失败扣除修为惩罚下限（百分比）。'),
     levelPunishmentLimit: Schema.number().default(10).description('突破失败扣除修为惩罚上限（百分比）。'),
-    levelUpProbability: Schema.number().role('').default(0.3).description('突破失败时增加突破概率的比例。'),
+    levelUpProbability: Schema.number().default(2).description('突破失败时固定增加的成功率（百分比），用于失败累计保底，成功突破后清零。'),
   }).description('突破设置'),
 
   Schema.object({

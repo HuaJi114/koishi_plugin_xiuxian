@@ -127,6 +127,7 @@ export function fightMissionMonsters(
       crit: 0,
       critDamage: 1.5,
       defense: 0,
+      armorPen: 0,
     }
     log.push(`——第${i + 1}战：${m.name}（气血${m.hp}，攻击${m.atk}）——`)
     const [roundLog, victor, finalHp] = fight(current, foe)

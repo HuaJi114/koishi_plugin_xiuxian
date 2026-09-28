@@ -66,6 +66,7 @@ export class XiuxianService extends Service {
       riftDailyCount: { type: 'integer', initial: 0 },
       workRefreshCount: { type: 'integer', initial: 0 },
       lastSignDate: 'string',
+      rebirth: { type: 'integer', initial: 0 },
     }, { primary: 'userId' })
 
     ctx.model.extend('xiuxian_cd', {

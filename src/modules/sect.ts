@@ -9,7 +9,7 @@ import {
   pickRandomMission,
   SECT_MISSION_CD_SECONDS,
 } from '../sect-missions'
-import { dateDiffSeconds, isHeavilyInjured, formatAmount, playerFight, randInt } from '../utils'
+import { dateDiffSeconds, isHeavilyInjured, formatAmount, playerFight, randInt, luckPoints } from '../utils'
 import { buildFighter } from '../combat-stats'
 
 /** 各职位供奉丹药概率（%） */
@@ -223,7 +223,7 @@ export function applySect(ctx: Context, config: Config) {
       let msg = `领取${srv.data.sectTitle(position)}供奉，获得灵石${formatAmount(stone)}枚。`
       const pillRate = SECT_OFFERING_PILL_RATE[position] ?? SECT_OFFERING_PILL_RATE[4]
       if (randInt(1, 100) <= pillRate) {
-        const itemId = srv.data.randomItemIdByRank(srv.data.itemRankByLevel(player.level), ['丹药'])
+        const itemId = srv.data.randomItemIdByRank(srv.data.itemRankByLevel(player.level), ['丹药'], luckPoints(player.rebirth))
         if (itemId !== 0) {
           const info = srv.data.getItem(itemId)
           if (info) {

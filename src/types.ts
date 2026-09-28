@@ -81,6 +81,8 @@ export interface XiuxianPlayer {
   workRefreshCount: number
   /** 上次签到日期 YYYY-MM-DD，兜底重置 */
   lastSignDate: string
+  /** 飞升转世次数（满级后重置境界累积） */
+  rebirth?: number
 }
 
 /** 用户状态/冷却表，对应原 user_cd 表 */
@@ -246,6 +248,8 @@ export interface Fighter {
   critDamage: number
   /** 减伤率 */
   defense: number
+  /** 破防率（穿甲，可抵消防守方减伤，小数 0~1） */
+  armorPen: number
   /** 已学神通 ID 列表（战斗随机选用其一） */
   secSkillIds?: number[]
 }

@@ -46,9 +46,12 @@ export declare class GameData {
     getItemsByType(types: string[]): Record<string, ItemInfo>;
     /**
      * 按等级与类型随机获取一个物品 ID，对应 Items.get_random_id_list_by_rank_and_item_type。
+     * 掉落规则：越高于玩家境界（rank 越小）的物品越难掉落，采用指数衰减权重；
+     * 同阶及以下（rank >= finalRank）为常见掉落，最多可比玩家高 3 阶（rank 差 ≤ 15）。
      * @param finalRank 物品 rank 量纲（请用 itemRankByLevel 转换，勿用 userRank）
+     * @param luck 转世气运加成点数（提升高阶物品掉落权重）
      */
-    randomItemIdByRank(finalRank: number, itemTypes?: string[]): string | 0;
+    randomItemIdByRank(finalRank: number, itemTypes?: string[], luck?: number): string | 0;
     /** 获取某境界的突破成功率 */
     getLevelRate(level: string): number;
     /** 获取某境界突破所需修为（即该境界 power 字段） */

@@ -17,6 +17,7 @@ export interface CombatStatBreakdown {
   permAtkBonus: number
   critRate: number
   defenseRate: number
+  armorPen: number
   merged: MergedSkillBuffs
 }
 
@@ -42,6 +43,7 @@ export function computeCombatStats(
   const critBuff = num(weapon?.crit_buff)
   const critRate = critBuff > 0 ? Math.max(1, Math.floor(critBuff * 100)) : 1
   const defenseRate = num(armor?.def_buff)
+  const armorPen = num(weapon?.armor_pen)
 
   return {
     baseAtk,
@@ -52,6 +54,7 @@ export function computeCombatStats(
     permAtkBonus,
     critRate,
     defenseRate,
+    armorPen,
     merged: skillMerged,
   }
 }
@@ -73,6 +76,7 @@ export async function buildFighter(srv: XiuxianService, userId: string): Promise
   let atk = stats.finalAtk
   let defense = stats.defenseRate
   let crit = stats.critRate
+  let armorPen = stats.armorPen
   if (ex) {
     atk += ex.atkBuff
     defense = Math.min(defense + ex.defBuff / 10000, 0.9)
@@ -88,6 +92,7 @@ export async function buildFighter(srv: XiuxianService, userId: string): Promise
     crit,
     critDamage: 1.5 + (ex?.critDmgBuff ?? 0) / 1000,
     defense,
+    armorPen,
     secSkillIds,
   }
 }

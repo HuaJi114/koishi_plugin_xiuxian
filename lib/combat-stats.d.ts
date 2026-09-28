@@ -11,6 +11,7 @@ export interface CombatStatBreakdown {
     permAtkBonus: number;
     critRate: number;
     defenseRate: number;
+    armorPen: number;
     merged: MergedSkillBuffs;
 }
 /** 计算最终攻击与加成明细（对应 nonebot final_user_data） */

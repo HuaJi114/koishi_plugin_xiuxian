@@ -18,7 +18,7 @@ export interface Config {
     levelPunishmentFloor: number;
     /** 突破失败扣除修为惩罚上限（百分比） */
     levelPunishmentLimit: number;
-    /** 突破失败增加当前境界突破概率的比例 */
+    /** 突破失败时固定增加的成功率（百分比），用于失败累计保底 */
     levelUpProbability: number;
     /** 每日签到灵石下限 */
     signInLingShiLowerLimit: number;

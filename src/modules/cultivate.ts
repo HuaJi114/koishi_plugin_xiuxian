@@ -78,7 +78,10 @@ export function applyCultivate(ctx: Context, config: Config) {
     const skills = await srv.getLearnedSkills(userId)
     const merged = mergeSkillBuffs(skills, srv.data)
     const rateBuff = merged.ratebuff
-    let exp = Math.floor(expTime * config.closingExp * (rootRate * realmRate * (1 + rateBuff)))
+    // 洞府灵气加成：每级 +5% 闭关修为（洞天经营玩法）
+    const buff = await srv.getBuff(userId)
+    const spiritBonus = buff.blessedSpot * 0.05
+    let exp = Math.floor(expTime * config.closingExp * (rootRate * realmRate * (1 + rateBuff + spiritBonus)))
 
     await srv.setState(userId, 0)
     const healMsg = wasInjured ? '，重伤已愈，气血与真元已恢复至满' : ''

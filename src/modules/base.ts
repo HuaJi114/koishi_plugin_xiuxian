@@ -4,7 +4,7 @@ import { ADMIN_AUTHORITY, breakthrough, getAtId } from '../helpers'
 import { formatPresetSectList, formatSectRegisterPrompt } from '../preset-sects'
 import { buildFighter } from '../combat-stats'
 import { BATTLE_DETAIL_HINT, getBattleDetail, storeBattleDetail } from '../battle-detail'
-import { dateDiffSeconds, generateRoot, getPowerRate, isHeavilyInjured, formatAmount, playerFight, randInt } from '../utils'
+import { dateDiffSeconds, generateRoot, getPowerRate, isHeavilyInjured, formatAmount, playerFight, randInt, luckBonus } from '../utils'
 
 const REGISTER_PROMPT_MS = 120_000
 
@@ -92,7 +92,7 @@ export function applyBase(ctx: Context, config: Config) {
     .action(async ({ session }) => {
       const player = await srv.getPlayer(session!.userId!)
       if (!player) return '修仙界没有道友的信息，请输入【我要修仙】加入！'
-      const rate = srv.data.getLevelRate(player.level) + player.levelUpRate
+      const rate = srv.data.getLevelRate(player.level) + player.levelUpRate + luckBonus(player.rebirth)
       return `道友下一次突破成功概率为${rate}%`
     })
 
@@ -103,7 +103,7 @@ export function applyBase(ctx: Context, config: Config) {
       if (!player) return '修仙界没有道友的信息，请输入【我要修仙】加入！'
       const cdMsg = checkLevelCd(player.levelUpCd, config.levelUpCd)
       if (cdMsg) return cdMsg
-      const rate = srv.data.getLevelRate(player.level) + player.levelUpRate
+      const rate = srv.data.getLevelRate(player.level) + player.levelUpRate + luckBonus(player.rebirth)
       const backs = await srv.getBack(session!.userId!)
       const hasPill = backs.some((b) => Number(b.goodsId) === 1999)
       if (hasPill) {
@@ -128,7 +128,7 @@ export function applyBase(ctx: Context, config: Config) {
     if (cdMsg) return cdMsg
     const level = player.level
     const baseRate = srv.data.getLevelRate(level)
-    const rate = baseRate + player.levelUpRate
+    const rate = baseRate + player.levelUpRate + luckBonus(player.rebirth)
     const result = breakthrough(srv.data, player.exp, rate, level)
 
     if (result.type === 'top') return '道友已是最高境界，无法突破！'
@@ -147,7 +147,8 @@ export function applyBase(ctx: Context, config: Config) {
 
     // 失败
     await srv.setLevelCd(userId)
-    const updateRate = Math.max(1, Math.floor(baseRate * config.levelUpProbability))
+    // 失败累计保底：每次失败固定 +levelUpProbability%，成功突破后清零
+    const updateRate = Math.max(1, Math.floor(config.levelUpProbability))
     const backs = await srv.getBack(userId)
     const hasPill = backs.some((b) => Number(b.goodsId) === 1999)
     if (useDuE && hasPill) {

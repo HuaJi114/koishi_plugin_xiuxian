@@ -7,6 +7,15 @@ import { Fighter } from './types';
 export declare function formatAmount(num: number): string;
 /** 区间内随机整数（含两端） */
 export declare function randInt(min: number, max: number): number;
+/**
+ * 计算转世带来的「气运」加成点数。
+ * 每转世一次积累一点气运，上限 LUCK_CAP 点；每点气运在
+ * 突破、顿悟、珍稀物品掉落等概率判定中提供 LUCK_POINT_BONUS 的加成。
+ * @param rebirth 转世次数
+ */
+export declare function luckPoints(rebirth: number | undefined): number;
+/** 气运加成点数换算为概率百分点（突破/顿悟等百分比判定直接叠加） */
+export declare function luckBonus(rebirth: number | undefined): number;
 /** 从数组中随机取一个元素 */
 export declare function randChoice<T>(list: T[]): T;
 /** 从数组中随机取 n 个不重复元素 */

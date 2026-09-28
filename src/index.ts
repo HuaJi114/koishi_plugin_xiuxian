@@ -14,6 +14,8 @@ import { applyMixElixir } from './modules/mixelixir'
 import { applyImpart } from './modules/impart'
 import { applyExercises } from './modules/exercises'
 import { applyShop } from './modules/shop'
+import { applyEndgame } from './modules/endgame'
+import { applyBlessedSpot } from './modules/blessed-spot'
 import { ensureAdminAuthority, syncAllAdminAuthority } from './helpers'
 import { setupDailyReset } from './daily-reset'
 import { formatLongTextReply } from './message-reply'
@@ -98,6 +100,8 @@ export function apply(ctx: Context, config: Config) {
         '— 炼丹：炼丹帮助 / 炼丹 / 炼制',
         '— 传承：传承帮助 / 参悟传承',
         '— 炼体：炼体帮助 / 炼体查看 / 炼体',
+        '— 长线：宗门贡献兑换 / 参悟天机 / 飞升转世 / 我的转世',
+        '— 洞天：洞府帮助 / 开辟洞府 / 灵气升级 / 灵田种植 / 灵田收获 / 洞府信息',
       ].join('\n'))
 
     applyBase(cmdCtx, config)
@@ -113,6 +117,8 @@ export function apply(ctx: Context, config: Config) {
     applyImpart(cmdCtx, config)
     applyExercises(cmdCtx, config)
     applyShop(cmdCtx, config)
+    applyEndgame(cmdCtx, config)
+    applyBlessedSpot(cmdCtx, config)
 
     cmdCtx.middleware(async (_session, next) => {
       const result = await next()
