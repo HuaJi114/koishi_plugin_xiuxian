@@ -7,6 +7,14 @@ export interface Config {
   groupOnly: boolean
   /** 管理员 QQ 号列表，可执行管理类指令 */
   adminQQ: string[]
+  /** 群聊白名单开关：开启后仅白名单内 QQ 群可游玩 */
+  groupWhitelistEnabled: boolean
+  /** 白名单 QQ 群号列表（纯数字），仅开关开启时生效 */
+  groupWhitelist: string[]
+  /** 白名单开启时是否也响应私聊 */
+  allowPrivateChat: boolean
+  /** QQ 号黑名单：列表中的用户无论私聊/群聊均不响应 */
+  userBlacklist: string[]
   /** 我的存档冷却时间（秒） */
   userInfoCd: number
   /** 突破 CD（分钟） */
@@ -64,6 +72,10 @@ export const Config: Schema<Config> = Schema.intersect([
     currency: Schema.string().default('default').description('灵石所使用的 monetary 货币种类标识。'),
     groupOnly: Schema.boolean().default(true).description('是否仅在群聊（非私聊）中响应指令。'),
     adminQQ: Schema.array(String).role('table').default([]).description('管理员 QQ 号列表。填写后自动将对应用户的 Koishi authority 设为 999，可执行需 authority 999 的管理指令。'),
+    groupWhitelistEnabled: Schema.boolean().default(false).description('启用群聊白名单：仅白名单内的 QQ 群可游玩本插件，其余群静默忽略（不回复任何消息）。'),
+    groupWhitelist: Schema.array(String).role('table').default([]).description('白名单 QQ 群号列表（纯数字，如 123456789）。仅当上方开关开启时生效；列表为空时所有群均不响应。'),
+    allowPrivateChat: Schema.boolean().default(false).description('白名单开启时，是否也响应私聊消息（默认关闭，仅响应白名单群）。'),
+    userBlacklist: Schema.array(String).role('table').default([]).description('QQ 号黑名单：列表中的用户无论私聊还是群聊，本插件均不响应（无需开启白名单即生效）。'),
     globalCommandCd: Schema.number().default(0).description('全局指令冷却（秒）。同一群内任一玩家触发某指令后，该群所有玩家对该指令进入冷却，0 表示关闭。'),
   }).description('基础设置'),
 
@@ -98,7 +110,7 @@ export const Config: Schema<Config> = Schema.intersect([
   }).description('宗门设置'),
 
   Schema.object({
-    longTextToImage: Schema.boolean().default(false).description('启用后，超长回复将转为图片发出（需安装 koishi-plugin-markdown-to-image-service）。'),
+    longTextToImage: Schema.boolean().default(false).description('启用后，超长回复（超过 longTextLineThreshold 行）将转为图片发出。基于 Puppeteer（需安装 koishi-plugin-markdown-to-image-service 及其依赖的 @koishijs/plugin-puppeteer），已内嵌中文字体，白底等宽卡片，无需额外配置字体。'),
     longTextLineThreshold: Schema.number().default(20).description('超过该行数的文本将自动转为图片。'),
     shopServiceCharge: Schema.number().role('').default(0.05).description('坊市成交手续费比例。'),
     shopRestockThreshold: Schema.number().default(5).description('神秘人补货阈值：坊市全部商品数低于该值时，神秘人才会自动上架补货。'),

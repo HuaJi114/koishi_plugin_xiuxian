@@ -9,6 +9,8 @@ export declare function ensureAdminAuthority(ctx: Context, platform: string, use
 export declare function syncAllAdminAuthority(ctx: Context, config: Config): Promise<void>;
 /** 解析消息中第一个被 @ 的用户平台 ID */
 export declare function getAtId(session: Session): string | undefined;
+/** 将平台前缀 id（如 qq:123456 / mock:123）规范为纯数字/字符串 id，便于白名单/黑名单按群号或 QQ 号匹配 */
+export declare function normalizePlatformId(raw: string | number): string;
 /** 突破判定结果 */
 export type BreakthroughResult = {
     type: 'top';

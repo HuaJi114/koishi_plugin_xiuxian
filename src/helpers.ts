@@ -28,6 +28,13 @@ export function getAtId(session: Session): string | undefined {
   return at?.attrs.id
 }
 
+/** 将平台前缀 id（如 qq:123456 / mock:123）规范为纯数字/字符串 id，便于白名单/黑名单按群号或 QQ 号匹配 */
+export function normalizePlatformId(raw: string | number): string {
+  const s = String(raw ?? '').trim()
+  const i = s.lastIndexOf(':')
+  return i >= 0 ? s.slice(i + 1) : s
+}
+
 /** 突破判定结果 */
 export type BreakthroughResult =
   | { type: 'top' }

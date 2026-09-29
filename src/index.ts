@@ -16,7 +16,7 @@ import { applyExercises } from './modules/exercises'
 import { applyShop } from './modules/shop'
 import { applyEndgame } from './modules/endgame'
 import { applyBlessedSpot } from './modules/blessed-spot'
-import { ensureAdminAuthority, syncAllAdminAuthority } from './helpers'
+import { ensureAdminAuthority, syncAllAdminAuthority, normalizePlatformId } from './helpers'
 import { setupDailyReset } from './daily-reset'
 import { formatLongTextReply } from './message-reply'
 
@@ -63,6 +63,19 @@ function formatHelpMain(): string {
   ].join('\n')
 }
 
+/** 仅用于上下文过滤器的极简会话结构 */
+type FilterSession = { guildId?: string; userId?: string }
+
+/** 自定义上下文过滤器：按「规范化后的 guildId」命中白名单集合（兼容 qq:123 / mock:123 等平台前缀） */
+function makeGuildFilter(ids: Set<string>) {
+  return (session: FilterSession) => !!session.guildId && ids.has(normalizePlatformId(session.guildId))
+}
+
+/** 自定义上下文过滤器：按「规范化后的 userId」命中黑名单集合（跨私聊与群聊） */
+function makeUserFilter(ids: Set<string>) {
+  return (session: FilterSession) => !!session.userId && ids.has(normalizePlatformId(session.userId))
+}
+
 export function apply(ctx: Context, config: Config) {
   ctx.plugin(XiuxianService, config)
   setupDailyReset(ctx)
@@ -102,8 +115,36 @@ export function apply(ctx: Context, config: Config) {
   })
 
   ctx.inject(['xiuxian'], (root) => {
-    // 群聊限定：通过过滤上下文限定所有指令仅在群聊响应
-    const cmdCtx = config.groupOnly ? root.guild() : root
+    const wlSet = new Set(config.groupWhitelist.map(normalizePlatformId).filter(Boolean))
+    const blSet = new Set(config.userBlacklist.map(normalizePlatformId).filter(Boolean))
+
+    // 游玩上下文（playCtx）：普通玩家指令在此注册，受「白名单 + 黑名单」约束
+    let playCtx: Context
+    if (!config.groupWhitelistEnabled) {
+      // 白名单未开启：延续原 groupOnly 行为
+      playCtx = config.groupOnly ? root.guild() : root
+    } else if (wlSet.size === 0) {
+      // 白名单开启但列表为空：全部禁止（静默）
+      playCtx = root.never()
+    } else {
+      // 白名单开启且非空：仅白名单群可玩
+      let base = root.guild().intersect(makeGuildFilter(wlSet))
+      if (config.allowPrivateChat) {
+        // 允许私聊时，私聊也纳入（仍受黑名单约束）
+        base = base.union(root.private())
+      }
+      playCtx = base
+    }
+    // 黑名单对所有上下文生效（跨私聊与群聊）
+    if (blSet.size) {
+      playCtx = playCtx.exclude(root.intersect(makeUserFilter(blSet)))
+    }
+
+    // 管理上下文（adminCtx）：豁免白名单，仍受黑名单与 groupOnly 约束
+    let adminCtx: Context = config.groupOnly ? root.guild() : root
+    if (blSet.size) {
+      adminCtx = adminCtx.exclude(root.intersect(makeUserFilter(blSet)))
+    }
 
     // 全局指令冷却：同一群内，任一玩家触发某指令后，所有玩家对该指令进入冷却（防刷屏）
     const globalCdMap = new Map<string, number>()
@@ -132,36 +173,41 @@ export function apply(ctx: Context, config: Config) {
       globalCdMap.set(key, now)
     })
 
-    cmdCtx.command('xiuxian', '修仙模拟器')
+    // 父命令与帮助（普通玩家指令，注册在 playCtx）
+    playCtx.command('xiuxian', '修仙模拟器')
       .action(() => formatHelpMain())
 
-    cmdCtx.command('xiuxian/修仙帮助', '查看修仙指令帮助')
+    playCtx.command('xiuxian/修仙帮助', '查看修仙指令帮助')
       .alias('帮助')
       .action(() => formatHelpMain())
 
-    applyBase(cmdCtx, config)
-    applyInfo(cmdCtx, config)
-    applyCultivate(cmdCtx, config)
-    applyBack(cmdCtx, config)
-    applySect(cmdCtx, config)
-    applyWork(cmdCtx, config)
-    applyBank(cmdCtx, config)
-    applyBoss(cmdCtx, config)
-    applyRift(cmdCtx, config)
-    applyMixElixir(cmdCtx, config)
-    applyImpart(cmdCtx, config)
-    applyExercises(cmdCtx, config)
-    applyShop(cmdCtx, config)
-    applyEndgame(cmdCtx, config)
-    applyBlessedSpot(cmdCtx, config)
+    // 普通玩法模块：全部注册在 playCtx
+    applyBase(playCtx, config, adminCtx)
+    applyInfo(playCtx, config)
+    applyCultivate(playCtx, config)
+    applyBack(playCtx, config)
+    applySect(playCtx, config)
+    applyWork(playCtx, config)
+    applyBank(playCtx, config)
+    applyBoss(playCtx, config, adminCtx)
+    applyRift(playCtx, config)
+    applyMixElixir(playCtx, config)
+    applyImpart(playCtx, config)
+    applyExercises(playCtx, config)
+    applyShop(playCtx, config, adminCtx)
+    applyEndgame(playCtx, config)
+    applyBlessedSpot(playCtx, config)
 
-    cmdCtx.middleware(async (_session, next) => {
+    // 长文本转图中间件：playCtx 与 adminCtx 均需覆盖
+    const longTextMw = async (_session: import('koishi').Session, next: () => Promise<any>) => {
       const result = await next()
       if (typeof result === 'string') {
         return formatLongTextReply(root, config, result)
       }
       return result
-    }, true)
+    }
+    playCtx.middleware(longTextMw, true)
+    adminCtx.middleware(longTextMw, true)
 
     root.logger('huaji-xiuxian').info('huaji-xiuxian 插件已加载，发送 我要修仙 开始游戏~')
   })

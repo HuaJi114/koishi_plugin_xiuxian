@@ -278,7 +278,25 @@ const data = new GameData()
   assert(minRankWithLuck < 47, `满气运应能命中高于自身境界的法器，实际最小 rank ${minRankWithLuck}`)
 }
 
-// 13. 物品详情功效数值展示（formatItemDetail）
+// 13. 回归：非数字 rank 物品不应污染加权随机（修复探索秘境几乎必得真龙九变）
+{
+  // 真龙九变 rank 为中文品质「天阶上品」，主功法/辅修功法共 127 件带此类 rank。
+  // 修复前 Number('天阶上品')=NaN 会令累计权重变 NaN，兜底恒返回候选末尾（id 最大的 10411=真龙九变）。
+  let zhulong = 0
+  const seen = new Set<string>()
+  const finalRank = 1 // 模拟高阶玩家，使真龙九变（rank 21）在可掉范围内
+  for (let i = 0; i < 500; i++) {
+    const id = data.randomItemIdByRank(finalRank, undefined, 0)
+    assert(id !== 0 && typeof id === 'string', '应返回有效物品而非 0')
+    const idStr = id as string
+    if (idStr === '10411') zhulong++
+    seen.add(idStr)
+  }
+  assert(zhulong < 250, `真龙九变不应几乎必出（修复前 500/500），实际 ${zhulong}/500`)
+  assert(seen.size > 3, `掉落分布应多样，实际仅 ${seen.size} 种`)
+}
+
+// 14. 物品详情功效数值展示（formatItemDetail）
 {
   // 突破丹（level_up_big）：buff 为整数百分比，应直接显示 +30%，而非 3000%
   const jidan = data.formatItemDetail('1400')!

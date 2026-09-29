@@ -2,7 +2,7 @@
 
 群聊修仙文字 MUD，由 [nonebot-plugin-xiuxian-2](https://github.com/luolianxiyou/nonebot-plugin-xiuxian-2) 移植并重构为 Koishi 插件。
 
-当前版本：**0.6.1**
+当前版本：**0.6.2**
 
 ## 依赖
 
@@ -10,7 +10,7 @@
 |------|------|------|
 | `database` | 是 | 玩家、背包、宗门等数据 |
 | [monetary](https://koishi.chat/market?keyword=monetary) | 是 | 灵石经济 |
-| [markdown-to-image-service](https://www.npmjs.com/package/koishi-plugin-markdown-to-image-service) | 否 | 长文本转图片（可选） |
+| [markdown-to-image-service](https://www.npmjs.com/package/koishi-plugin-markdown-to-image-service) | 否 | 长文本转图片（可选，基于 Puppeteer，已内嵌中文字体） |
 
 ## 快速开始
 
@@ -32,6 +32,26 @@
 | `shopRestockThreshold` | `5` | 神秘人补货阈值：商品数低于该值才补货 |
 | `shopCapacity` | `30` | 坊市容量上限 |
 | `shopExpireHours` | `72` | 物品过期小时数，超时自动下架 |
+
+## 0.6.2 更新摘要
+
+### 群聊白名单与黑名单
+
+控制台「基础设置」新增四项，限制机器人仅在指定群游玩：
+
+| 配置项 | 默认 | 说明 |
+|--------|------|------|
+| `groupWhitelistEnabled` | `false` | 群聊白名单开关 |
+| `groupWhitelist` | `[]` | 白名单 QQ 群号列表（纯数字）。开关开启时生效；**列表为空则所有群均不响应** |
+| `allowPrivateChat` | `false` | 白名单开启时是否也响应私聊（默认仅响应白名单群） |
+| `userBlacklist` | `[]` | QQ 号黑名单：列表中的用户无论私聊/群聊均不响应（无需开启白名单即生效） |
+
+行为要点：
+
+- 开启白名单后，**仅在白名单群内的消息会得到响应**；非白名单群与（默认）私聊一律**静默忽略**（不回复任何消息）
+- 群号按「去除平台前缀后的数字」匹配（如 `qq:123` 与 `mock:123` 均视作 `123`），便于跨平台与测试
+- **管理指令（`authority >= 999`，如 系统坊市上架、重置状态、创建世界boss、神秘力量）豁免白名单**，仍可在任意群执行，但同样受黑名单约束
+- **定时任务（坊市自动补货、过期下架）仅处理白名单内群**，移出白名单的群不再被自动维护
 
 ## 0.6.0 更新摘要
 
@@ -88,10 +108,10 @@
 
 | 配置项 | 默认 | 说明 |
 |--------|------|------|
-| `longTextToImage` | `false` | 是否启用 |
-| `longTextLineThreshold` | `20` | 超过该行数转图片 |
+| `longTextToImage` | `false` | 是否启用（开关） |
+| `longTextLineThreshold` | `20` | 超过该行数的回复将转为图片（自定义行数） |
 
-需安装 `koishi-plugin-markdown-to-image-service`；未安装时自动降级为纯文本。
+基于 Puppeteer 实现（`koishi-plugin-markdown-to-image-service` 内部使用 `@koishijs/plugin-puppeteer` 渲染）。启用后会把任意超过阈值行数的指令回复渲染为**白底深字等宽卡片图片**发出，并已内嵌中文字体，无需额外配置字体；未安装该服务时自动降级为纯文本。
 
 ### 传承（合并升级线）
 

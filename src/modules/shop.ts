@@ -1,6 +1,6 @@
 import { Context } from 'koishi'
 import { Config } from '../config'
-import { ADMIN_AUTHORITY } from '../helpers'
+import { ADMIN_AUTHORITY, normalizePlatformId } from '../helpers'
 import { XiuxianShopItem } from '../types'
 import { formatAmount, randChoice } from '../utils'
 
@@ -26,7 +26,7 @@ function guildOf(session: { guildId?: string }): string | undefined {
 }
 
 /** 坊市模块（按群独立） */
-export function applyShop(ctx: Context, config: Config) {
+export function applyShop(ctx: Context, config: Config, adminCtx?: Context) {
   const srv = ctx.xiuxian
 
   ctx.model.extend('xiuxian_shop', {
@@ -54,10 +54,20 @@ export function applyShop(ctx: Context, config: Config) {
     const all = await ctx.database.get('xiuxian_shop', {})
     const guildIds = [...new Set(all.map((r) => r.guildId))]
 
+    // 群聊白名单：定时任务仅处理白名单内群（开启时）
+    const wlSet = config.groupWhitelistEnabled
+      ? new Set(config.groupWhitelist.map((g) => normalizePlatformId(g)).filter(Boolean))
+      : null
+    const allowedGuilds = wlSet ? new Set(guildIds.filter((g) => wlSet.has(normalizePlatformId(g)))) : null
+
     // 1) 过期商品静默下架（神秘人直接删除，玩家发回背包）
     const expireMs = config.shopExpireHours * 3600 * 1000
     const now = Date.now()
-    const expired = all.filter((r) => now - new Date(r.createTime).getTime() > expireMs)
+    const expired = all.filter((r) => {
+      if (now - new Date(r.createTime).getTime() <= expireMs) return false
+      if (allowedGuilds && !allowedGuilds.has(r.guildId)) return false
+      return true
+    })
     for (const item of expired) {
       if (item.sellerId !== '0') {
         await srv.sendBack(item.sellerId, item.goodsId, item.goodsName, item.goodsType, item.goodsNum)
@@ -67,7 +77,7 @@ export function applyShop(ctx: Context, config: Config) {
     }
 
     // 2) 补货：仅当坊市全部商品数低于阈值时，神秘人补 1 件
-    for (const guildId of guildIds) {
+    for (const guildId of allowedGuilds ? [...allowedGuilds] : guildIds) {
       const count = (await listShop(guildId)).length
       if (count >= config.shopRestockThreshold) continue
       if (count >= config.shopCapacity) continue
@@ -186,7 +196,7 @@ export function applyShop(ctx: Context, config: Config) {
       return `已下架【${item.goodsName}】！`
     })
 
-  ctx.command('xiuxian/系统坊市上架 <name:string> <price:integer>', '【管理】上架任意物品', { authority: ADMIN_AUTHORITY })
+  ;(adminCtx ?? ctx).command('xiuxian/系统坊市上架 <name:string> <price:integer>', '【管理】上架任意物品', { authority: ADMIN_AUTHORITY })
     .action(async ({ session }, name, price) => {
       const gid = guildOf(session!)
       if (!gid) return '坊市仅在群聊中使用！'

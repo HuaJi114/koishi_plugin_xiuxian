@@ -26,5 +26,5 @@ export interface XiuxianBossParticipant {
     damage: number;
 }
 /** 世界 BOSS 模块：生成、查看、讨伐 */
-export declare function applyBoss(ctx: Context, _config: Config): void;
+export declare function applyBoss(ctx: Context, _config: Config, adminCtx?: Context): void;
 //# sourceMappingURL=boss.d.ts.map

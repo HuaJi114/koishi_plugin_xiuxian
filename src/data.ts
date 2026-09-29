@@ -139,7 +139,16 @@ export class GameData {
   randomItemIdByRank(finalRank: number, itemTypes?: string[], luck = 0): string | 0 {
     const candidates: Array<[string, number]> = []
     for (const [id, info] of Object.entries(this.items)) {
-      const rank = Number(info.rank ?? 99999)
+      // rank 可能是数字字符串（如 "50"）或中文品质字符串（如 "天阶上品"）。
+      // 后者经 Number() 会得到 NaN，会污染加权随机（累计权重变 NaN，区间匹配全失败，
+      // 最终兜底恒返回候选列表最后一项），导致探索秘境等几乎必得真龙九变。
+      // 此时回退到同物品的 level 数值字段（主功法/辅修功法均带数值 level，且与掉落
+      // rank 量纲一致）；若仍无效则视为极高阶（基本不会掉落）。
+      let rank = Number(info.rank)
+      if (!Number.isFinite(rank)) {
+        const lv = Number(info.level)
+        rank = Number.isFinite(lv) ? lv : 99999
+      }
       if (itemTypes && (!info.item_type || !itemTypes.includes(info.item_type))) continue
       // delta > 0 表示物品比玩家高阶（rank 更小）
       const delta = finalRank - rank
@@ -157,14 +166,17 @@ export class GameData {
     let total = 0
     const intervals: Array<[number, number, string]> = []
     for (const [id, weight] of candidates) {
-      intervals.push([total + 1, total + weight, id])
+      // 累积区间需连续覆盖 [0, total]，不能用 total+1 起手（会让 interval 退化为单点、
+      // 相邻留 1 单位空隙，连续随机数几乎永远命中不了，最终一律兜底返回末尾物品）。
+      intervals.push([total, total + weight, id])
       total += weight
     }
     const pick = Math.random() * total
     for (const [lo, hi, id] of intervals) {
       if (pick >= lo && pick <= hi) return id
     }
-    return candidates[candidates.length - 1][0]
+    // 理论上不可达（连续 pick 必落在某个区间内）；兜底返回首个候选，避免恒返回末尾
+    return candidates[0][0]
   }
 
   /** 获取某境界的突破成功率 */

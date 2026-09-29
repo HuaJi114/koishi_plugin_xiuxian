@@ -41,7 +41,7 @@ const BOSS_LIMIT = 15
 const KILLER_ITEM_TYPES = ['功法', '神通', '丹药', '法器', '防具']
 
 /** 世界 BOSS 模块：生成、查看、讨伐 */
-export function applyBoss(ctx: Context, _config: Config) {
+export function applyBoss(ctx: Context, _config: Config, adminCtx?: Context) {
   const srv = ctx.xiuxian
 
   ctx.model.extend('xiuxian_boss', {
@@ -164,7 +164,7 @@ export function applyBoss(ctx: Context, _config: Config) {
       '提示：BOSS死亡时，所有参与讨伐的道友获得修为与灵石；最后一击者额外获得1~3件装备或丹药。',
     ].join('\n'))
 
-  ctx.command('xiuxian/创建世界boss', '【管理】生成一只世界BOSS', { authority: ADMIN_AUTHORITY })
+  ;(adminCtx ?? ctx).command('xiuxian/创建世界boss', '【管理】生成一只世界BOSS', { authority: ADMIN_AUTHORITY })
     .action(async ({ session }) => {
       const channelId = channelOf(session!)
       const count = await ctx.database.get('xiuxian_boss', { channelId })

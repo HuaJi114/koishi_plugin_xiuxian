@@ -6,6 +6,14 @@ export interface Config {
     groupOnly: boolean;
     /** 管理员 QQ 号列表，可执行管理类指令 */
     adminQQ: string[];
+    /** 群聊白名单开关：开启后仅白名单内 QQ 群可游玩 */
+    groupWhitelistEnabled: boolean;
+    /** 白名单 QQ 群号列表（纯数字），仅开关开启时生效 */
+    groupWhitelist: string[];
+    /** 白名单开启时是否也响应私聊 */
+    allowPrivateChat: boolean;
+    /** QQ 号黑名单：列表中的用户无论私聊/群聊均不响应 */
+    userBlacklist: string[];
     /** 我的存档冷却时间（秒） */
     userInfoCd: number;
     /** 突破 CD（分钟） */

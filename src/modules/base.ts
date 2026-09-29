@@ -44,7 +44,7 @@ async function promptSectChoice(session: Session, srv: Context['xiuxian']): Prom
 }
 
 /** 核心指令模块：账号、签到、突破、灵石互动、排行榜等 */
-export function applyBase(ctx: Context, config: Config) {
+export function applyBase(ctx: Context, config: Config, adminCtx?: Context) {
   const srv = ctx.xiuxian
 
   ctx.command('xiuxian', '修仙模拟器')
@@ -348,8 +348,8 @@ export function applyBase(ctx: Context, config: Config) {
       return msg
     })
 
-  // GM：神秘力量（增加灵石）
-  ctx.command('xiuxian/神秘力量 <amount:integer>', '【管理】赠送灵石', { authority: ADMIN_AUTHORITY })
+  // GM：神秘力量（增加灵石）—— 注册在管理上下文（豁免白名单）
+  ;(adminCtx ?? ctx).command('xiuxian/神秘力量 <amount:integer>', '【管理】赠送灵石', { authority: ADMIN_AUTHORITY })
     .action(async ({ session }, amount) => {
       if (!amount || amount < 1 || amount > 100000000) return '请输入正确的灵石数量！'
       const targetId = getAtId(session!)
@@ -364,8 +364,8 @@ export function applyBase(ctx: Context, config: Config) {
       return `全服通告：赠送所有用户${amount}灵石，请注意查收！`
     })
 
-  // 重置状态
-  ctx.command('xiuxian/重置状态', '【管理】重置玩家状态', { authority: ADMIN_AUTHORITY })
+  // 重置状态 —— 注册在管理上下文（豁免白名单）
+  ;(adminCtx ?? ctx).command('xiuxian/重置状态', '【管理】重置玩家状态', { authority: ADMIN_AUTHORITY })
     .action(async ({ session }) => {
       const targetId = getAtId(session!)
       if (targetId) {

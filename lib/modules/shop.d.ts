@@ -7,5 +7,5 @@ declare module 'koishi' {
     }
 }
 /** 坊市模块（按群独立） */
-export declare function applyShop(ctx: Context, config: Config): void;
+export declare function applyShop(ctx: Context, config: Config, adminCtx?: Context): void;
 //# sourceMappingURL=shop.d.ts.map
