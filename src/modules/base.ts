@@ -2,6 +2,7 @@ import { Context, Session } from 'koishi'
 import { Config } from '../config'
 import { ADMIN_AUTHORITY, breakthrough, getAtId, normalizePlatformId } from '../helpers'
 import { formatPresetSectList, formatSectRegisterPrompt, resolvePresetSectInput } from '../preset-sects'
+import { pushAllPanels } from './panel'
 import { buildFighter } from '../combat-stats'
 import { BATTLE_DETAIL_HINT, getBattleDetail, storeBattleDetail } from '../battle-detail'
 import { dateDiffSeconds, generateRoot, getPowerRate, isHeavilyInjured, formatAmount, playerFight, randInt, luckBonus } from '../utils'
@@ -402,6 +403,20 @@ export function applyBase(ctx: Context, config: Config, adminCtx?: Context) {
         '插件配置 → 基础设置 → 群聊白名单 列表，该群才会响应指令；私聊场景请视情况开启「允许私聊」。',
       ]
       return lines.join('\n')
+    })
+
+  // 配置面板 —— 注册在管理上下文（豁免白名单）：手动（重新）推送 QQ 群指令面板
+  // 适配 adapter-qq：调用官方「指令面板」API（POST/PUT /v2/panels, scope=group）。
+  ;(adminCtx ?? ctx).command('xiuxian/配置面板', '【管理】推送/更新 QQ 群指令面板（adapter-qq）', { authority: ADMIN_AUTHORITY })
+    .alias('推送面板')
+    .action(async ({ session }) => {
+      if (!config.enablePanel) {
+        return '指令面板功能当前已关闭（配置 → QQ 指令面板 → 启用指令面板）。如需推送请先开启。'
+      }
+      const logger = ctx.logger('huaji-xiuxian')
+      const bots = Array.from((ctx as any).bots?.values?.() ?? [])
+      const summary = await pushAllPanels(bots as any[], config, logger)
+      return `【指令面板推送结果】\n${summary}\n\n提示：官方 QQ 机器人在群聊通常只接收 @机器人 消息，面板 command 按钮是否自动 @ 取决于平台；若群内点击无响应，请确认平台已自动 @ 或改用单聊自定义菜单。`
     })
 
   /** 校验突破 CD，返回提示信息或空 */

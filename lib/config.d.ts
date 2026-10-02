@@ -64,6 +64,26 @@ export interface Config {
     shopCapacity: number;
     /** 坊市物品过期小时数：超过该时长无人购买自动下架 */
     shopExpireHours: number;
+    /** 是否自动配置 QQ 群「指令面板」（仅官方 QQ 机器人 adapter-qq 生效） */
+    enablePanel: boolean;
+    /** 指令面板条目：每行一条指令名（点击后填入聊天框的文本），留空则用内置默认 12 条 */
+    panelEntries: string;
+    /** 是否启用「金银阁·猜大小」娱乐小游戏 */
+    enableJinyinge: boolean;
+    /** 金银阁每日次数上限（按玩家计） */
+    jinyinDailyLimit: number;
+    /** 金银阁单次押注灵石上限 */
+    jinyinSingleLimit: number;
+    /** 金银阁每日押注灵石总额上限 */
+    jinyinDailyStoneLimit: number;
+    /** 金银阁冷却时间（秒） */
+    jinyinCd: number;
+    /** 是否启用「虚神界对决 / 俄罗斯轮盘」娱乐小游戏 */
+    enableVoidDuel: boolean;
+    /** 虚神界对决每日发起次数上限（按玩家计） */
+    voidDuelDailyLimit: number;
+    /** 虚神界对决对方接受超时时间（秒） */
+    voidDuelAcceptTimeout: number;
 }
 export declare const Config: Schema<Config>;
 //# sourceMappingURL=config.d.ts.map

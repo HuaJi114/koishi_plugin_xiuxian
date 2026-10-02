@@ -65,6 +65,26 @@ export interface Config {
   shopCapacity: number
   /** 坊市物品过期小时数：超过该时长无人购买自动下架 */
   shopExpireHours: number
+  /** 是否自动配置 QQ 群「指令面板」（仅官方 QQ 机器人 adapter-qq 生效） */
+  enablePanel: boolean
+  /** 指令面板条目：每行一条指令名（点击后填入聊天框的文本），留空则用内置默认 12 条 */
+  panelEntries: string
+  /** 是否启用「金银阁·猜大小」娱乐小游戏 */
+  enableJinyinge: boolean
+  /** 金银阁每日次数上限（按玩家计） */
+  jinyinDailyLimit: number
+  /** 金银阁单次押注灵石上限 */
+  jinyinSingleLimit: number
+  /** 金银阁每日押注灵石总额上限 */
+  jinyinDailyStoneLimit: number
+  /** 金银阁冷却时间（秒） */
+  jinyinCd: number
+  /** 是否启用「虚神界对决 / 俄罗斯轮盘」娱乐小游戏 */
+  enableVoidDuel: boolean
+  /** 虚神界对决每日发起次数上限（按玩家计） */
+  voidDuelDailyLimit: number
+  /** 虚神界对决对方接受超时时间（秒） */
+  voidDuelAcceptTimeout: number
 }
 
 export const Config: Schema<Config> = Schema.intersect([
@@ -78,6 +98,22 @@ export const Config: Schema<Config> = Schema.intersect([
     userBlacklist: Schema.array(String).role('table').default([]).description('QQ 号黑名单：列表中的用户无论私聊还是群聊，本插件均不响应（无需开启白名单即生效）。\n填写说明：OneBot/Napcat 下填纯数字 QQ 号；官方 QQ 机器人下填用户的 openid（可在该用户发「@机器人」时从日志或管理端获取）。'),
     globalCommandCd: Schema.number().default(0).description('全局指令冷却（秒）。同一群内任一玩家触发某指令后，该群所有玩家对该指令进入冷却，0 表示关闭。'),
   }).description('基础设置'),
+
+  Schema.object({
+    enablePanel: Schema.boolean().default(true).description('启用后，插件会在官方 QQ 机器人（adapter-qq）上自动配置 QQ 群「指令面板」，供玩家在群聊里一键触发常用指令。仅对 adapter-qq 平台生效，使用 OneBot/Napcat 等协议时无需开启。'),
+    panelEntries: Schema.string().role('textarea').default('').description('指令面板条目，每行一条「指令名」（即玩家点击后填入聊天框的文本）。留空则使用内置默认：修仙帮助 / 我要修仙 / 修仙签到 / 我的状态 / 我的修仙信息 / 我的背包 / 闭关 / 突破 / 排行榜 / 我的宗门 / 灵田情况 / 洞府信息。\n\n注意：官方 QQ 机器人在群聊中通常只接收 @机器人 的消息，面板 command 按钮点击后是否自动 @ 取决于平台行为；若某群点击面板无响应，请确认平台已自动 @，或改用单聊自定义菜单承载 command 入口。'),
+  }).description('QQ 指令面板(adapter-qq)'),
+
+  Schema.object({
+    enableJinyinge: Schema.boolean().default(true).description('启用「金银阁·猜大小」：玩家在群内掷骰压大/压小赌灵石（豹子庄家通杀，押中 1.9 倍）。关闭则隐藏该玩法。'),
+    jinyinDailyLimit: Schema.number().default(50).description('金银阁每位玩家每日可玩次数上限。'),
+    jinyinSingleLimit: Schema.number().default(100000000).description('金银阁单次押注灵石上限。'),
+    jinyinDailyStoneLimit: Schema.number().default(500000000).description('金银阁每位玩家每日累计押注灵石上限。'),
+    jinyinCd: Schema.number().default(30).description('金银阁冷却时间（秒），两次下注之间的最小间隔。'),
+    enableVoidDuel: Schema.boolean().default(true).description('启用「虚神界对决 / 俄罗斯轮盘」：PvP 灵石赌注，发起后需对方发「接受对决」确认，6 轮轮盘必有一方暴毙、胜者通吃双方押注。关闭则隐藏该玩法。'),
+    voidDuelDailyLimit: Schema.number().default(3).description('虚神界对决每位玩家每日可发起次数上限。'),
+    voidDuelAcceptTimeout: Schema.number().default(120).description('虚神界对决对方接受超时时间（秒），超时自动取消且双方灵石不扣除。'),
+  }).description('娱乐小游戏'),
 
   Schema.object({
     signInLingShiLowerLimit: Schema.number().default(200000).description('每日签到灵石下限。'),

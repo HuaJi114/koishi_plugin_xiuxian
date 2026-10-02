@@ -16,6 +16,8 @@ import { applyExercises } from './modules/exercises'
 import { applyShop } from './modules/shop'
 import { applyEndgame } from './modules/endgame'
 import { applyBlessedSpot } from './modules/blessed-spot'
+import { applyGamble } from './modules/gamble'
+import { pushCommandPanel } from './modules/panel'
 import { ensureAdminAuthority, syncAllAdminAuthority, normalizePlatformId } from './helpers'
 import { setupDailyReset } from './daily-reset'
 import { formatLongTextReply } from './message-reply'
@@ -59,6 +61,7 @@ function formatHelpMain(): string {
     '— 传承：传承帮助',
     '— 炼体：炼体帮助',
     '— 洞天：洞府帮助',
+    '— 娱乐小游戏：金银阁 / 虚神界对决（俄罗斯轮盘）',
     '— 长线玩法：参悟天机 / 飞升转世 / 我的转世 / 宗门贡献兑换',
   ].join('\n')
 }
@@ -131,6 +134,22 @@ export function apply(ctx: Context, config: Config) {
     const wlSet = new Set(config.groupWhitelist.map(normalizePlatformId).filter(Boolean))
     const blSet = new Set(config.userBlacklist.map(normalizePlatformId).filter(Boolean))
     const logger = root.logger('huaji-xiuxian')
+
+    // 启动自动推送 QQ 群「指令面板」（仅官方 QQ 机器人 adapter-qq，且配置开启时）
+    if (config.enablePanel) {
+      const tryPush = (bot: any) => {
+        if (!bot || bot.platform !== 'qq') return
+        // 延迟 3s，确保机器人已完成初始化并拿到 access_token
+        const t = setTimeout(() => {
+          pushCommandPanel(bot, config, logger).catch((err) => {
+            logger.warn('指令面板：自动推送失败（%s）：%s', bot.selfId ?? bot.config?.id ?? '', (err as Error).message)
+          })
+        }, 3000)
+        t.unref?.()
+      }
+      root.on('bot-added', tryPush)
+      for (const bot of root.bots.values()) tryPush(bot)
+    }
 
     // 游玩上下文（playCtx）：普通玩家指令在此注册，受「白名单 + 黑名单」约束
     let playCtx: Context
@@ -211,6 +230,7 @@ export function apply(ctx: Context, config: Config) {
     applyShop(playCtx, config, adminCtx)
     applyEndgame(playCtx, config)
     applyBlessedSpot(playCtx, config)
+    applyGamble(playCtx, config)
 
     // 长文本转图中间件：playCtx 与 adminCtx 均需覆盖
     const longTextMw = async (_session: import('koishi').Session, next: () => Promise<any>) => {
