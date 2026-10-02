@@ -84,7 +84,7 @@ export function formatSectRegisterPrompt(): string {
 }
 
 export function formatPresetSectList(): string {
-  const lines = ['可选宗门如下，请回复宗门全名加入：']
+  const lines = ['可选宗门如下，请回复【序号】或【宗门全名】加入：']
   PRESET_SECTS.forEach((s, i) => {
     lines.push(`${i + 1}. ${s.name}`)
     lines.push(`   ${s.desc}`)
@@ -96,4 +96,21 @@ export function formatPresetSectList(): string {
 export function findPresetSect(name: string): PresetSect | undefined {
   const trimmed = name.trim()
   return PRESET_SECTS.find((s) => s.name === trimmed)
+}
+
+/**
+ * 解析玩家在「加入宗门」选择时输入的文本：
+ * - 纯数字且落在预设宗门序号范围内（1 基）→ 按序号取对应预设宗门；
+ * - 否则按宗门全名匹配；
+ * - 都匹配不到返回 undefined。
+ * 用于建号引导，让玩家回复序号也能加入。
+ */
+export function resolvePresetSectInput(input: string): PresetSect | undefined {
+  const trimmed = (input ?? '').trim()
+  if (!trimmed) return undefined
+  const num = Number(trimmed)
+  if (Number.isInteger(num) && num >= 1 && num <= PRESET_SECTS.length) {
+    return PRESET_SECTS[num - 1]
+  }
+  return findPresetSect(trimmed)
 }

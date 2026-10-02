@@ -1,6 +1,6 @@
 {
   "name": "koishi-plugin-huaji-xiuxian",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "群聊修仙文字MUD",
   "contributors": [
     "huaji250 <945766041@qq.com>"
@@ -30,6 +30,7 @@
   ],
   "scripts": {
     "build": "tsc -b",
+    "prepublishOnly": "tsc -b",
     "lint": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json",
     "test": "tsx src/test/run-tests.ts",
     "test:unit": "tsx src/test/run-tests.ts",

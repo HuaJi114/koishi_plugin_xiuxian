@@ -66,9 +66,22 @@ function formatHelpMain(): string {
 /** 仅用于上下文过滤器的极简会话结构 */
 type FilterSession = { guildId?: string; userId?: string }
 
+/** 已被白名单静默拦截、且已打印过提示的 guildId（进程内去重，避免刷屏） */
+const loggedBlockedGuilds = new Set<string>()
+
 /** 自定义上下文过滤器：按「规范化后的 guildId」命中白名单集合（兼容 qq:123 / mock:123 等平台前缀） */
-function makeGuildFilter(ids: Set<string>) {
-  return (session: FilterSession) => !!session.guildId && ids.has(normalizePlatformId(session.guildId))
+function makeGuildFilter(ids: Set<string>, logger?: import('koishi').Logger) {
+  return (session: FilterSession) => {
+    if (!session.guildId) return false
+    const norm = normalizePlatformId(session.guildId)
+    if (ids.has(norm)) return true
+    // 白名单开启但该群未命中：记一条日志，便于管理员拿到 group_openid 填入白名单（进程内去重）
+    if (logger && !loggedBlockedGuilds.has(session.guildId)) {
+      loggedBlockedGuilds.add(session.guildId)
+      logger.info('白名单未命中，已静默拦截群 guildId=%s（规范化后=%s）；如需放行，请将规范化后的值加入「群聊白名单」', session.guildId, norm)
+    }
+    return false
+  }
 }
 
 /** 自定义上下文过滤器：按「规范化后的 userId」命中黑名单集合（跨私聊与群聊） */
@@ -117,6 +130,7 @@ export function apply(ctx: Context, config: Config) {
   ctx.inject(['xiuxian'], (root) => {
     const wlSet = new Set(config.groupWhitelist.map(normalizePlatformId).filter(Boolean))
     const blSet = new Set(config.userBlacklist.map(normalizePlatformId).filter(Boolean))
+    const logger = root.logger('huaji-xiuxian')
 
     // 游玩上下文（playCtx）：普通玩家指令在此注册，受「白名单 + 黑名单」约束
     let playCtx: Context
@@ -128,7 +142,7 @@ export function apply(ctx: Context, config: Config) {
       playCtx = root.never()
     } else {
       // 白名单开启且非空：仅白名单群可玩
-      let base = root.guild().intersect(makeGuildFilter(wlSet))
+      let base = root.guild().intersect(makeGuildFilter(wlSet, logger))
       if (config.allowPrivateChat) {
         // 允许私聊时，私聊也纳入（仍受黑名单约束）
         base = base.union(root.private())

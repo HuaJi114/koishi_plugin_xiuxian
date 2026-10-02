@@ -72,10 +72,10 @@ export const Config: Schema<Config> = Schema.intersect([
     currency: Schema.string().default('default').description('灵石所使用的 monetary 货币种类标识。'),
     groupOnly: Schema.boolean().default(true).description('是否仅在群聊（非私聊）中响应指令。'),
     adminQQ: Schema.array(String).role('table').default([]).description('管理员 QQ 号列表。填写后自动将对应用户的 Koishi authority 设为 999，可执行需 authority 999 的管理指令。'),
-    groupWhitelistEnabled: Schema.boolean().default(false).description('启用群聊白名单：仅白名单内的 QQ 群可游玩本插件，其余群静默忽略（不回复任何消息）。'),
-    groupWhitelist: Schema.array(String).role('table').default([]).description('白名单 QQ 群号列表（纯数字，如 123456789）。仅当上方开关开启时生效；列表为空时所有群均不响应。'),
+    groupWhitelistEnabled: Schema.boolean().default(false).description('启用群聊白名单：仅白名单内的群可游玩本插件，其余群静默忽略（不回复任何消息）。\n开启前请先在目标群里发送「@机器人 群组信息」获取该群的准确 ID（见下方白名单列表说明），再填进列表。'),
+    groupWhitelist: Schema.array(String).role('table').default([]).description('白名单群 ID 列表，仅当上方开关开启时生效；列表为空时所有群均不响应（静默）。\n\n【如何获取并填写群 ID】\n· 官方 QQ 机器人（adapter-qq）：群 ID 不是纯数字群号，而是一串 group_openid。请在目标群里发送「@机器人 群组信息」（需管理员权限），把返回结果里的「群ID（填白名单用）」整段复制填到本列表。\n· OneBot / Napcat 等协议：填写纯数字群号即可（如 123456789），插件会自动忽略 onebot: 之类的平台前缀。\n\n【使用提示】\n· 多个群请每行填一个 ID。\n· 管理类指令（神秘力量 / 重置状态 / 创建世界boss / 系统坊市上架）不受白名单限制，可随时在任何群执行。'),
     allowPrivateChat: Schema.boolean().default(false).description('白名单开启时，是否也响应私聊消息（默认关闭，仅响应白名单群）。'),
-    userBlacklist: Schema.array(String).role('table').default([]).description('QQ 号黑名单：列表中的用户无论私聊还是群聊，本插件均不响应（无需开启白名单即生效）。'),
+    userBlacklist: Schema.array(String).role('table').default([]).description('QQ 号黑名单：列表中的用户无论私聊还是群聊，本插件均不响应（无需开启白名单即生效）。\n填写说明：OneBot/Napcat 下填纯数字 QQ 号；官方 QQ 机器人下填用户的 openid（可在该用户发「@机器人」时从日志或管理端获取）。'),
     globalCommandCd: Schema.number().default(0).description('全局指令冷却（秒）。同一群内任一玩家触发某指令后，该群所有玩家对该指令进入冷却，0 表示关闭。'),
   }).description('基础设置'),
 

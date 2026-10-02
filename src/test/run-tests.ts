@@ -21,6 +21,7 @@ import {
 } from '../utils'
 import { breakthrough } from '../helpers'
 import { Fighter, XiuxianSkill } from '../types'
+import { resolvePresetSectInput, PRESET_SECTS } from '../preset-sects'
 
 let passed = 0
 let failed = 0
@@ -336,6 +337,28 @@ const data = new GameData()
   assert(danlu.includes('丹成额外多 2 枚'), `寒铁铸心炉应显示丹成额外多 2 枚，实际：${danlu}`)
   const yuntielu = data.formatItemDetail('4003')!
   assert(yuntielu.includes('持有方可炼制丹药'), `陨铁炉(buff=0)应显示基础说明，实际：${yuntielu}`)
+}
+
+// 11. 建号引导：加入宗门支持「序号」或「宗门全名」
+{
+  // 序号命中（1 基）
+  const byNum1 = resolvePresetSectInput('1')
+  assert(byNum1?.name === PRESET_SECTS[0].name, `序号 1 应映射到首个预设宗门，实际：${byNum1?.name}`)
+  const last = PRESET_SECTS.length
+  const byNumLast = resolvePresetSectInput(String(last))
+  assert(byNumLast?.name === PRESET_SECTS[last - 1].name, `序号 ${last} 应映射到末个预设宗门，实际：${byNumLast?.name}`)
+  // 序号带前后空格
+  const byNumSpaced = resolvePresetSectInput('  2  ')
+  assert(byNumSpaced?.name === PRESET_SECTS[1].name, `带空格的序号 2 应映射正确，实际：${byNumSpaced?.name}`)
+  // 序号越界 → 找不到（不会误当成全名）
+  assert(resolvePresetSectInput('99') === undefined, '序号越界应返回 undefined')
+  assert(resolvePresetSectInput('0') === undefined, '序号 0 应返回 undefined')
+  // 非数字字符串按全名匹配
+  const byName = resolvePresetSectInput(PRESET_SECTS[1].name)
+  assert(byName?.name === PRESET_SECTS[1].name, `宗门全名应精确匹配，实际：${byName?.name}`)
+  // 空白 → 找不到
+  assert(resolvePresetSectInput('   ') === undefined, '空白输入应返回 undefined')
+  assert(resolvePresetSectInput('') === undefined, '空输入应返回 undefined')
 }
 
 console.log(`\n测试结果：${passed} 通过，${failed} 失败`)

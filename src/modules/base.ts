@@ -1,7 +1,7 @@
 import { Context, Session } from 'koishi'
 import { Config } from '../config'
-import { ADMIN_AUTHORITY, breakthrough, getAtId } from '../helpers'
-import { formatPresetSectList, formatSectRegisterPrompt } from '../preset-sects'
+import { ADMIN_AUTHORITY, breakthrough, getAtId, normalizePlatformId } from '../helpers'
+import { formatPresetSectList, formatSectRegisterPrompt, resolvePresetSectInput } from '../preset-sects'
 import { buildFighter } from '../combat-stats'
 import { BATTLE_DETAIL_HINT, getBattleDetail, storeBattleDetail } from '../battle-detail'
 import { dateDiffSeconds, generateRoot, getPowerRate, isHeavilyInjured, formatAmount, playerFight, randInt, luckBonus } from '../utils'
@@ -31,11 +31,16 @@ async function promptSectChoice(session: Session, srv: Context['xiuxian']): Prom
 
   await session.send(formatPresetSectList())
   for (let attempt = 0; attempt < 5; attempt++) {
-    const sectName = (await session.prompt(REGISTER_PROMPT_MS))?.trim() ?? ''
-    if (!sectName) break
-    const result = await srv.joinSectByName(session.userId!, sectName)
-    if (result.startsWith('未找到宗门')) {
-      await session.send(`${result}\n请重新回复宗门全名。`)
+    const raw = (await session.prompt(REGISTER_PROMPT_MS))?.trim() ?? ''
+    if (!raw) break
+    const preset = resolvePresetSectInput(raw)
+    if (!preset) {
+      await session.send('未找到对应宗门，请回复【序号】（如 1）或【宗门全名】。')
+      continue
+    }
+    const result = await srv.joinSectByName(session.userId!, preset.name)
+    if (result.startsWith('未找到宗门') || result.includes('数据异常')) {
+      await session.send(`${result}\n请重新回复序号或宗门全名。`)
       continue
     }
     return result
@@ -374,6 +379,29 @@ export function applyBase(ctx: Context, config: Config, adminCtx?: Context) {
       }
       await srv.resetState()
       return '所有用户信息重置成功！'
+    })
+
+  // 群组信息 —— 注册在管理上下文（豁免白名单）：显示当前群/用户的平台 ID，便于配置白名单
+  // 适配 adapter-qq：官方 QQ 群机器人的 guildId 是 group_openid（不透明字符串，非纯数字群号），
+  // 开启「群聊白名单」后必须把该 openid 填入白名单列表才能放行。
+  ;(adminCtx ?? ctx).command('xiuxian/群组信息', '【管理】显示当前群/用户的平台ID（用于群聊白名单）', { authority: ADMIN_AUTHORITY })
+    .alias('群信息')
+    .action(async ({ session }) => {
+      const s = session!
+      const rawGuild = s.guildId ?? ''
+      const normGuild = rawGuild ? normalizePlatformId(rawGuild) : ''
+      const lines = [
+        '【当前会话平台标识】',
+        `平台：qq（适配器 adapter-qq）`,
+        `群ID（原始 guildId）：${rawGuild || '（私聊，无群ID）'}`,
+        `群ID（填白名单用，建议复制此值）：${normGuild || '（私聊，无群ID）'}`,
+        `你的用户ID：${s.userId ?? '（未知）'}`,
+        `机器人自身ID：${s.selfId ?? '（未知）'}`,
+        '',
+        '说明：开启「群聊白名单」后，请把上面的「群ID（填白名单用）」加入',
+        '插件配置 → 基础设置 → 群聊白名单 列表，该群才会响应指令；私聊场景请视情况开启「允许私聊」。',
+      ]
+      return lines.join('\n')
     })
 
   /** 校验突破 CD，返回提示信息或空 */
