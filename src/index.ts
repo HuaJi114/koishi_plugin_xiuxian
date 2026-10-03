@@ -18,6 +18,7 @@ import { applyEndgame } from './modules/endgame'
 import { applyBlessedSpot } from './modules/blessed-spot'
 import { applyGamble } from './modules/gamble'
 import { pushCommandPanel } from './modules/panel'
+import { applySlashCompat } from './slash'
 import { ensureAdminAuthority, syncAllAdminAuthority, normalizePlatformId } from './helpers'
 import { setupDailyReset } from './daily-reset'
 import { formatLongTextReply } from './message-reply'
@@ -231,6 +232,12 @@ export function apply(ctx: Context, config: Config) {
     applyEndgame(playCtx, config)
     applyBlessedSpot(playCtx, config)
     applyGamble(playCtx, config)
+
+    // QQ 官方机器人「指令面板」点击后会填入 `/命令名`（不会自动 @、不剥离 `/`），
+    // 若不处理则命令名不匹配 → 用户点了面板却毫无反应。
+    // 这里用前置中间件在命令解析前剥离开头的 `/`，对 playCtx/adminCtx 零副作用，
+    // 且自动覆盖全部已注册命令（含链式别名与未来新增命令）。
+    applySlashCompat(root)
 
     // 长文本转图中间件：playCtx 与 adminCtx 均需覆盖
     const longTextMw = async (_session: import('koishi').Session, next: () => Promise<any>) => {
